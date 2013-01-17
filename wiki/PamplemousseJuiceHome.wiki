@@ -8,6 +8,7 @@
  * Hao Guan:  sg1234 AT uw DOT edu
  * Talal Sadak:  sadak AT uw DOT edu
 =Minutes=
+[http://code.google.com/p/uwt360wi2013-team-pamplemousse-juice/downloads/detail?name=Minutes_1-16-2013.doc&can=2&q=#makechanges]
 
 =Task Matrix=
 
