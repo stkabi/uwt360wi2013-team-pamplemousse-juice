@@ -15,5 +15,11 @@
 =Check Ins=
 
 =Deliverables=
+
+===Meeting Times===
+The dev team meets on Wednesdays at 6:20 PM
+===Meeting Duty Rotation===
+ * Minute Taker Sequence: Hao, Talal, Justin, Brian
+ * Facilitator Sequence: Justin, Brian, Hao, Talal
 ---
 Last updated 1/16/2013
