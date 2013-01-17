@@ -7,8 +7,12 @@
  * Brian Mathews:  brianmat AT uw DOT edu
  * Hao Guan:  sg1234 AT uw DOT edu
  * Talal Sadak:  sadak AT uw DOT edu
-=Meeting Notes=
+=Minutes=
+
+=Task Matrix=
 
 =Check Ins=
 
 =Deliverables=
+---
+Last updated 1/16/2013
