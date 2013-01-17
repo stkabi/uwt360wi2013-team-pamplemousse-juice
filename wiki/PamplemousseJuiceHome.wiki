@@ -1,0 +1,14 @@
+#summary Home page for team Pamplemousse
+#labels Featured
+
+=Members=
+==Mailing List: Pamplemousse_juice AT u DOT washington DOT edu==
+ * Justin Prentice:  prentj AT uw DOT edu
+ * Brian Mathews:  brianmat AT uw DOT edu
+ * Hao Guan:  sg1234 AT uw DOT edu
+ * Talal Sadak:  sadak AT uw DOT edu
+=Meeting Notes=
+
+=Check Ins=
+
+=Deliverables=
