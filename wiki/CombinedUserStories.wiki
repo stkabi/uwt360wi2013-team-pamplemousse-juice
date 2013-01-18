@@ -1,13 +1,13 @@
-Users:
+=Users:=
         Sponsor//merge with organizer
-        *Contestant
-        *Organizer
-        *Judges
+        Contestant
+        Organizer
+        Judges
 
-User Stories:
+= User Stories:=
 
-    1)  As a contestant I want to access the application so that I can participate in a contest
-    *2)  As a contestant I want to register so that I can participate in a contest
+    #    As a contestant I want to access the application so that I can participate in a contest
+    #    As a contestant I want to register so that I can participate in a contest
         ⁃   rule: certain fields are required
         ⁃   fields:
             ⁃   name
@@ -15,35 +15,35 @@ User Stories:
             ⁃   email
             ⁃   address
             ⁃   general 
-    3)  As a contestant I want to login so that I can participate in a contest
-    4)  As a contestant I want to log out to ensure secure use
-    5)  As a contestant I want to change my information so that it is always up to date
-    6)  As a contestant I want to view my current entires so that I can verify my entries
-    7)  As a contestant I want to submit an entry into a category so that I can participate in a contest
+    #    As a contestant I want to login so that I can participate in a contest
+    #    As a contestant I want to log out to ensure secure use
+    #    As a contestant I want to change my information so that it is always up to date
+    #    As a contestant I want to view my current entires so that I can verify my entries
+    #    As a contestant I want to submit an entry into a category so that I can participate in a contest
         ⁃   rule: 1 per category
         ⁃   rule: no more than 3
         ⁃   rule: can't submit after cutoff date
         ⁃   rule: certain fields are required
-    8) As a contestant, I want to withdraw my entry so that I can act as a judge in a category.
-    9)  As a judge I want to view categories that I am judging so that I can easily see only relevant entries
-    10)  As a judge I want to view entries for a category so that I can compare 
-    11) As a judge I want to submit an entry to a category so that I can participate in a contest
+    #    As a contestant, I want to withdraw my entry so that I can act as a judge in a category.
+    #    As a judge I want to view categories that I am judging so that I can easily see only relevant entries
+    #   As a judge I want to view entries for a category so that I can compare 
+    #   As a judge I want to submit an entry to a category so that I can participate in a contest
         ⁃   rule: cannot be a category for which i am judging
-    12)  As a judge I want to accept or decline a request to be a judge so that I can participate as a judge or not.
+    #   As a judge I want to accept or decline a request to be a judge so that I can participate as a judge or not.
         ⁃   rule: my entries for a category will be removed if I am to judge that category
-    13) As a judge, I want to withdraw my entry to be allowed to judge that category.
-    14) As an organizer I want to see the list of contestants so that I can verify contestants 
-    15) As an organizer I want to create a contest so that contestants can participate
+    #   As a judge, I want to withdraw my entry to be allowed to judge that category.
+    #   As an organizer I want to see the list of contestants so that I can verify contestants 
+    #   As an organizer I want to create a contest so that contestants can participate
         ⁃   rule: certain fields are required
-    16) As an organizer I want to remove a contest so that contestants cannot participate in a contest
-    17) As an organizer I want to specify a user as a judge so that the user can judge entries
-    18) As an organizer I want to send an email to all contestants to notify contestants of relevant information
-    19) As an organizer I want to remove a contestant so that the list of eligible contestants is accurate
-    20) As an organizer I want to unspecify a user as a judge so that the user is no longer able to judge entries
-    21) As an organizer I want to be able to enter different contestant numbers, so I can accommodate small and large events.
-    22) As an organizer I want to be able to limit the number of contestant entries, so we have at most three entries per contestant.
-    23) As an organizer I want to be able to allow contestants to register and submit an entry at the same time.
-    24) As a sponsor, I want to register so I can see the designs of contestants.
-    25) As a sponsor I want to be able to have access to the list of guild members so I can choose judges.
-    26) As a sponsor I want to have each entry include the type of pattern of the woven material so I can categorize them.
-    27) As a sponsor I want to be able to define multiple criteria so I can segment entries.
+    #   As an organizer I want to remove a contest so that contestants cannot participate in a contest
+    #   As an organizer I want to specify a user as a judge so that the user can judge entries
+    #   As an organizer I want to send an email to all contestants to notify contestants of relevant information
+    #   As an organizer I want to remove a contestant so that the list of eligible contestants is accurate
+    #   As an organizer I want to unspecify a user as a judge so that the user is no longer able to judge entries
+    #   As an organizer I want to be able to enter different contestant numbers, so I can accommodate small and large events.
+    #   As an organizer I want to be able to limit the number of contestant entries, so we have at most three entries per contestant.
+    #   As an organizer I want to be able to allow contestants to register and submit an entry at the same time.
+    #   As a sponsor, I want to register so I can see the designs of contestants.
+    #   As a sponsor I want to be able to have access to the list of guild members so I can choose judges.
+    #   As a sponsor I want to have each entry include the type of pattern of the woven material so I can categorize them.
+    #   As a sponsor I want to be able to define multiple criteria so I can segment entries.
