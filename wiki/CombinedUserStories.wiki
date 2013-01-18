@@ -18,7 +18,7 @@
     #    *As a contestant I want to login so that I can participate in a contest*
     #    As a contestant I want to log out to ensure secure use
     #    As a contestant I want to change my information so that it is always up to date
-    #    As a contestant I want to view my current entires so that I can verify my entries
+    #    *As a contestant I want to view my current entires so that I can verify my entries*
     #    *As a contestant I want to submit an entry into a category so that I can participate in a contest*
         *   rule: 1 per category
         *   rule: no more than 3
