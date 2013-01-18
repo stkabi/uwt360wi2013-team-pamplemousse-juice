@@ -47,3 +47,15 @@
     #   As a sponsor I want to be able to have access to the list of guild members so I can choose judges.
     #   As a sponsor I want to have each entry include the type of pattern of the woven material so I can categorize them.
     #   As a sponsor I want to be able to define multiple criteria so I can segment entries.
+
+=USER STORY 2 PAPER PROTOTYPE=
+[http://uwt360wi2013-team-pamplemousse-juice.googlecode.com/files/US2.jpg]
+
+=USER STORY 3 PAPER PROTOTYPE=
+[http://uwt360wi2013-team-pamplemousse-juice.googlecode.com/files/US3.jpg]
+
+=USER STORY 6 PAPER PROTOTYPE=
+[http://uwt360wi2013-team-pamplemousse-juice.googlecode.com/files/US6.jpg]
+
+=USER STORY 7 PAPER PROTOTYPE=
+[http://uwt360wi2013-team-pamplemousse-juice.googlecode.com/files/US7.jpg]
