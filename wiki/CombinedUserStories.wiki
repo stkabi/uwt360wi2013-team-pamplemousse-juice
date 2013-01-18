@@ -1,40 +1,40 @@
 =Users:=
-        Sponsor//merge with organizer
-        Contestant
-        Organizer
-        Judges
+        * Contestant
+        * Organizer
+        * Judges
+        * Sponsor
 
 = User Stories:=
 
     #    As a contestant I want to access the application so that I can participate in a contest
-    #    As a contestant I want to register so that I can participate in a contest
-        ⁃   rule: certain fields are required
-        ⁃   fields:
-            ⁃   name
-            ⁃   phone
-            ⁃   email
-            ⁃   address
-            ⁃   general 
-    #    As a contestant I want to login so that I can participate in a contest
+    #    *As a contestant I want to register so that I can participate in a contest*
+        *   rule: certain fields are required
+        *   fields:
+            *   name
+            *   phone
+            *   email
+            *   address
+            *   general 
+    #    *As a contestant I want to login so that I can participate in a contest*
     #    As a contestant I want to log out to ensure secure use
     #    As a contestant I want to change my information so that it is always up to date
     #    As a contestant I want to view my current entires so that I can verify my entries
-    #    As a contestant I want to submit an entry into a category so that I can participate in a contest
-        ⁃   rule: 1 per category
-        ⁃   rule: no more than 3
-        ⁃   rule: can't submit after cutoff date
-        ⁃   rule: certain fields are required
+    #    *As a contestant I want to submit an entry into a category so that I can participate in a contest*
+        *   rule: 1 per category
+        *   rule: no more than 3
+        *   rule: can't submit after cutoff date
+        *   rule: certain fields are required
     #    As a contestant, I want to withdraw my entry so that I can act as a judge in a category.
     #    As a judge I want to view categories that I am judging so that I can easily see only relevant entries
     #   As a judge I want to view entries for a category so that I can compare 
     #   As a judge I want to submit an entry to a category so that I can participate in a contest
-        ⁃   rule: cannot be a category for which i am judging
+        *   rule: cannot be a category for which i am judging
     #   As a judge I want to accept or decline a request to be a judge so that I can participate as a judge or not.
-        ⁃   rule: my entries for a category will be removed if I am to judge that category
+        *   rule: my entries for a category will be removed if I am to judge that category
     #   As a judge, I want to withdraw my entry to be allowed to judge that category.
     #   As an organizer I want to see the list of contestants so that I can verify contestants 
     #   As an organizer I want to create a contest so that contestants can participate
-        ⁃   rule: certain fields are required
+        *   rule: certain fields are required
     #   As an organizer I want to remove a contest so that contestants cannot participate in a contest
     #   As an organizer I want to specify a user as a judge so that the user can judge entries
     #   As an organizer I want to send an email to all contestants to notify contestants of relevant information
