@@ -18,7 +18,8 @@ public class App {
         frame.setLayout(new FlowLayout());
         frame.add(c);
         
-        frame.setSize(305, 255);
+//        frame.setSize(305, 255);
+        frame.pack();
         frame.setLocationRelativeTo(null); //center
         frame.setVisible(true);
     }
