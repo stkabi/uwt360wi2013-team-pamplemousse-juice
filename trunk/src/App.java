@@ -1,21 +1,25 @@
-import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.UIManager;
 
 
 public class App {
     
     public static void main (String[] args) {
+        //force consistent L&F cross platform
+        try { UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName()); } catch (Exception e) { }
+        
         JFrame frame = new JFrame("Weaving App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        JLabel label = new JLabel("Hello, world!", null, JLabel.CENTER);
-        frame.getContentPane().add(label, BorderLayout.CENTER);
+        Login c = new Login();
         
-        frame.setSize(512, 512);
+        frame.setLayout(new FlowLayout());
+        frame.add(c);
+        
+        frame.setSize(305, 255);
         frame.setLocationRelativeTo(null); //center
-        
         frame.setVisible(true);
     }
     
