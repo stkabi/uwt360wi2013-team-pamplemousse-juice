@@ -49,6 +49,11 @@ public class App implements ActionListener {
                     showRegister();
                 }
             });
+            loginScreen.login.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent arg0) {
+                    loginScreen.pass.wiggle();
+                }
+            });
         }
         changeScreen(loginScreen);
         loginScreen.email.requestFocus();
