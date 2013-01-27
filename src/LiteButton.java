@@ -1,5 +1,7 @@
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -14,6 +16,10 @@ public class LiteButton extends JButton {
     
     public static Color GREEN = new Color(98, 201, 110);
     public static Color BLUE = new Color(98, 146, 201);
+    
+    private Color focusColor;
+    private Color normalColor;
+    private boolean enabled = true;
 
     public LiteButton() {
     }
@@ -34,20 +40,60 @@ public class LiteButton extends JButton {
         super(arg0, arg1);
     }
     
+    public void setEnabled(boolean enable) {
+        this.enabled = enable;
+        if (enable) {
+            this.setForeground(Color.WHITE);
+        } else {
+            this.setForeground(new Color(145, 215, 153));
+        }
+    }
+    
+    public void setBackground(Color c) {
+        super.setBackground(c);
+        focusColor = c.darker();
+        normalColor = c;
+    }
+    
+    public void setBackgroundState(Color c) {
+        super.setBackground(c);
+    }
+    
     protected void init(String text, Icon icon) {
         super.init(text, icon);
         final LiteButton button = this;
         
+        this.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent arg0) {
+                if (!enabled) {
+                    button.transferFocus();
+                } else {
+                    button.setBackgroundState(focusColor);    
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent arg0) {
+                if (enabled) {
+                    button.setBackgroundState(normalColor);
+                }
+            }
+            
+        });
+        
         //set mouse event for hover effect
         this.addMouseListener(new MouseAdapter() {
-            private Color old;
             public void mouseExited(MouseEvent e) {
-                button.setBackground(old);
+                if (enabled) {
+                    button.setBackgroundState(normalColor);
+                }
             }
          
             public void mouseEntered(MouseEvent e) {
-                old = button.getBackground();
-                button.setBackground(old.darker());
+                if (enabled) {
+                    button.setBackgroundState(focusColor);
+                }
             }
         });
         

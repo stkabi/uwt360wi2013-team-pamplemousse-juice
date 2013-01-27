@@ -61,7 +61,7 @@ public class LiteTextField extends JPasswordField {
                 field.selectAll();
                 if (field.getText().compareTo(placeholderText) == 0) {
                     if (field.maskText) {
-                        field.setEchoChar('*');    
+                        field.setEchoChar('*');
                     }
                     field.setForeground(Color.darkGray);
                 }
