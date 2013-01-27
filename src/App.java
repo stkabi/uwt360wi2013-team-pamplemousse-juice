@@ -26,6 +26,9 @@ public class App implements ActionListener {
         frame = new JFrame("Weaving App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new FlowLayout());
+
+        animationTimer = new Timer(10, this);
+        animationTimer.setInitialDelay(0);
         
         showLogin(); //show login screen intially
         
@@ -72,15 +75,15 @@ public class App implements ActionListener {
      * @param newScreen Screen to show.
      */
     public void changeScreen(Component newScreen) {
-        frame.add(newScreen);
-        frame.validate();
-        if (currentScreen != null) {
-            nextScreen = newScreen;
-            animationTimer = new Timer(5, this);
-            animationTimer.setInitialDelay(0);
-            animationTimer.start();
-        } else {
-            currentScreen = newScreen;
+        if (!animationTimer.isRunning()) { //prevents a changeScreen while animating
+            frame.add(newScreen);
+            frame.validate();
+            if (currentScreen != null) {
+                nextScreen = newScreen;
+                animationTimer.start();
+            } else {
+                currentScreen = newScreen;
+            }    
         }
     }
     
@@ -88,9 +91,9 @@ public class App implements ActionListener {
      * Called from animation timer. Incrementally moves the screens.
      */
     public void actionPerformed(ActionEvent arg0) {
-        currentScreen.setBounds(currentScreen.getX() - 10, currentScreen.getY(), currentScreen.getWidth(), currentScreen.getHeight());
+        currentScreen.setBounds(currentScreen.getX() - 15, currentScreen.getY(), currentScreen.getWidth(), currentScreen.getHeight());
         nextScreen.setBounds(currentScreen.getX() + nextScreen.getWidth() , currentScreen.getY(), nextScreen.getWidth(), nextScreen.getHeight());
-        if (currentScreen.getWidth() + currentScreen.getX() < 10) {
+        if (currentScreen.getWidth() + currentScreen.getX() < 15) {
             animationTimer.stop();
             frame.remove(currentScreen);
             currentScreen = nextScreen;

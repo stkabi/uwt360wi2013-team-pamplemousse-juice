@@ -5,10 +5,15 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -54,13 +59,25 @@ public class LoginScreen extends JPanel {
         this.setBackground(Color.white);
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
         
-        this.add(Box.createVerticalStrut(105));
+        BufferedImage myPicture;
+        try {
+            myPicture = ImageIO.read(new File("res/images/logo.png"));
+            JLabel picLabel = new JLabel(new ImageIcon( myPicture ));
+            picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+//            picLabel.
+            this.add(picLabel);
+        } catch (IOException e) { }
+        
+        
+//        
+        
+        this.add(Box.createVerticalStrut(25));
         this.add(title);
         this.add(Box.createVerticalStrut(25));
         this.add(email);
         this.add(Box.createVerticalStrut(10));
         this.add(pass);
-        this.add(Box.createVerticalStrut(120));
+        this.add(Box.createVerticalStrut(60));
         this.add(buttonContainer);
         
         buttonContainer.add(register);
