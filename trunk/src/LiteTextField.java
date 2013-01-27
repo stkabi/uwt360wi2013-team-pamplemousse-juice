@@ -1,9 +1,13 @@
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPasswordField;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -75,5 +79,43 @@ public class LiteTextField extends JPasswordField {
                 }
             }
         });
+    }
+    
+    public void wiggle() {
+        Border border = new EmptyBorder(8, 8, 8, 8);
+        border = new CompoundBorder(BorderFactory.createLineBorder(Color.red, 1), border);
+        this.setBorder(border);
+        final int min = this.getX() - 7;
+        final int max = this.getX() + 7;
+        final int original = this.getX();
+        final LiteTextField field = this;
+        
+        final Timer t = new Timer(15, new ActionListener() {  public void actionPerformed(ActionEvent arg0) { } });
+        
+        //wiggle animation listener
+        t.addActionListener(new ActionListener() {
+            private int direction = 2;
+            private int count = 0;
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                count += 1;
+                if (field.getX() < original) {
+                    field.setBounds(field.getX() + direction, field.getY(), field.getWidth(), field.getHeight());
+                } else if (field.getY() > original) {
+                    field.setBounds(field.getX() + direction, field.getY(), field.getWidth(), field.getHeight());
+                }
+                if (field.getX() < min || field.getX() > max) {
+                    direction *= -1;
+                }
+                if (count > 30) {
+                    field.setBounds(original, field.getY(), field.getWidth(), field.getHeight());
+                    Border border2 = new EmptyBorder(8, 8, 8, 8);
+                    border2 = new CompoundBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1), border2);
+                    field.setBorder(border2);
+                    t.stop();
+                }
+            }
+        });
+        t.start();
     }
 }
