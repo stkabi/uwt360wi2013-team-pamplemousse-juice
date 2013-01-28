@@ -1,5 +1,5 @@
 import java.awt.Color;
-import java.awt.Component;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -15,6 +15,7 @@ import javax.swing.text.Document;
 
 public class LiteTextField extends JPasswordField {
     private static final long serialVersionUID = 4343478043238514738L;
+    private final Timer animationTimer = new Timer(10, null);
     
     public boolean maskText = false;
 
@@ -65,7 +66,7 @@ public class LiteTextField extends JPasswordField {
                 field.selectAll();
                 if (field.getText().compareTo(placeholderText) == 0) {
                     if (field.maskText) {
-                        field.setEchoChar('*');
+                        field.setEchoChar('\u25CF'); //circle
                     }
                     field.setForeground(Color.darkGray);
                 }
@@ -75,47 +76,49 @@ public class LiteTextField extends JPasswordField {
                 if (field.getText().trim().compareTo("") == 0 || field.getText().compareTo(placeholderText) == 0) {
                     field.setEchoChar((char)0);
                     field.setText(placeholderText);
-                    field.setForeground(Color.lightGray);
+                    field.setForeground(Color.lightGray.darker());
                 }
             }
         });
     }
     
     public void wiggle() {
-        Border border = new EmptyBorder(8, 8, 8, 8);
-        border = new CompoundBorder(BorderFactory.createLineBorder(Color.red, 1), border);
-        this.setBorder(border);
-        final int min = this.getX() - 7;
-        final int max = this.getX() + 7;
-        final int original = this.getX();
-        final LiteTextField field = this;
-        
-        final Timer t = new Timer(15, new ActionListener() {  public void actionPerformed(ActionEvent arg0) { } });
-        
-        //wiggle animation listener
-        t.addActionListener(new ActionListener() {
-            private int direction = 2;
-            private int count = 0;
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                count += 1;
-                if (field.getX() < original) {
-                    field.setBounds(field.getX() + direction, field.getY(), field.getWidth(), field.getHeight());
-                } else if (field.getY() > original) {
-                    field.setBounds(field.getX() + direction, field.getY(), field.getWidth(), field.getHeight());
+        //prevent animation from happening if it's already running.
+        if (!animationTimer.isRunning()) {
+            Border border = new EmptyBorder(8, 8, 8, 8);
+            border = new CompoundBorder(BorderFactory.createLineBorder(Color.red, 1), border);
+            this.setBorder(border);
+            final Rectangle original = this.getBounds();
+            final int min = original.x - 7;
+            final int max = original.x + 7;
+            final LiteTextField field = this;
+    
+            field.requestFocus();
+
+            //wiggle animation listener
+            animationTimer.addActionListener(new ActionListener() {
+                private int direction = 2;
+                private int count = 0;
+                @Override
+                public void actionPerformed(ActionEvent arg0) {
+                    count += 1;
+                    Rectangle r = field.getBounds();
+                    r.x = r.x + direction;
+                    field.setBounds(r);
+                    if (field.getX() < min || field.getX() > max) {
+                        direction *= -1;
+                    }
+                    if (count > 30) {
+                        field.setBounds(original);
+                        Border border2 = new EmptyBorder(8, 8, 8, 8);
+                        border2 = new CompoundBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1), border2);
+                        field.setBorder(border2);
+                        animationTimer.stop();
+                        animationTimer.removeActionListener(this);
+                    }
                 }
-                if (field.getX() < min || field.getX() > max) {
-                    direction *= -1;
-                }
-                if (count > 30) {
-                    field.setBounds(original, field.getY(), field.getWidth(), field.getHeight());
-                    Border border2 = new EmptyBorder(8, 8, 8, 8);
-                    border2 = new CompoundBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1), border2);
-                    field.setBorder(border2);
-                    t.stop();
-                }
-            }
-        });
-        t.start();
+            });
+            animationTimer.start();
+        }
     }
 }

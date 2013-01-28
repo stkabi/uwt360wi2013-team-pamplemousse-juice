@@ -1,5 +1,6 @@
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -96,9 +97,11 @@ public class App implements ActionListener {
      * Called from animation timer. Incrementally moves the screens.
      */
     public void actionPerformed(ActionEvent arg0) {
-        currentScreen.setBounds(currentScreen.getX() - 15, currentScreen.getY(), currentScreen.getWidth(), currentScreen.getHeight());
-        nextScreen.setBounds(currentScreen.getX() + nextScreen.getWidth() , currentScreen.getY(), nextScreen.getWidth(), nextScreen.getHeight());
-        if (currentScreen.getWidth() + currentScreen.getX() < 15) {
+        Rectangle r = currentScreen.getBounds();
+        r.x -= 15;
+        currentScreen.setBounds(r);
+        nextScreen.setBounds(r.x + r.width, currentScreen.getY(), nextScreen.getWidth(), nextScreen.getHeight());
+        if (r.x + r.width < 15) {
             animationTimer.stop();
             frame.remove(currentScreen);
             currentScreen = nextScreen;

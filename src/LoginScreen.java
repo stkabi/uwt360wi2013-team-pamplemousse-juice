@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -59,17 +58,11 @@ public class LoginScreen extends JPanel {
         this.setBackground(Color.white);
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
         
-        BufferedImage myPicture;
         try {
-            myPicture = ImageIO.read(new File("res/images/logo.png"));
-            JLabel picLabel = new JLabel(new ImageIcon( myPicture ));
+            JLabel picLabel = new JLabel(new ImageIcon(ImageIO.read(new File("res/images/logo.png"))));
             picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-//            picLabel.
             this.add(picLabel);
         } catch (IOException e) { }
-        
-        
-//        
         
         this.add(Box.createVerticalStrut(25));
         this.add(title);
