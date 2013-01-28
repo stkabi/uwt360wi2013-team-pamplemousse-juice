@@ -59,3 +59,9 @@
 
 =USER STORY 7 PAPER PROTOTYPE=
 [http://uwt360wi2013-team-pamplemousse-juice.googlecode.com/files/US7.jpg]
+
+=USER STORY 10 PAPER PROTOTYPE=
+[http://uwt360wi2013-team-pamplemousse-juice.googlecode.com/files/us10.jpg]
+
+=USER STORY 14 PAPER PROTOTYPE=
+[http://uwt360wi2013-team-pamplemousse-juice.googlecode.com/files/US14.jpg]
