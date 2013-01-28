@@ -26,13 +26,13 @@
         *   rule: certain fields are required
     #    As a contestant, I want to withdraw my entry so that I can act as a judge in a category.
     #    As a judge I want to view categories that I am judging so that I can easily see only relevant entries
-    #   As a judge I want to view entries for a category so that I can compare 
+    #   *As a judge I want to view entries for a category so that I can compare 
     #   As a judge I want to submit an entry to a category so that I can participate in a contest
         *   rule: cannot be a category for which i am judging
     #   As a judge I want to accept or decline a request to be a judge so that I can participate as a judge or not.
         *   rule: my entries for a category will be removed if I am to judge that category
     #   As a judge, I want to withdraw my entry to be allowed to judge that category.
-    #   As an organizer I want to see the list of contestants so that I can verify contestants 
+    #   *As an organizer I want to see the list of contestants so that I can verify contestants 
     #   As an organizer I want to create a contest so that contestants can participate
         *   rule: certain fields are required
     #   As an organizer I want to remove a contest so that contestants cannot participate in a contest
