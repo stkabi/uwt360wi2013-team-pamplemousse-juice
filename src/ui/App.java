@@ -1,3 +1,4 @@
+package ui;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Rectangle;
