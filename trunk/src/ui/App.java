@@ -1,4 +1,5 @@
 package ui;
+
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Rectangle;
@@ -9,18 +10,18 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 
-
 public class App implements ActionListener {
-    
+
     public JFrame frame;
-    
+
     public LoginScreen loginScreen;
-    public RegisterScreen registerScreen; 
-    
-    public Component currentScreen; //currently shown screen 
-    public Component nextScreen; //the next screen to be shown, used by the animation
-    public Timer animationTimer;  //timer for animations
-    
+    public RegisterScreen registerScreen;
+
+    public Component currentScreen; // currently shown screen
+    public Component nextScreen; // the next screen to be shown, used by the
+                                 // animation
+    public Timer animationTimer; // timer for animations
+
     /**
      * Intial startup of application.
      */
@@ -31,15 +32,15 @@ public class App implements ActionListener {
 
         animationTimer = new Timer(10, this);
         animationTimer.setInitialDelay(0);
-        
-        showLogin(); //show login screen intially
-        
+
+        showLogin(); // show login screen intially
+
         frame.pack();
-        frame.setLocationRelativeTo(null); //center
+        frame.setLocationRelativeTo(null); // center
         frame.setVisible(true);
         frame.setResizable(false);
     }
-    
+
     /**
      * Show login screen.
      */
@@ -60,7 +61,7 @@ public class App implements ActionListener {
         changeScreen(loginScreen);
         loginScreen.email.requestFocus();
     }
-    
+
     /**
      * Show register screen.
      */
@@ -69,20 +70,23 @@ public class App implements ActionListener {
             registerScreen = new RegisterScreen();
             registerScreen.back.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
-                    showLogin(); //when back is pressed, show login
+                    showLogin(); // when back is pressed, show login
                 }
             });
         }
         changeScreen(registerScreen);
         registerScreen.email.requestFocus();
     }
-    
+
     /**
      * Show a new screen.
-     * @param newScreen Screen to show.
+     * 
+     * @param newScreen
+     *            Screen to show.
      */
     public void changeScreen(Component newScreen) {
-        if (!animationTimer.isRunning()) { //prevents a changeScreen while animating
+        if (!animationTimer.isRunning()) { // prevents a changeScreen while
+                                           // animating
             frame.add(newScreen);
             frame.validate();
             if (currentScreen != null) {
@@ -90,10 +94,10 @@ public class App implements ActionListener {
                 animationTimer.start();
             } else {
                 currentScreen = newScreen;
-            }    
+            }
         }
     }
-    
+
     /**
      * Called from animation timer. Incrementally moves the screens.
      */
@@ -110,14 +114,18 @@ public class App implements ActionListener {
             frame.validate();
         }
     }
-    
+
     /**
      * Main method. Sets look and feel and starts app.
+     * 
      * @param args
      */
-    public static void main (String[] args) {
-        //force consistent L&F cross platform
-        try { UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName()); } catch (Exception e) { }
+    public static void main(String[] args) {
+        // force consistent L&F cross platform
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (Exception e) {
+        }
         new App();
     }
 }

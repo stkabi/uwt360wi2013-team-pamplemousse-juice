@@ -1,38 +1,32 @@
 package entities;
 
-public class Category
-{
-  private int categoryID;
-  private String name;
-  
-  public Category() {
-    this(0,"");
-  }
+public class Category extends BaseEntity {
+    private int categoryID;
+    private String name;
 
-  public Category(final int categoryID, final String name)
-  {
-    super();
-    this.categoryID = categoryID;
-    this.name = name;
-  }
-  
-  public int getCategoryID()
-  {
-    return categoryID;
-  }
+    public Category() {
+        this(0, "");
+    }
 
-  public void setCategoryID(final int categoryID)
-  {
-    this.categoryID = categoryID;
-  }
+    public Category(final int categoryID, final String name) {
+        super();
+        this.categoryID = categoryID;
+        this.name = name;
+    }
 
-  public String getName()
-  {
-    return name;
-  }
+    public int getCategoryID() {
+        return categoryID;
+    }
 
-  public void setName(final String name)
-  {
-    this.name = name;
-  }
+    public void setCategoryID(final int categoryID) {
+        this.categoryID = categoryID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
 }
