@@ -101,5 +101,12 @@ public class User extends BaseEntity {
     public void setPassword(final String password) {
         this.password = password;
     }
+    
+    public User deserialize(String data) {
+        return new User();
+    }
 
+    public String serialize() {
+        return null;
+    }
 }

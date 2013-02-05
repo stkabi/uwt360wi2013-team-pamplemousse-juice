@@ -103,4 +103,12 @@ public class Entry extends BaseEntity {
     public void setOtherDetails(final String otherDetails) {
         this.otherDetails = otherDetails;
     }
+
+    public Entry deserialize(String data) {
+        return new Entry();
+    }
+
+    public String serialize() {
+        return null;
+    }
 }
