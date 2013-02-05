@@ -1,13 +1,18 @@
 package data;
 
+import java.util.ArrayList;
+
+import entities.Category;
+import entities.Contest;
+import entities.Entry;
+import entities.User;
+
 public class DataProvider {
-    
+
     private enum DataType {
-        USER,
-        ENTRY,
-        CATEGORY,
-        CONTEST
+        USER, ENTRY, CATEGORY, CONTEST
     };
+
     private static String DATAPATH = "/Data/";
     private static String USERPATH = DATAPATH + "/Users/users.txt";
     private static String ENTRYPATH = DATAPATH + "/Entries/entires.txt";
@@ -17,50 +22,50 @@ public class DataProvider {
     public DataProvider() {
         // TODO Auto-generated constructor stub
     }
-    
+
     public void getData(DataType type) {
         switch (type) {
-            case USER:
-                break;
-            case ENTRY:
-                break;
-            case CATEGORY:
-                break;
-            case CONTEST:
-                break;
+        case USER:
+            break;
+        case ENTRY:
+            break;
+        case CATEGORY:
+            break;
+        case CONTEST:
+            break;
         }
     }
-    
-    public void getUserById(String id) {
-        
+
+    public User getUserById(String id) {
+        return null;
     }
-    
-    public void getUserByEmail(String email) {
-        
+
+    public User getUserByEmail(String email) {
+        return null;
     }
-    
-    public void getEntryById(String id) {
-        
+
+    public Entry getEntryById(String id) {
+        return null;
     }
-    
-    public void getEntriesByUserId(String id) {
-        
+
+    public ArrayList<Entry> getEntriesByUserId(String id) {
+        return null;
     }
-    
-    public void getEntriesByCategoryId(String id) {
-        
+
+    public ArrayList<Entry> getEntriesByCategoryId(String id) {
+        return null;
     }
-    
-    public void getWinningEntries() {
-        
+
+    public ArrayList<Entry> getWinningEntries() {
+        return null;
     }
-    
-    public void getCategoryById(String id) {
-        
+
+    public Category getCategoryById(String id) {
+        return null;
     }
-    
-    public void getContestById(String id) {
-        
+
+    public Contest getContestById(String id) {
+        return null;
     }
 
 }
