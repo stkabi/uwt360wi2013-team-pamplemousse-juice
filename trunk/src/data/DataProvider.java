@@ -35,6 +35,10 @@ public class DataProvider {
             break;
         }
     }
+    
+    public ArrayList<User> getAllUsers() {
+        return null;
+    }
 
     public User getUserById(String id) {
         return null;
@@ -43,21 +47,76 @@ public class DataProvider {
     public User getUserByEmail(String email) {
         return null;
     }
-
-    public Entry getEntryById(String id) {
+    
+    /**
+     * Get all entries
+     * @return List of all entries
+     */
+    public ArrayList<Entry> getAllEntries() {
+        //TODO: Read file, deserialize, return all
         return null;
     }
 
-    public ArrayList<Entry> getEntriesByUserId(String id) {
+    /**
+     * Get an entry by an id
+     * @param id Entry id
+     * @return entry 
+     */
+    public Entry getEntryById(int id) {
+        ArrayList<Entry> allEntries = this.getAllEntries();
+        for (Entry e : allEntries) {
+            if (e.getEntryID() == id) {
+                return e;
+            }
+        }
         return null;
     }
 
-    public ArrayList<Entry> getEntriesByCategoryId(String id) {
-        return null;
+    /**
+     * Get entries by user id
+     * @param id User id
+     * @return Entries for user id
+     */
+    public ArrayList<Entry> getEntriesByUserId(int id) {
+        ArrayList<Entry> allEntries = this.getAllEntries();
+        ArrayList<Entry> resultList = new ArrayList<Entry>();
+        for (Entry e : allEntries) {
+            if (e.getUserID() == id) {
+                resultList.add(e);
+            }
+        }
+        return resultList;
     }
 
+    /**
+     * Get all entries for a category
+     * @param id Category id
+     * @return entries for category
+     */
+    public ArrayList<Entry> getEntriesByCategoryId(int id) {
+        ArrayList<Entry> allEntries = this.getAllEntries();
+        ArrayList<Entry> resultList = new ArrayList<Entry>();
+        for (Entry e : allEntries) {
+            if (e.getCategoryID() == id) {
+                resultList.add(e);
+            }
+        }
+        return resultList;
+    }
+
+    /**
+     * Get all winning entries.
+     * @return Winning entries
+     */
     public ArrayList<Entry> getWinningEntries() {
-        return null;
+        ArrayList<Entry> allEntries = this.getAllEntries();
+        ArrayList<Entry> resultList = new ArrayList<Entry>();
+        for (Entry e : allEntries) {
+            if (e.isWinner()) {
+                resultList.add(e);
+            }
+        }
+        return resultList;
     }
 
     public Category getCategoryById(String id) {
