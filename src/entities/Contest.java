@@ -66,5 +66,13 @@ public class Contest extends BaseEntity {
     public void setEndDate(final Date endDate) {
         this.endDate = endDate;
     }
+        
+    public Contest deserialize(String data) {
+        return new Contest();
+    }
+
+    public String serialize() {
+        return null;
+    }
 
 }

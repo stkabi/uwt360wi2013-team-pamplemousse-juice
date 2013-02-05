@@ -15,7 +15,7 @@ public class DataProvider {
 
     private static String DATAPATH = "/Data/";
     private static String USERPATH = DATAPATH + "/Users/users.txt";
-    private static String ENTRYPATH = DATAPATH + "/Entries/entires.txt";
+    private static String ENTRYPATH = DATAPATH + "/Entries/entrees.txt";
     private static String CATEGORYPATH = DATAPATH + "/Categories/categories.txt";
     private static String CONTESTPATH = DATAPATH + "/Contests/contests.txt";
 
