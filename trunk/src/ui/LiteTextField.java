@@ -1,3 +1,4 @@
+package ui;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
