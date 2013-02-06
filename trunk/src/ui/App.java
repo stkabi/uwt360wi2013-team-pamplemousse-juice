@@ -23,7 +23,7 @@ public class App implements ActionListener {
     public Timer animationTimer; // timer for animations
 
     /**
-     * Intial startup of application.
+     * Initial startup of application.
      */
     public App() {
         frame = new JFrame("Weaving App");
@@ -122,10 +122,7 @@ public class App implements ActionListener {
      */
     public static void main(String[] args) {
         // force consistent L&F cross platform
-        try {
-            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-        } catch (Exception e) {
-        }
+        try { UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName()); } catch (Exception e) { }
         new App();
     }
 }

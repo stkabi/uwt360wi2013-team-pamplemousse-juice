@@ -1,25 +1,24 @@
 package entities;
 
+import java.security.MessageDigest;
+import java.util.ArrayList;
+
+import data.DataProvider;
+
 public class User extends BaseEntity {
-    private int userID;
-    private String role; // possibly use an enum instead?
+    public static enum Role {
+        CONTESTANT, JUDGE, ORGANIZER
+    }
+    private Role role = Role.CONTESTANT; // possibly use an enum instead?
     private String name;
     private String address;
     private String phoneNumber;
     private String email;
-    private String password; // strictly speaking, we shouldn't do this
-
-    /**
-     * Constructs a user with default values (should be changed soon after
-     * construction).
-     */
-    public User() {
-        this(0, "", "", "", "", "", "");
-    }
+    private String passwordHash;
 
     /**
      * 
-     * @param userId
+     * @param id
      *            The user ID. (Where should we designate IDs? In some db
      *            interaction class?)
      * @param role
@@ -32,33 +31,28 @@ public class User extends BaseEntity {
      *            User's phone number
      * @param email
      *            User's email
-     * @param password
-     *            User's password
+     * @param passwordHash
+     *            User's passwordHash
      */
-    public User(final int userId, final String role, final String name, final String address, final String phoneNumber, final String email, final String password) {
-        super();
-        this.userID = userId;
+    public User(final String id, final Role role, final String name, final String address, final String phoneNumber, final String email, final String passwordHash) {
+        this.id = id;
         this.role = role;
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.password = password;
+        this.passwordHash = passwordHash;
+    }
+    
+    public User() {
+        super();
     }
 
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(final int userID) {
-        this.userID = userID;
-    }
-
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(final String role) {
+    public void setRole(final Role role) {
         this.role = role;
     }
 
@@ -95,18 +89,62 @@ public class User extends BaseEntity {
     }
 
     public String getPassword() {
-        return password;
+        return passwordHash;
     }
 
-    public void setPassword(final String password) {
-        this.password = password;
+    public void setPassword(final String passwordPlainText) {
+        this.passwordHash = User.hashPassword(passwordPlainText);
     }
     
-    public User deserialize(String data) {
-        return new User();
+    public boolean authenticate(final String passwordPlainText) {
+        //convert string to md5, validate against stored md5.
+        return User.hashPassword(passwordPlainText).compareTo(this.passwordHash) == 0;      
+    }
+    
+    /**
+     * Get the hash for a plaintext password
+     * @param passwordPlainText Password in plain text
+     * @return hashed password
+     */
+    public static String hashPassword(String passwordPlainText) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(passwordPlainText.getBytes());
+            byte[] digest = md.digest();
+            String pwHash = "";
+            for (byte b : digest) {
+                pwHash += (Integer.toHexString((int) b & 0xff));
+            }
+            return pwHash;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public static User deserialize(String[] data) {
+        User u = new User();
+        u.id = data[0];
+        u.role = Role.valueOf(data[1]);
+        u.name = data[2];
+        u.address = data[3];
+        u.phoneNumber = data[4];
+        u.email = data[5];
+        u.passwordHash = data[6];
+        return u;
     }
 
+    @SuppressWarnings("serial")
     public String serialize() {
-        return null;
+        final User self = this;
+        return DataProvider.serialize(new ArrayList<Object>() {{
+            add(self.id); //0
+            add(self.role); //1
+            add(self.name); //2 
+            add(self.address); //3
+            add(self.phoneNumber); //4
+            add(self.email); //5
+            add(self.passwordHash); //6
+        }});
     }
 }
