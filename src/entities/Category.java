@@ -1,25 +1,15 @@
 package entities;
 
 public class Category extends BaseEntity {
-    private int categoryID;
     private String name;
 
-    public Category() {
-        this(0, "");
-    }
-
-    public Category(final int categoryID, final String name) {
-        super();
-        this.categoryID = categoryID;
+    public Category(final String id, final String name) {
+        this.id = id;
         this.name = name;
     }
-
-    public int getCategoryID() {
-        return categoryID;
-    }
-
-    public void setCategoryID(final int categoryID) {
-        this.categoryID = categoryID;
+    
+    public Category() {
+        super();
     }
 
     public String getName() {
@@ -31,7 +21,7 @@ public class Category extends BaseEntity {
     }
     
     public Category deserialize(String data) {
-        return new Category();
+        return null;
     }
 
     public String serialize() {

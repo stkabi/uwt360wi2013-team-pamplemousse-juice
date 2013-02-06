@@ -1,27 +1,18 @@
 package entities;
 
 public class Entry extends BaseEntity {
-    private int entryID;
-    private int userID;
-    private int categoryID;
-    private boolean winner; // Is this how we flag winners? Perhaps it should be
-                            // in our 'database' so it is searchable?
+    private String userID;
+    private String categoryID;
+    private boolean isWinner;
     private String weavingPattern; // we will probably need to build our own
                                    // class for this eventually
     private int fibersInWeave;
     private String otherDetails;
 
     /**
-     * Default constructor
-     */
-    public Entry() {
-        this(0, 0, 0, false, "", 0, "");
-    }
-
-    /**
      * Parameterized Constructor
      * 
-     * @param entryID
+     * @param id
      *            This entry's ID
      * @param userID
      *            The ID of the user who submitted this entry
@@ -37,47 +28,42 @@ public class Entry extends BaseEntity {
      * @param otherDetails
      *            User-provided details that don't fit elsewhere
      */
-    public Entry(final int entryID, final int userID, final int categoryID, final boolean winner, final String weavingPattern, final int fibersInWeave, final String otherDetails) {
-        super();
-        this.entryID = entryID;
+    public Entry(final String id, final String userID, final String categoryID, final boolean isWinner, final String weavingPattern, final int fibersInWeave, final String otherDetails) {
+        this.id = id;
         this.userID = userID;
         this.categoryID = categoryID;
-        this.winner = winner;
+        this.isWinner = isWinner;
         this.weavingPattern = weavingPattern;
         this.fibersInWeave = fibersInWeave;
         this.otherDetails = otherDetails;
     }
 
-    public int getEntryID() {
-        return entryID;
+    public Entry() {
+        super();
     }
 
-    public void setEntryID(final int entryID) {
-        this.entryID = entryID;
-    }
-
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(final int userID) {
+    public void setUserID(final String userID) {
         this.userID = userID;
     }
 
-    public int getCategoryID() {
+    public String getCategoryID() {
         return categoryID;
     }
 
-    public void setCategoryID(final int categoryID) {
+    public void setCategoryID(final String categoryID) {
         this.categoryID = categoryID;
     }
 
     public boolean isWinner() {
-        return winner;
+        return isWinner;
     }
 
-    public void setWinner(final boolean winner) {
-        this.winner = winner;
+    public void setWinner(final boolean isWinner) {
+        this.isWinner = isWinner;
     }
 
     public String getWeavingPattern() {
@@ -104,8 +90,8 @@ public class Entry extends BaseEntity {
         this.otherDetails = otherDetails;
     }
 
-    public Entry deserialize(String data) {
-        return new Entry();
+    public Entry deserialize(String[] data) {
+        return null;
     }
 
     public String serialize() {

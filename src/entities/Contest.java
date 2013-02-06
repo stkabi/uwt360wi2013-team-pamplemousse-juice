@@ -3,23 +3,12 @@ package entities;
 import java.util.Date;
 
 public class Contest extends BaseEntity {
-    private int contestID;
     private String name;
     private Date startDate;
     private Date endDate;
-
-    /**
-     * Default Constructor.
-     */
-    public Contest() {
-        this(0, "", new Date(), new Date());
-    }
-
+    
     /**
      * Parameterized constructor
-     * 
-     * @param contestID
-     *            The contest's ID
      * @param name
      *            The name of the contest
      * @param startDate
@@ -27,20 +16,15 @@ public class Contest extends BaseEntity {
      * @param endDate
      *            The ending date
      */
-    public Contest(final int contestID, final String name, final Date startDate, final Date endDate) {
-        super();
-        this.contestID = contestID;
+    public Contest(final String id, final String name, final Date startDate, final Date endDate) {
+        this.id = id;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
     }
-
-    public int getContestID() {
-        return contestID;
-    }
-
-    public void setContestID(final int contestID) {
-        this.contestID = contestID;
+    
+    public Contest() {
+        super();
     }
 
     public String getName() {
@@ -68,7 +52,7 @@ public class Contest extends BaseEntity {
     }
         
     public Contest deserialize(String data) {
-        return new Contest();
+        return null;
     }
 
     public String serialize() {
