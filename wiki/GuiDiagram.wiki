@@ -1,0 +1,10 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Gui diagram
+
+
+= Details =
+
+ <wiki:gadget url="http://creately.com/player/gadget/createlyplayer.xml" height="400" width="600" border="0"  up_did="hcvasjpv1-xrUi1gRt1bz5Xv03sCrxjJhlFTg=" up_dlogo="true" up_dtitle="GUI UML" up_bgcolor="#eeeeee" /> 
