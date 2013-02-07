@@ -1,10 +1,10 @@
 #summary Gui diagram.
 
 = Introduction =
-You can see the the diagram using the applet. Click on
+You can see the the diagram using the applet. Click on fullscreen to see a larger image.
 
 
 
 = Details =
 
- <wiki:gadget url="http://creately.com/player/gadget/createlyplayer.xml" height="400" width="600" border="0"  up_did="hcvasjpv1-xrUi1gRt1bz5Xv03sCrxjJhlFTg=" up_dlogo="true" up_dtitle="GUI UML" up_bgcolor="#eeeeee" /> 
+  <wiki:gadget url="http://creately.com/player/gadget/createlyplayer.xml" height="400" width="600" border="0"  up_did="hcvfoe7r-WfvzfY8EeBnN2z9vTr42B8ZhPU=" up_dlogo="true" up_dtitle="GUI UML" up_bgcolor="#eeeeee" /> 
