@@ -1,8 +1,8 @@
-#summary One-sentence summary of this page.
+#summary Gui diagram.
 
 = Introduction =
+You can see the the diagram using the applet. Click on
 
-Gui diagram
 
 
 = Details =
