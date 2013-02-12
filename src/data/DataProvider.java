@@ -4,10 +4,13 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import entities.BaseEntity;
 import entities.Category;
 import entities.Contest;
 import entities.Entry;
@@ -19,71 +22,38 @@ public class DataProvider {
     private static String USERPATH = "Users";
     private static String ENTRYPATH = "Entries";
     private static String CATEGORYPATH = "Categories";
-    private static String CONTESTPATH = "Contests";
+//    private static String CONTESTPATH = "Contests";
     private static String DELIMITER = "|";
     
-    HashMap<String, ArrayList<String[]>> cache = new HashMap<String, ArrayList<String[]>>();
+    HashMap<String, ArrayList<String>> cache = new HashMap<String, ArrayList<String>>();
 
     public DataProvider() { }
-
-    private ArrayList<String[]> getData(String filePath) {
-        
-        //cache only single type of data at a time
-        if (cache.containsKey(filePath)) {
-            return cache.get(filePath);
-        } else {
-            cache.clear();
-        }
-        
-        ArrayList<String[]> items = new ArrayList<String[]>();
-        try {
-            //get/create base data dir
-            File file = new File(DATAPATH + "/" + filePath);
-            if (!file.exists()) { file.mkdirs(); }
-            
-            //get/create db file
-            file = new File(DATAPATH + "/" + filePath + "/" + filePath.toLowerCase() + ".txt");
-            if (!file.exists()) { file.createNewFile(); }
-            
-            //read all lines
-            Scanner scanner = new Scanner(file);
-            while(scanner.hasNextLine()) {
-                items.add(DataProvider.splitString(scanner.nextLine()));
-            }
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        //cache it
-        cache.put(filePath, items);
-        
-        return items;
-    }
-    
-    private void saveData(String filePath, String data) {
-        //get/create db file
-        File file = new File(DATAPATH + "/" + filePath + "/" + filePath.toLowerCase() + ".txt");
-        try {
-            BufferedWriter out = new BufferedWriter(new FileWriter(file));
-            out.write(data);
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //clear the cache if we've got this data type cached.
-        if (this.cache.containsKey(filePath)) {
-            this.cache.clear();
-        }
-    }
     
     public ArrayList<User> getAllUsers() {
-        ArrayList<String[]> data = this.getData(USERPATH);
+        ArrayList<String> data = this.getData(USERPATH);
         ArrayList<User> users = new ArrayList<User>();
-        for (String[] s : data) {
-            users.add(User.deserialize(s));
+        for (String s : data) {
+            users.add((User)DataProvider.deserialize(s, User.class));
         }
         return users;
+    }
+    
+    public ArrayList<Entry> getAllEntries() { 
+        ArrayList<String> data = this.getData(ENTRYPATH);
+        ArrayList<Entry> entries = new ArrayList<Entry>();
+        for (String s : data) {
+            entries.add((Entry)DataProvider.deserialize(s, Entry.class));
+        }
+        return entries;
+    }
+    
+    public ArrayList<Category> getAllCategories() { 
+        ArrayList<String> data = this.getData(CATEGORYPATH);
+        ArrayList<Category> categories = new ArrayList<Category>();
+        for (String s : data) {
+            categories.add((Category)DataProvider.deserialize(s, Category.class));
+        }
+        return categories;
     }
 
     public User getUserById(String id) {
@@ -104,22 +74,6 @@ public class DataProvider {
             }
         }
         return null;
-    }
-    
-    /**
-     * Get all entries
-     * @return List of all entries
-     */
-    public ArrayList<Entry> getAllEntries() { 
-        ArrayList<String[]> data = this.getData(ENTRYPATH);
-        ArrayList<Entry> entries = new ArrayList<Entry>();
-        Entry e;
-        for (String[] s : data) {
-            e = new Entry();
-            e.deserialize(s);
-            entries.add(e);
-        }
-        return entries;
     }
 
     /**
@@ -205,19 +159,45 @@ public class DataProvider {
         boolean update = false;
         for (User u : users) {
             if (u.getID().compareTo(user.getID()) == 0) {
-                data += user.serialize() + "\n";
+                data += DataProvider.serialize(user) + "\n";
                 update = true;
                 break;
             } else {
-                data += u.serialize() + "\n";
+                data += DataProvider.serialize(u) + "\n";
             }
         }
         if (!update) {
             users.add(user);
-            data += user.serialize();
+            data += DataProvider.serialize(user);
         }
         this.saveData(USERPATH, data);
         return users;
+    }
+    
+    /**
+     * Creates or updates an Entry object. 
+     * @param entry Entry to save.
+     * @return set of all entries
+     */
+    public ArrayList<Entry> saveEntry(Entry entry) {
+        ArrayList<Entry> entries = this.getAllEntries();
+        String data = "";
+        boolean update = false;
+        for (Entry e : entries) {
+            if (e.getID().compareTo(entry.getID()) == 0) {
+                data += DataProvider.serialize(entry) + "\n";
+                update = true;
+                break;
+            } else {
+                data += DataProvider.serialize(e) + "\n";
+            }
+        }
+        if (!update) {
+            entries.add(entry);
+            data += DataProvider.serialize(entry);
+        }
+        this.saveData(ENTRYPATH, data);
+        return entries;
     }
     
     /**
@@ -225,15 +205,121 @@ public class DataProvider {
      * @param properties
      * @return
      */
-    public static String serialize(ArrayList<Object> properties) {
+    public static String serialize(BaseEntity obj) {
         String data = "";
-        for (Object p : properties) {
-            if (p != null) {
-                data += p.toString();
+        Class<? extends BaseEntity> cls = obj.getClass();
+        try {
+            ArrayList<Field> fields = DataProvider.getAllFields(cls);
+            for (Field f : fields) {
+                f.setAccessible(true);
+                Object val = f.get(obj);
+                if (val != null) {
+                    data += val.toString();
+                }
+                data += DELIMITER;
             }
-            data += DELIMITER;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return data;
+    }
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static Object deserialize(String data, Class<? extends BaseEntity> cls) {
+        String[] args = DataProvider.splitString(data);
+        Object obj = null;
+        try {
+            obj = cls.newInstance();
+        } catch (InstantiationException e1) {
+            e1.printStackTrace();
+        } catch (IllegalAccessException e1) {
+            e1.printStackTrace();
+        }
+        
+        try {
+            ArrayList<Field> fields = DataProvider.getAllFields(cls);
+            int index = 0;
+            for (Field f : fields) {
+                f.setAccessible(true);
+                Class<?> type = f.getType();
+                if (type.isEnum()) {
+                    f.set(obj, Enum.valueOf((Class<Enum>) f.getType(), args[index]));
+                } else if (type.equals(boolean.class)) {
+                    f.set(obj, Boolean.valueOf(args[index]));
+                } else if (type.equals(int.class)) {
+                    f.set(obj, Integer.valueOf(args[index]));
+                } else {
+                    f.set(obj, args[index]);
+                }
+                index += 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+    
+    private static ArrayList<Field> getAllFields(Class<?> type) {
+        ArrayList<Field> result = new ArrayList<Field>();
+
+        Class<?> i = type;
+        while (i != null && i != Object.class) {
+            result.addAll(Arrays.asList(i.getDeclaredFields()));
+            i = i.getSuperclass();
+        }
+
+        return result;
+    }
+
+    private ArrayList<String> getData(String filePath) {
+        
+        //cache only single type of data at a time
+        if (cache.containsKey(filePath)) {
+            return cache.get(filePath);
+        } else {
+            cache.clear();
+        }
+        
+        ArrayList<String> items = new ArrayList<String>();
+        try {
+            //get/create base data dir
+            File file = new File(DATAPATH + "/" + filePath);
+            if (!file.exists()) { file.mkdirs(); }
+            
+            //get/create db file
+            file = new File(DATAPATH + "/" + filePath + "/" + filePath.toLowerCase() + ".txt");
+            if (!file.exists()) { file.createNewFile(); }
+            
+            //read all lines
+            Scanner scanner = new Scanner(file);
+            while(scanner.hasNextLine()) {
+                items.add(scanner.nextLine());
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        //cache it
+        cache.put(filePath, items);
+        
+        return items;
+    }
+    
+    private void saveData(String filePath, String data) {
+        //get/create db file
+        File file = new File(DATAPATH + "/" + filePath + "/" + filePath.toLowerCase() + ".txt");
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter(file));
+            out.write(data);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //clear the cache if we've got this data type cached.
+        if (this.cache.containsKey(filePath)) {
+            this.cache.clear();
+        }
     }
     
     /**

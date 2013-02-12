@@ -3,10 +3,10 @@ package entities;
 public class Entry extends BaseEntity {
     private String userID;
     private String categoryID;
-    private boolean isWinner;
+    private boolean isWinner = false;
     private String weavingPattern; // we will probably need to build our own
                                    // class for this eventually
-    private int fibersInWeave;
+    private String fibersInWeave;
     private String otherDetails;
 
     /**
@@ -28,7 +28,7 @@ public class Entry extends BaseEntity {
      * @param otherDetails
      *            User-provided details that don't fit elsewhere
      */
-    public Entry(final String id, final String userID, final String categoryID, final boolean isWinner, final String weavingPattern, final int fibersInWeave, final String otherDetails) {
+    public Entry(final String id, final String userID, final String categoryID, final boolean isWinner, final String weavingPattern, final String fibersInWeave, final String otherDetails) {
         this.id = id;
         this.userID = userID;
         this.categoryID = categoryID;
@@ -74,11 +74,11 @@ public class Entry extends BaseEntity {
         this.weavingPattern = weavingPattern;
     }
 
-    public int getFibersInWeave() {
+    public String getFibersInWeave() {
         return fibersInWeave;
     }
 
-    public void setFibersInWeave(final int fibersInWeave) {
+    public void setFibersInWeave(final String fibersInWeave) {
         this.fibersInWeave = fibersInWeave;
     }
 
@@ -88,13 +88,5 @@ public class Entry extends BaseEntity {
 
     public void setOtherDetails(final String otherDetails) {
         this.otherDetails = otherDetails;
-    }
-
-    public Entry deserialize(String[] data) {
-        return null;
-    }
-
-    public String serialize() {
-        return null;
     }
 }

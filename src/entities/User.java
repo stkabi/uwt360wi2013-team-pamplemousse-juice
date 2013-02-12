@@ -1,9 +1,6 @@
 package entities;
 
 import java.security.MessageDigest;
-import java.util.ArrayList;
-
-import data.DataProvider;
 
 public class User extends BaseEntity {
     public static enum Role {
@@ -120,31 +117,5 @@ public class User extends BaseEntity {
             e.printStackTrace();
         }
         return null;
-    }
-    
-    public static User deserialize(String[] data) {
-        User u = new User();
-        u.id = data[0];
-        u.role = Role.valueOf(data[1]);
-        u.name = data[2];
-        u.address = data[3];
-        u.phoneNumber = data[4];
-        u.email = data[5];
-        u.passwordHash = data[6];
-        return u;
-    }
-
-    @SuppressWarnings("serial")
-    public String serialize() {
-        final User self = this;
-        return DataProvider.serialize(new ArrayList<Object>() {{
-            add(self.id); //0
-            add(self.role); //1
-            add(self.name); //2 
-            add(self.address); //3
-            add(self.phoneNumber); //4
-            add(self.email); //5
-            add(self.passwordHash); //6
-        }});
     }
 }
