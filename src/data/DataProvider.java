@@ -29,6 +29,10 @@ public class DataProvider {
 
     public DataProvider() { }
     
+    /**
+     * Get all users
+     * @return list of users
+     */
     public ArrayList<User> getAllUsers() {
         ArrayList<String> data = this.getData(USERPATH);
         ArrayList<User> users = new ArrayList<User>();
@@ -38,6 +42,10 @@ public class DataProvider {
         return users;
     }
     
+    /**
+     * Get all entries 
+     * @return List of entries
+     */
     public ArrayList<Entry> getAllEntries() { 
         ArrayList<String> data = this.getData(ENTRYPATH);
         ArrayList<Entry> entries = new ArrayList<Entry>();
@@ -47,6 +55,10 @@ public class DataProvider {
         return entries;
     }
     
+    /**
+     * Get all categories
+     * @return List of categories
+     */
     public ArrayList<Category> getAllCategories() { 
         ArrayList<String> data = this.getData(CATEGORYPATH);
         ArrayList<Category> categories = new ArrayList<Category>();
@@ -56,6 +68,11 @@ public class DataProvider {
         return categories;
     }
 
+    /**
+     * Get a user by id
+     * @param id id of user
+     * @return User or null
+     */
     public User getUserById(String id) {
         ArrayList<User> allUsers = this.getAllUsers();
         for (User u : allUsers) {
@@ -66,6 +83,11 @@ public class DataProvider {
         return null;
     }
 
+    /**
+     * Get a user by a user's email address
+     * @param email email address
+     * @return User or null
+     */
     public User getUserByEmail(String email) {
         ArrayList<User> allUsers = this.getAllUsers();
         for (User u : allUsers) {
@@ -138,11 +160,21 @@ public class DataProvider {
         return resultList;
     }
 
+    /**
+     * Get a category by id
+     * @param id id of category
+     * @return Category or null
+     */
     public Category getCategoryById(String id) {
         //TODO: Implement
         return null;
     }
 
+    /**
+     * Get a contest by id
+     * @param id id of contest
+     * @return Contest or null
+     */
     public Contest getContestById(String id) {
         //TODO: Implement
         return null;
@@ -224,6 +256,12 @@ public class DataProvider {
         return data;
     }
     
+    /**
+     * Deserialize an object from a delimiter separated string to an instance of the class 
+     * @param data String to parse
+     * @param cls Class to construct
+     * @return instance of a class
+     */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static Object deserialize(String data, Class<? extends BaseEntity> cls) {
         String[] args = DataProvider.splitString(data);
@@ -259,6 +297,11 @@ public class DataProvider {
         return obj;
     }
     
+    /**
+     * Get all fields on a class
+     * @param type Class
+     * @return List of fields
+     */
     private static ArrayList<Field> getAllFields(Class<?> type) {
         ArrayList<Field> result = new ArrayList<Field>();
 
@@ -271,6 +314,11 @@ public class DataProvider {
         return result;
     }
 
+    /**
+     * Get all data stored in a text file
+     * @param filePath file of text
+     * @return List of lines
+     */
     private ArrayList<String> getData(String filePath) {
         
         //cache only single type of data at a time
@@ -306,6 +354,11 @@ public class DataProvider {
         return items;
     }
     
+    /**
+     * Save data to a file
+     * @param filePath file of text
+     * @param data data to save
+     */
     private void saveData(String filePath, String data) {
         //get/create db file
         File file = new File(DATAPATH + "/" + filePath + "/" + filePath.toLowerCase() + ".txt");
