@@ -79,38 +79,33 @@ public class LoginScreen extends JPanel {
         buttonContainer.add(new Box.Filler(null, null, null));
         buttonContainer.add(login);
     }
+    
+    private void performValidation() {
+        if (email.getText().trim().length() > 0 && email.getText().compareTo("Email") != 0 && pass.getText().trim().length() > 0 && pass.getText().compareTo("Password") != 0) {
+            login.setEnabled(true);
+        } else {
+            login.setEnabled(false);
+        }
+    }
 
     /**
      * Enable/disable the login button unless all fields are valid.
      */
-    @SuppressWarnings("deprecation")
     private KeyListener inputChangeListener = new KeyListener() {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            if (email.getText().trim().length() > 0 && email.getText().compareTo("Email") != 0 && pass.getText().trim().length() > 0 && pass.getText().compareTo("Password") != 0) {
-                login.setEnabled(true);
-            } else {
-                login.setEnabled(false);
-            }
+            performValidation();
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            if (email.getText().trim().length() > 0 && email.getText().compareTo("Email") != 0 && pass.getText().trim().length() > 0 && pass.getText().compareTo("Password") != 0) {
-                login.setEnabled(true);
-            } else {
-                login.setEnabled(false);
-            }
+            performValidation();
         }
 
         @Override
         public void keyTyped(KeyEvent e) {
-            if (email.getText().trim().length() > 0 && email.getText().compareTo("Email") != 0 && pass.getText().trim().length() > 0 && pass.getText().compareTo("Password") != 0) {
-                login.setEnabled(true);
-            } else {
-                login.setEnabled(false);
-            }
+            performValidation();
         }
     };
 

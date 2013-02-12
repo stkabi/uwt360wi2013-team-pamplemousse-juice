@@ -88,42 +88,29 @@ public class RegisterScreen extends JPanel {
     /**
      * TODO: Enable/disable the create button unless all fields are valid.
      */
-    // @SuppressWarnings("deprecation")
+    private void performValidation() {
+//        if (email.getText().trim().length() > 0 && email.getText().compareTo("Email") != 0 && pass.getText().trim().length() > 0 && pass.getText().compareTo("Password") != 0) {
+//            login.setEnabled(true);
+//        } else {
+//            login.setEnabled(false);
+//        }
+    }
+    
     private KeyListener inputChangeListener = new KeyListener() {
+
         @Override
         public void keyPressed(KeyEvent e) {
-            // if (email.getText().trim().length() > 0 &&
-            // email.getText().compareTo("Email") != 0 &&
-            // pass.getText().trim().length() > 0 &&
-            // pass.getText().compareTo("Password") != 0) {
-            // login.setEnabled(true);
-            // } else {
-            // login.setEnabled(false);
-            // }
+            performValidation();
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            // if (email.getText().trim().length() > 0 &&
-            // email.getText().compareTo("Email") != 0 &&
-            // pass.getText().trim().length() > 0 &&
-            // pass.getText().compareTo("Password") != 0) {
-            // login.setEnabled(true);
-            // } else {
-            // login.setEnabled(false);
-            // }
+            performValidation();
         }
 
         @Override
         public void keyTyped(KeyEvent e) {
-            // if (email.getText().trim().length() > 0 &&
-            // email.getText().compareTo("Email") != 0 &&
-            // pass.getText().trim().length() > 0 &&
-            // pass.getText().compareTo("Password") != 0) {
-            // login.setEnabled(true);
-            // } else {
-            // login.setEnabled(false);
-            // }
+            performValidation();
         }
     };
 
