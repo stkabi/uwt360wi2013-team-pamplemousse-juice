@@ -45,7 +45,6 @@ public class LiteTextField extends JPasswordField {
         this.init();
     }
 
-    @SuppressWarnings("deprecation")
     public void init() {
 
         this.setEchoChar((char) 0);
@@ -124,5 +123,10 @@ public class LiteTextField extends JPasswordField {
             });
             animationTimer.start();
         }
+    }
+    
+    @SuppressWarnings("deprecation")
+    public String getText() {
+        return super.getText();
     }
 }
