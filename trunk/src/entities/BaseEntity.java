@@ -2,7 +2,7 @@ package entities;
 
 
 public class BaseEntity {
-    protected String id;
+    public String id;
     
     public BaseEntity() {
         this.id = java.util.UUID.randomUUID().toString();
@@ -19,5 +19,4 @@ public class BaseEntity {
     public void setID(String id) {
         this.id = id;
     }
-
 }

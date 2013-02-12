@@ -19,12 +19,4 @@ public class Category extends BaseEntity {
     public void setName(final String name) {
         this.name = name;
     }
-    
-    public Category deserialize(String data) {
-        return null;
-    }
-
-    public String serialize() {
-        return null;
-    }
 }

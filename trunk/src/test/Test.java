@@ -3,6 +3,7 @@ package test;
 import java.util.ArrayList;
 
 import data.DataProvider;
+import entities.Entry;
 import entities.User;
 
 
@@ -23,11 +24,13 @@ public class Test {
         
         //test serialization
         String data;
-        data = u.serialize();
+        data = DataProvider.serialize(u);
         
         //test deserialization
-        User u2 = User.deserialize(DataProvider.splitString(data));
+        User u2 = (User)DataProvider.deserialize(data, User.class); 
         System.out.println("deserialize: " + (u2.getID().compareTo(u.getID()) == 0));
+        
+        
     }
     
     public void testDataProvider() {
@@ -50,6 +53,29 @@ public class Test {
         
         //test get user by email
         System.out.println("get by email: " + (dp.getUserByEmail(u.getEmail()).getID().compareTo(u.getID()) == 0));
+        
+        
+        Entry e = new Entry();
+        e.setOtherDetails("details");
+        e.setUserID(u.getID());
+        
+        dp.saveEntry(e);
+        
+        ArrayList<Entry> entryList = dp.getAllEntries();
+        
+        Entry e2 = entryList.get(entryList.size() - 1);
+        
+        //test save entry
+        System.out.println("check save entry: " + (e2.getID().compareTo(e.getID()) == 0));
+        
+        //test get entry by ID
+        System.out.println("check get entry by ID: " + (dp.getEntryById(e.getID()).getID().compareTo(e.getID()) == 0));
+        
+        //test get entry by UserID
+        ArrayList<Entry> userEntryList = dp.getEntriesByUserId(u.getID());
+        System.out.println("check get entry by UserId: " + (userEntryList.get(userEntryList.size() - 1).getID().compareTo(e2.getID()) == 0));
+        
+        
     }
 
     public Test() {
