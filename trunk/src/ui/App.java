@@ -121,6 +121,7 @@ public class App implements ActionListener {
             currentScreen = nextScreen;
             nextScreen = null;
             frame.validate();
+            frame.pack();
         }
     }
     
