@@ -41,14 +41,16 @@ public class LiteButton extends JButton {
         super(arg0, arg1);
     }
 
-    public void setEnabled(boolean enable) {
-        this.enabled = enable;
-        if (enable) {
-            this.setForeground(Color.WHITE);
-        } else {
-            this.setForeground(new Color(145, 215, 153));
-        }
-    }
+//    public void setEnabled(boolean enable) {
+//        this.enabled = enable;
+//        
+////            this.enableEvents(Event.MOUSE_DOWN);
+//            this.setForeground(Color.WHITE);
+//        } else {
+////            this.disableEvents(Event.M);
+//            this.setForeground(new Color(145, 215, 153));
+//        }
+//    }
 
     public void setBackground(Color c) {
         super.setBackground(c);
@@ -59,6 +61,10 @@ public class LiteButton extends JButton {
     public void setBackgroundState(Color c) {
         super.setBackground(c);
     }
+    
+//    public void actionPerformed(ActionEvent e) {
+//        
+//    }
 
     protected void init(String text, Icon icon) {
         super.init(text, icon);
