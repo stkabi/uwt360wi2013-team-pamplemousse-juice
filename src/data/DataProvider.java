@@ -154,8 +154,38 @@ public class DataProvider {
      * @return Category or null
      */
     public Category getCategoryById(String id) {
-        //TODO: Implement
+        ArrayList<Category> categories = this.getAllCategories();
+        for (Category c : categories) {
+            if (c.getID().compareTo(id) == 0) {
+                return c;
+            }
+        }
         return null;
+    }
+    
+    /**
+     * Get entries for judge
+     * @param judgeID Judge id to get entries for
+     * @return list of entries
+     */
+    public ArrayList<Entry> getEntriesForJudge(String judgeID) {
+        ArrayList<Category> categories = this.getAllCategories();
+        ArrayList<Entry> results = new ArrayList<Entry>();
+
+        //all categories
+        for (Category c : categories) {
+            if (c.getJudgeIDs() != null) {
+              //all judge ids for category
+                for (String uid : c.getJudgeIDs()) {
+                    //if the judge belongs to this category, get/add all entries by category  
+                    if (uid.compareTo(judgeID) == 0) {
+                        results.addAll(this.getEntriesByCategoryId(c.getID()));
+                    }
+                }    
+            }
+        }
+        
+        return results;
     }
 
     /**
@@ -275,13 +305,11 @@ public class DataProvider {
             e.printStackTrace();
         }
         
-        //clear the cache if we've got this data type cached.
+        //update the cache if we've got this data type cached.
         if (this.cache.containsKey(filePath)) {
-            this.cache.clear();
+            cache.put(filePath, data);
         }
         
-        //cache it
-        cache.put(filePath, data);
     }
 
 }
