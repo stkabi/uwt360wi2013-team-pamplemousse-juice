@@ -21,19 +21,9 @@ public class Test {
         
         //test authentication
         System.out.println("auth: " + u.authenticate(pwPlain));
-        
-        //test serialization
-        String data;
-        data = DataProvider.serialize(u);
-        
-        //test deserialization
-        User u2 = (User)DataProvider.deserialize(data, User.class); 
-        System.out.println("deserialize: " + (u2.getID().compareTo(u.getID()) == 0));
-        
-        
     }
     
-    public void testDataProvider() {
+    public void testDataProvider () {
         User u = new User();
         u.setID("1-TESTID-1");
         u.setEmail("herp@derp.com");
@@ -45,15 +35,23 @@ public class Test {
         //test get all users
         ArrayList<User> list = dp.getAllUsers();
         
-        //last user should be our new one, check id
-        System.out.println("add new: " + (list.get(list.size() - 1).getID().compareTo(u.getID()) == 0));
-        
         //test get user by id
         System.out.println("get by id: " + (dp.getUserById(u.getID()).getID().compareTo(u.getID()) == 0));
         
         //test get user by email
         System.out.println("get by email: " + (dp.getUserByEmail(u.getEmail()).getID().compareTo(u.getID()) == 0));
         
+        //test update user
+        User u2a = new User();
+        u2a.setEmail("test@email.com");
+        dp.saveUser(u2a);
+        User u2b = dp.getUserByEmail("test@email.com");
+        u2b.setEmail("changed@email.com");
+        dp.saveUser(u2b);
+        u2b = dp.getUserByEmail("test@email.com");
+        System.out.println("check null after update: " + (u2b == null));
+        u2b = dp.getUserByEmail("changed@email.com");
+        System.out.println("check changed after update: " + (u2b != null));
         
         Entry e = new Entry();
         e.setOtherDetails("details");
@@ -74,8 +72,6 @@ public class Test {
         //test get entry by UserID
         ArrayList<Entry> userEntryList = dp.getEntriesByUserId(u.getID());
         System.out.println("check get entry by UserId: " + (userEntryList.get(userEntryList.size() - 1).getID().compareTo(e2.getID()) == 0));
-        
-        
     }
 
     public Test() {

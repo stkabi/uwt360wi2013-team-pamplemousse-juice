@@ -3,10 +3,12 @@ package entities;
 import java.security.MessageDigest;
 
 public class User extends BaseEntity {
+    private static final long serialVersionUID = -7917347868104375158L;
+
     public static enum Role {
         CONTESTANT, JUDGE, ORGANIZER
     }
-    private Role role = Role.CONTESTANT; // possibly use an enum instead?
+    private Role role = Role.CONTESTANT;
     private String name;
     private String address;
     private String phoneNumber;
@@ -16,8 +18,7 @@ public class User extends BaseEntity {
     /**
      * 
      * @param id
-     *            The user ID. (Where should we designate IDs? In some db
-     *            interaction class?)
+     *            The user ID.
      * @param role
      *            User's role in the contest (organizer, judge, participant)
      * @param name
