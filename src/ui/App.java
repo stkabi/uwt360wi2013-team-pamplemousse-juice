@@ -10,9 +10,15 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 
+import data.DataProvider;
+import entities.User;
+
 public class App implements ActionListener {
 
     public JFrame frame;
+    
+    private User loggedInUser;
+    private DataProvider dataProvider;
 
     public LoginScreen loginScreen;
     public RegisterScreen registerScreen;
@@ -26,6 +32,9 @@ public class App implements ActionListener {
      * Initial startup of application.
      */
     public App() {
+        
+        this.dataProvider = new DataProvider();
+        
         frame = new JFrame("Weaving App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new FlowLayout());
@@ -46,7 +55,7 @@ public class App implements ActionListener {
      */
     public void showLogin() {
         if (loginScreen == null) {
-            loginScreen = new LoginScreen();
+            loginScreen = new LoginScreen(this);
             loginScreen.register.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
                     showRegister();
@@ -67,7 +76,7 @@ public class App implements ActionListener {
      */
     public void showRegister() {
         if (registerScreen == null) {
-            registerScreen = new RegisterScreen();
+            registerScreen = new RegisterScreen(this);
             registerScreen.back.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
                     showLogin(); // when back is pressed, show login
@@ -113,6 +122,14 @@ public class App implements ActionListener {
             nextScreen = null;
             frame.validate();
         }
+    }
+    
+    public User getLoggedInUser() {
+        return this.loggedInUser;
+    }
+    
+    public DataProvider getDataProvider() {
+        return this.dataProvider;
     }
 
     /**

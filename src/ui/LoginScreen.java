@@ -21,13 +21,14 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
-public class LoginScreen extends JPanel {
+public class LoginScreen extends BaseScreen {
     private static final long serialVersionUID = -4847569599721799776L;
 
     public LiteTextField pass, email;
     public LiteButton login, register;
 
-    public LoginScreen() {
+    public LoginScreen(App application) {
+        super(application);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         Container buttonContainer = new Container();
         buttonContainer.setLayout(new BoxLayout(buttonContainer, BoxLayout.X_AXIS));

@@ -12,18 +12,18 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
-public class RegisterScreen extends JPanel {
+public class RegisterScreen extends BaseScreen {
     private static final long serialVersionUID = -4847569599721799776L;
 
     public LiteTextField pass, pass2, email, name, address, general;
     public LiteButton back, submit;
 
-    public RegisterScreen() {
+    public RegisterScreen(App application) {
+        super(application);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         Container buttonContainer = new Container();
         buttonContainer.setLayout(new BoxLayout(buttonContainer, BoxLayout.X_AXIS));
