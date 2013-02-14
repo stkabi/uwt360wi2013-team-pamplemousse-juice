@@ -3,6 +3,7 @@ package entities;
 import java.util.Date;
 
 public class Contest extends BaseEntity {
+    private static final long serialVersionUID = 38532368642593698L;
     private String name;
     private Date startDate;
     private Date endDate;

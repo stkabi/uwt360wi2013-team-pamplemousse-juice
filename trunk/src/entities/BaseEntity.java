@@ -1,7 +1,10 @@
 package entities;
 
+import java.io.Serializable;
 
-public class BaseEntity {
+
+public class BaseEntity implements Serializable {
+    private static final long serialVersionUID = -721319874728872980L;
     public String id;
     
     public BaseEntity() {

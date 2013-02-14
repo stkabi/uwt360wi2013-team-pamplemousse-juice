@@ -1,6 +1,7 @@
 package entities;
 
 public class Entry extends BaseEntity {
+    private static final long serialVersionUID = -3191322136179845133L;
     private String userID;
     private String categoryID;
     private boolean isWinner = false;
