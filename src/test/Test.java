@@ -1,6 +1,11 @@
 package test;
 
+import java.awt.BorderLayout;
 import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 
 import data.DataProvider;
 import entities.Entry;
@@ -73,10 +78,38 @@ public class Test {
         ArrayList<Entry> userEntryList = dp.getEntriesByUserId(u.getID());
         System.out.println("check get entry by UserId: " + (userEntryList.get(userEntryList.size() - 1).getID().compareTo(e2.getID()) == 0));
     }
+    
+    private void testTable() {
+        JFrame frame = new JFrame("Table test");
+        DataProvider dp = new DataProvider();
+        ArrayList<User> users = dp.getAllUsers();
+        Object[][] data = new Object[users.size()][6];
+        
+        for (int i = 0; i < users.size(); i += 1) {
+            data[i][0] = users.get(i).getID();
+            data[i][1] = users.get(i).getEmail();
+            data[i][2] = users.get(i).getName();
+            data[i][3] = users.get(i).getRole();
+            data[i][4] = users.get(i).getAddress();
+            data[i][5] = users.get(i).getPhoneNumber();
+        }
+        
+        JTable table = new JTable(data, new Object[] {"UserID", "Email", "Name", "Role", "Address", "Phone"});
+        
+        frame.setLayout(new BorderLayout());
+        frame.add(table.getTableHeader(), BorderLayout.PAGE_START);
+        frame.add(table, BorderLayout.CENTER);
+        frame.pack();
+        frame.setLocationRelativeTo(null); // center
+        frame.setVisible(true);
+        
+        
+    }
 
     public Test() {
         this.testUser();
         this.testDataProvider();
+        this.testTable();
     }
     
     public static void main(String[] args) {

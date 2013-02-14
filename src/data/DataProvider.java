@@ -184,7 +184,6 @@ public class DataProvider {
                 }    
             }
         }
-        
         return results;
     }
 
