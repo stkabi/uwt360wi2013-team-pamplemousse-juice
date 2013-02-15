@@ -29,9 +29,9 @@ public class EntriesScreen extends BaseScreen {
     private LiteTextField one, two, three;
     private LiteTextField[] entries_arr = { one, two, three };
     private String[] entries_txt = { " 1. ", " 2. ", " 3. " };
-    private LiteButton logout, remove, submit;
-    private LiteButton[] button_arr = { logout, remove, submit };
-    private String[] button_txt = { "Logout", "Remove", "Submit" };
+    private LiteButton logout, remove, add;
+    private LiteButton[] button_arr = { logout, remove, add };
+    private String[] button_txt = { "Logout", "Remove", "Add" };
     private Color[] button_color = { LiteButton.RED, LiteButton.BLUE, LiteButton.GREEN };
     private JCheckBox ckbx1, ckbx2, ckbx3;
     private JCheckBox[] ckbx_items = { ckbx1, ckbx2, ckbx3 };
