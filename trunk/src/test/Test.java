@@ -4,10 +4,10 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 
+import ui.LiteTable;
 import data.DataProvider;
+import entities.Category;
 import entities.Entry;
 import entities.User;
 
@@ -31,8 +31,20 @@ public class Test {
     public void testDataProvider () {
         User u = new User();
         u.setID("1-TESTID-1");
+        u.setName("John Doe");
+        u.setAddress("4102 Herp Derp, Tacoma, Washington");
+        u.setPhoneNumber("360-990-3815");
         u.setEmail("herp@derp.com");
         DataProvider dp = new DataProvider();
+        
+        Category c = new Category();
+        if (dp.getAllCategories().size() == 0) {
+            c.setName("CoolWeavez~~");
+            ArrayList<String> judgeIDs = new ArrayList<String>();
+            judgeIDs.add(u.getID());
+            c.setJudgeIDs(judgeIDs);
+            dp.saveCategory(c);
+        }
         
         //test save user
         dp.saveUser(u);
@@ -61,6 +73,7 @@ public class Test {
         Entry e = new Entry();
         e.setOtherDetails("details");
         e.setUserID(u.getID());
+        e.setCategoryID(c.getID());
         
         dp.saveEntry(e);
         
@@ -94,16 +107,13 @@ public class Test {
             data[i][5] = users.get(i).getPhoneNumber();
         }
         
-        JTable table = new JTable(data, new Object[] {"UserID", "Email", "Name", "Role", "Address", "Phone"});
-        
+        LiteTable table = new LiteTable(data, new Object[] {"UserID", "Email", "Name", "Role", "Address", "Phone"});
         frame.setLayout(new BorderLayout());
-        frame.add(table.getTableHeader(), BorderLayout.PAGE_START);
+        frame.add(table.getTableHeader(), BorderLayout.NORTH);
         frame.add(table, BorderLayout.CENTER);
         frame.pack();
         frame.setLocationRelativeTo(null); // center
         frame.setVisible(true);
-        
-        
     }
 
     public Test() {

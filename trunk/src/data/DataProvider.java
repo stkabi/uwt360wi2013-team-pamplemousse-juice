@@ -126,7 +126,7 @@ public class DataProvider {
         ArrayList<Entry> allEntries = this.getAllEntries();
         ArrayList<Entry> resultList = new ArrayList<Entry>();
         for (Entry e : allEntries) {
-            if (e.getCategoryID().compareTo(id) == 0) {
+            if (e.getCategoryID() != null && e.getCategoryID().compareTo(id) == 0) {
                 resultList.add(e);
             }
         }
@@ -204,15 +204,18 @@ public class DataProvider {
      */
     public ArrayList<User> saveUser(User user) {
         ArrayList<User> users = this.getAllUsers();
-        boolean update = false;
+        int updateIndex = -1;
+        int i = -1;
         for (User u : users) {
+            i += 1;
             if (u.getID().compareTo(user.getID()) == 0) {
-                u = user;
-                update = true;
+                users.remove(i);
+                users.add(i, user);
+                updateIndex = i;
                 break;
             }
         }
-        if (!update) {
+        if (updateIndex == -1) {
             users.add(user);
         }
         this.saveData(USERPATH, users);
@@ -226,19 +229,45 @@ public class DataProvider {
      */
     public ArrayList<Entry> saveEntry(Entry entry) {
         ArrayList<Entry> entries = this.getAllEntries();
-        boolean update = false;
+        int updateIndex = -1;
+        int i = -1;
         for (Entry e : entries) {
             if (e.getID().compareTo(entry.getID()) == 0) {
-                e = entry;
-                update = true;
+                entries.remove(i);
+                entries.add(i, entry);
+                updateIndex = i;
                 break;
             }
         }
-        if (!update) {
+        if (updateIndex == -1) {
             entries.add(entry);
         }
         this.saveData(ENTRYPATH, entries);
         return entries;
+    }
+    
+    /**
+     * Creates or updates a Category object. 
+     * @param category Category to save.
+     * @return set of all categories
+     */
+    public ArrayList<Category> saveCategory(Category category) {
+        ArrayList<Category> categories = this.getAllCategories();
+        int updateIndex = -1;
+        int i = -1;
+        for (Category c : categories) {
+            if (c.getID().compareTo(category.getID()) == 0) {
+                categories.remove(i);
+                categories.add(i, category);
+                updateIndex = i;
+                break;
+            }
+        }
+        if (updateIndex == -1) {
+            categories.add(category);
+        }
+        this.saveData(CATEGORYPATH, categories);
+        return categories;
     }
 
     /**
@@ -249,11 +278,9 @@ public class DataProvider {
     @SuppressWarnings("unchecked")
     private ArrayList<? extends BaseEntity> getData(String filePath) {
         
-        //cache only single type of data at a time
+        //cache the different types of data
         if (cache.containsKey(filePath)) {
             return cache.get(filePath);
-        } else {
-            cache.clear();
         }
         
         ArrayList<? extends BaseEntity> items = new ArrayList<BaseEntity>();
@@ -266,7 +293,8 @@ public class DataProvider {
             //get/create db file
             file = new File(DATAPATH + "/" + filePath + "/" + filePath.toLowerCase() + ".txt");
             if (!file.exists()) { 
-                file.createNewFile(); 
+                file.createNewFile();
+                this.saveData(filePath, items);
                 return items;
             }
             
@@ -304,10 +332,7 @@ public class DataProvider {
             e.printStackTrace();
         }
         
-        //update the cache if we've got this data type cached.
-        if (this.cache.containsKey(filePath)) {
-            cache.put(filePath, data);
-        }
+        cache.put(filePath, data);
         
     }
 
