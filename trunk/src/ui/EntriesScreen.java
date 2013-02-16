@@ -3,10 +3,11 @@ package ui;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class EntriesScreen extends BaseScreen {
+public class EntriesScreen extends BaseScreen implements ActionListener {
 
     private static final long serialVersionUID = 3747690407033623572L;
 
@@ -46,7 +47,7 @@ public class EntriesScreen extends BaseScreen {
 
 	for (int i = 0; i < button_arr.length; i++) {
 	    button_arr[i] = new LiteButton(button_txt[i]);
-	    button_arr[i].addKeyListener(inputChangeListener);
+	    button_arr[i].addActionListener(this);
 	    button_arr[i].setBackground(button_color[i]);
 	    button_arr[i].setEnabled(false);
 	    buttonContainer.add(button_arr[i]);
@@ -54,16 +55,6 @@ public class EntriesScreen extends BaseScreen {
 	    if (i == 1) buttonContainer.add(Box.createRigidArea(new Dimension(10, 0)));
 	}
 	button_arr[0].setEnabled(true);
-	button_arr[0].addActionListener(new ActionListener() {
-
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		// TODO: disable session's token authentication here
-		application.loginScreen = null;
-		application.showLogin();
-
-	    }
-	});
 	this.setBackground(Color.white);
 	this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
@@ -80,16 +71,9 @@ public class EntriesScreen extends BaseScreen {
 	    ckbx_items[i] = new JCheckBox();
 	    ckbx_items[i].setSelected(false);
 	    ckbx_items[i].setEnabled(true);
-	    ckbx_items[i].setFocusable(false);
+	    ckbx_items[i].setFocusable(true);
 	    ckbx_items[i].setBackground(getBackground());
-	    ckbx_items[i].addActionListener(new ActionListener() {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-		    performValidation(); // TODO: enable, or disable buttons
-		}
-	    });
+	    ckbx_items[i].addActionListener(this);
 	    chekBoxGrp.add(ckbx_items[i]);
 	    entries_arr[i].setEditable(false);
 	    entries_arr[i].setBackground(getBackground());
@@ -107,28 +91,34 @@ public class EntriesScreen extends BaseScreen {
 	this.add(buttonContainer);
     }
 
-    private void performValidation() {
-	// TODO: Check if the user has an entry before enabling / disabling the add/remove buttons
-	;
+    @Override
+    public void actionPerformed(final ActionEvent the_event) {
+	Object event_object = the_event.getSource();
+	// Handle the logout button
+	if (event_object.equals(button_arr[0])) {
+	    application.loginScreen = null;
+	    application.showLogin();
+	}
+	// Handle the remove button
+	if (event_object.equals(button_arr[1])) {
+	    application.loginScreen = null;
+	    application.showLogin();
+	}
+	// Handle the add button
+	if (event_object.equals(button_arr[2])) {
+	    application.changeScreen(new SubmissionScreen(application));
+	}
+	// Handle the checkbox item
+	for (int i = 0; i < ckbx_items.length; i++) {
+	    if (event_object.equals(ckbx_items[i])) {
+		// TODO: verify if entry exists or not and capture the
+		// location of the checkbox to
+		// make modifications to the data
+		button_arr[1].setEnabled(true);
+		button_arr[2].setEnabled(true);
+	    }
+	}
+
     }
-
-    /** Enable/disable the button depending on the user data validity */
-    private KeyListener inputChangeListener = new KeyListener() {
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-	    performValidation();
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-	    performValidation();
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-	    performValidation();
-	}
-    };
 
 }
