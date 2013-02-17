@@ -79,7 +79,6 @@ public class App implements ActionListener {
 
     /** Show entries screen. */
     public void showEntries() {
-	// just create a new screen each time you reach the login screen
 	changeScreen(new EntriesScreen(this));
     }
 
