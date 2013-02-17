@@ -14,7 +14,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
     private LiteTextField one, two, three;
     private LiteTextField[] entries_arr = { one, two, three };
     private String[] entries_txt = { " 1. ", " 2. ", " 3. " };
-    private LiteButton logout, remove, add;
+    private LiteButton logout, remove, add, user;
     private LiteButton[] button_arr = { logout, remove, add };
     private String[] button_txt = { "Logout", "Remove", "Add" };
     private Color[] button_color = { LiteButton.RED, LiteButton.BLUE, LiteButton.GREEN };
@@ -40,7 +40,17 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 
 	JLabel title = new JLabel("User Entries", null, JLabel.CENTER);
 	titleContainer.add(title);
-	titleContainer.add(new Box.Filler(null, null, null));
+	titleContainer.add(Box.createRigidArea(new Dimension(60, 30)));
+	user = new LiteButton("User: " + application.getLoggedInUser());
+	user.setBorder(new EmptyBorder(8, 8, 8, 8));
+	user.setForeground(new Color(170, 170, 170));
+	user.setBackground(Color.WHITE);
+	user.setContentAreaFilled(false);
+	user.setBorderPainted(false);
+	user.setFocusable(false);
+	user.addActionListener(this);
+	titleContainer.add(user);
+	titleContainer.add(new JSeparator(JSeparator.HORIZONTAL));
 	title.setAlignmentX(Component.LEFT_ALIGNMENT);
 	title.setForeground(new Color(13, 102, 255));
 	title.setFont(title.getFont().deriveFont(Font.PLAIN, 25));
@@ -60,6 +70,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 
 	this.add(Box.createVerticalStrut(10));
 	this.add(titleContainer);
+	this.add(new JSeparator(JSeparator.HORIZONTAL), -1);
 	this.add(Box.createRigidArea(new Dimension(100, 30)));
 	this.add(Box.createVerticalStrut(10));
 
@@ -94,6 +105,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
     @Override
     public void actionPerformed(final ActionEvent the_event) {
 	Object event_object = the_event.getSource();
+
 	// Handle the logout button
 	if (event_object.equals(button_arr[0])) {
 	    application.loginScreen = null;
@@ -107,6 +119,10 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	// Handle the add button
 	if (event_object.equals(button_arr[2])) {
 	    application.changeScreen(new SubmissionScreen(application));
+	}
+	if (event_object.equals(user)) {
+
+	    application.changeScreen(new EditRegScreen(application, this));
 	}
 	// Handle the checkbox item
 	for (int i = 0; i < ckbx_items.length; i++) {
