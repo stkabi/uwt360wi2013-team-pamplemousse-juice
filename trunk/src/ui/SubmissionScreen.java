@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.text.Document;
 
 import data.DataProvider;
 import entities.*;
@@ -19,6 +20,13 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
     private User current_user;
     private DataProvider user_data;
     private ArrayList<Entry> entry_list = new ArrayList<Entry>();
+
+    private String userID;
+    private String categoryID;
+    private String weavingPattern;
+    private String fibersInWeave;
+    private String otherDetails;
+
     private LiteButton logout, back, submit, user, upload, label;
     private LiteButton[] button_arr = { logout, back, submit };
     private String[] button_txt = { "Logout", "Back", "Submit" };
@@ -27,12 +35,27 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
     private String entryTxt = "empty";
     private BaseScreen last_screen;
     private BufferedImage my_image;
+    private JTextArea details_area;
 
     public SubmissionScreen(final App the_application, final BaseScreen the_screen) {
 	super(the_application);
+
 	last_screen = the_screen;
 	current_user = the_application.getLoggedInUser();
 	user_data = the_application.getDataProvider();
+	details_area = new JTextArea(3, 1);
+	details_area.setLineWrap(true);
+	details_area.setWrapStyleWord(true);
+
+	details_area.setBorder(new TitledBorder(BorderFactory
+		.createTitledBorder("Enter Other Details here...")));
+
+	// userID = current_user.id;
+	// categoryID =
+	// weavingPattern
+	// fibersInWeave
+	// otherDetails
+
 	// entry_list = user_data.getEntriesByUserId(current_user.id);
 
 	this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -75,6 +98,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 	label.setFocusPainted(false);
 
 	picContainer.add(upload);
+	picContainer.add(Box.createRigidArea(new Dimension(80, 30)));
 	picContainer.add(new Box.Filler(null, null, null));
 	picContainer.add(label);
 
@@ -96,11 +120,11 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 	this.add(titleContainer);
 	this.add(new JSeparator(JSeparator.HORIZONTAL), -1);
 	this.add(Box.createRigidArea(new Dimension(100, 30)));
-	this.add(Box.createVerticalStrut(10));
 
 	this.add(picContainer);
-	this.add(Box.createRigidArea(new Dimension(100, 100)));
-	this.add(Box.createVerticalStrut(60));
+	this.add(details_area);
+	this.add(Box.createRigidArea(new Dimension(100, 50)));
+	this.add(Box.createVerticalStrut(30));
 	this.add(buttonContainer);
     }
 
