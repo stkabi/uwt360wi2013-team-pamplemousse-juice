@@ -30,8 +30,10 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
     private Color[] button_color = { LiteButton.RED, LiteButton.BLUE, LiteButton.GREEN };
     private JCheckBox ckbx1, ckbx2, ckbx3;
     private JCheckBox[] ckbx_items = { ckbx1, ckbx2, ckbx3 };
+    private String[] ckbx_txt_arr = { "1", "2", "3" };
     private ButtonGroup chekBoxGrp = new ButtonGroup();
     private String entryTxt = "empty";
+    private String categoryID = "";
 
     public EntriesScreen(final App application) {
 	super(application);
@@ -131,7 +133,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	}
 	// Handle the add button
 	if (event_object.equals(button_arr[2])) {
-	    application.changeScreen(new SubmissionScreen(application, this));
+	    application.changeScreen(new SubmissionScreen(application, this, categoryID));
 	}
 	if (event_object.equals(user)) {
 
@@ -143,6 +145,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		// TODO: verify if entry exists or not and capture the
 		// location of the checkbox to
 		// make modifications to the data
+		categoryID = ckbx_txt_arr[i];
 		button_arr[1].setEnabled(true);
 		button_arr[2].setEnabled(true);
 	    }
