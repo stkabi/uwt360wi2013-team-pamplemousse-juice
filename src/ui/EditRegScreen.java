@@ -21,24 +21,35 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import data.DataProvider;
+
+import entities.User;
+
 public class EditRegScreen extends BaseScreen implements ActionListener {
 
     private static final long serialVersionUID = -7834083558260164475L;
+
+    private BaseScreen lastScreen;
+
+    private User current_user;
+    private DataProvider user_data;
+
     private LiteButton user, logout, back, update;
     private LiteTextField name, email, address, pass, pass2, general;
     private LiteTextField[] user_info_fields = { name, email, address, pass, pass2, general };
     private String[] user_fields_txt = { "Name", "Email", "Address", "New Password",
 	    "Confirm Password", "General" };
-    private BaseScreen lastScreen;
 
     public EditRegScreen(App application, BaseScreen screen) {
 
 	super(application);
+	current_user = application.getLoggedInUser();
+	user_data = application.getDataProvider();
+
 	lastScreen = screen;
 	logout = new LiteButton("Logout");
 	back = new LiteButton("Back");
 	update = new LiteButton("Update");
-
 	this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	this.setBackground(Color.white);
 	Container titleContainer = new Container();
@@ -56,7 +67,7 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 	titleContainer.add(title);
 	titleContainer.add(Box.createRigidArea(new Dimension(100, 40)));
 
-	user = new LiteButton("User: " + application.getLoggedInUser());
+	user = new LiteButton("User: " + current_user);
 	user.setBorder(new EmptyBorder(8, 8, 8, 8));
 	user.setForeground(new Color(170, 170, 170));
 	user.setBackground(Color.WHITE);
@@ -111,12 +122,12 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 
     // TODO: update dataprovider after validation
     private void performValidation() {
-	if (email.getText().trim().length() > 0 && email.getText().compareTo("Email") != 0
-		&& pass.getText().trim().length() > 0 && pass.getText().compareTo("Password") != 0) {
-	    update.setEnabled(true);
-	} else {
-	    update.setEnabled(false);
-	}
+	// if (email.getText().trim().length() > 0 && email.getText().compareTo("Email") != 0
+	// && pass.getText().trim().length() > 0 && pass.getText().compareTo("Password") != 0) {
+	// update.setEnabled(true);
+	// } else {
+	// update.setEnabled(false);
+	// }
     }
 
     private KeyListener inputChangeListener = new KeyListener() {

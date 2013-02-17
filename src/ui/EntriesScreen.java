@@ -3,14 +3,24 @@ package ui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.*;
 import javax.swing.border.*;
 
+import data.DataProvider;
+
+import entities.Entry;
+import entities.User;
+
 public class EntriesScreen extends BaseScreen implements ActionListener {
 
     private static final long serialVersionUID = 3747690407033623572L;
+    private User current_user;
+    private DataProvider user_data;
 
+    private ArrayList<Entry> entry_list = new ArrayList<Entry>();
     private LiteTextField one, two, three;
     private LiteTextField[] entries_arr = { one, two, three };
     private String[] entries_txt = { " 1. ", " 2. ", " 3. " };
@@ -25,6 +35,11 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 
     public EntriesScreen(final App application) {
 	super(application);
+
+	current_user = application.getLoggedInUser();
+	user_data = application.getDataProvider();
+	// entry_list = user_data.getEntriesByUserId(current_user.id);
+
 	this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 	Container titleContainer = new Container();
@@ -73,7 +88,6 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	this.add(new JSeparator(JSeparator.HORIZONTAL), -1);
 	this.add(Box.createRigidArea(new Dimension(100, 30)));
 	this.add(Box.createVerticalStrut(10));
-
 	for (int i = 0; i < entries_arr.length; i++) {
 	    Container entriesContainer = new Container();
 	    entriesContainer.setLayout(new BoxLayout(entriesContainer, BoxLayout.LINE_AXIS));
@@ -113,12 +127,11 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	}
 	// Handle the remove button
 	if (event_object.equals(button_arr[1])) {
-	    application.loginScreen = null;
-	    application.showLogin();
+	    // TODO: handle removing an entry
 	}
 	// Handle the add button
 	if (event_object.equals(button_arr[2])) {
-	    application.changeScreen(new SubmissionScreen(application));
+	    application.changeScreen(new SubmissionScreen(application, this));
 	}
 	if (event_object.equals(user)) {
 
