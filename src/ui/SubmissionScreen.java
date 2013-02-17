@@ -23,7 +23,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
     private ArrayList<Entry> entry_list = new ArrayList<Entry>();
 
     private String userID = "";
-    private String categoryID;
+    private String categoryID = "";
     private String weavingPattern;
     private String fibersInWeave;
     private String otherDetails;
@@ -37,7 +37,8 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
     private BufferedImage my_image;
     private JTextArea details_area;
 
-    public SubmissionScreen(final App the_application, final BaseScreen the_screen) {
+    public SubmissionScreen(final App the_application, final BaseScreen the_screen,
+	    final String the_category) {
 	super(the_application);
 	this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	this.setBackground(Color.white);
@@ -51,7 +52,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 	setupOtherDetailsComponnent();
 
 	// userID = current_user.id;
-	// categoryID =
+	categoryID = the_category;
 	// weavingPattern
 	// fibersInWeave
 	// otherDetails
@@ -182,7 +183,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 	}
 	// Handle the submit button
 	if (event_object.equals(button_arr[2])) {
-	    // TODO: handle Submit
+	    // TODO: handle Submit using categoryID
 	}
 	if (event_object.equals(user)) application
 		.changeScreen(new EditRegScreen(application, this));
