@@ -43,14 +43,15 @@ public class Test {
             ArrayList<String> judgeIDs = new ArrayList<String>();
             judgeIDs.add(u.getID());
             c.setJudgeIDs(judgeIDs);
-            dp.saveCategory(c);
+            dp.saveItem(c);
         }
         
         //test save user
-        dp.saveUser(u);
+        dp.saveItem(u);
         
         //test get all users
         ArrayList<User> list = dp.getAllUsers();
+        System.out.println("get all users: " + (list.size() > 0));
         
         //test get user by id
         System.out.println("get by id: " + (dp.getUserById(u.getID()).getID().compareTo(u.getID()) == 0));
@@ -61,21 +62,23 @@ public class Test {
         //test update user
         User u2a = new User();
         u2a.setEmail("test@email.com");
-        dp.saveUser(u2a);
+        dp.saveItem(u2a);
         User u2b = dp.getUserByEmail("test@email.com");
         u2b.setEmail("changed@email.com");
-        dp.saveUser(u2b);
+        dp.saveItem(u2b);
         u2b = dp.getUserByEmail("test@email.com");
         System.out.println("check null after update: " + (u2b == null));
         u2b = dp.getUserByEmail("changed@email.com");
         System.out.println("check changed after update: " + (u2b != null));
+        
+        dp.removeItem(u2b);
         
         Entry e = new Entry();
         e.setOtherDetails("details");
         e.setUserID(u.getID());
         e.setCategoryID(c.getID());
         
-        dp.saveEntry(e);
+        dp.saveItem(e);
         
         ArrayList<Entry> entryList = dp.getAllEntries();
         
