@@ -198,76 +198,78 @@ public class DataProvider {
     }
     
     /**
-     * Creates or updates a user object. 
-     * @param user User to save.
-     * @return set of all users
+     * Remove an item
+     * @param item Item to remove
+     * @return List of all items of that type.
      */
-    public ArrayList<User> saveUser(User user) {
-        ArrayList<User> users = this.getAllUsers();
-        int updateIndex = -1;
+    public ArrayList<? extends BaseEntity> removeItem(BaseEntity item) {
+        String filePath = getFilePathFromInstance(item);
+        
+        ArrayList<? extends BaseEntity> data = this.getData(filePath);
+        
         int i = -1;
-        for (User u : users) {
+        for (BaseEntity e : data) {
             i += 1;
-            if (u.getID().compareTo(user.getID()) == 0) {
-                users.remove(i);
-                users.add(i, user);
-                updateIndex = i;
-                break;
+            if (e.getID().compareTo(item.getID()) == 0) {
+                data.remove(i);
+                saveData(filePath, data);
+                return data;
             }
         }
-        if (updateIndex == -1) {
-            users.add(user);
-        }
-        this.saveData(USERPATH, users);
-        return users;
+        
+        return data;
     }
     
     /**
-     * Creates or updates an Entry object. 
-     * @param entry Entry to save.
-     * @return set of all entries
+     * Save an item
+     * @param item Item to save
+     * @return List of all items of that type
      */
-    public ArrayList<Entry> saveEntry(Entry entry) {
-        ArrayList<Entry> entries = this.getAllEntries();
-        int updateIndex = -1;
+    public ArrayList<? extends BaseEntity> saveItem(BaseEntity item) {
+        if (item.getID() == null) {
+            item.generateID();
+        }
+        
+        String filePath = getFilePathFromInstance(item);
+        
+        @SuppressWarnings("unchecked")
+        ArrayList<BaseEntity> data = (ArrayList<BaseEntity>)this.getData(filePath);
+        
         int i = -1;
-        for (Entry e : entries) {
-            if (e.getID().compareTo(entry.getID()) == 0) {
-                entries.remove(i);
-                entries.add(i, entry);
+        int updateIndex = -1;
+        for (BaseEntity e : data) {
+            i += 1;
+            if (e.getID().compareTo(item.getID()) == 0) {
+                data.remove(i);
+                data.add(i, item);
                 updateIndex = i;
-                break;
+                this.saveData(filePath, data);
+                return data;
             }
         }
+        
         if (updateIndex == -1) {
-            entries.add(entry);
+            data.add(item);
         }
-        this.saveData(ENTRYPATH, entries);
-        return entries;
+        
+        this.saveData(filePath, data);
+        return data;
     }
     
     /**
-     * Creates or updates a Category object. 
-     * @param category Category to save.
-     * @return set of all categories
+     * Gets the file path that an entity is stored at   
+     * @param item Item to get file path for
+     * @return file path
      */
-    public ArrayList<Category> saveCategory(Category category) {
-        ArrayList<Category> categories = this.getAllCategories();
-        int updateIndex = -1;
-        int i = -1;
-        for (Category c : categories) {
-            if (c.getID().compareTo(category.getID()) == 0) {
-                categories.remove(i);
-                categories.add(i, category);
-                updateIndex = i;
-                break;
-            }
+    private String getFilePathFromInstance(BaseEntity item) {
+        if (item.getClass().equals(User.class)) {
+            return USERPATH;
+        } else if (item.getClass().equals(Category.class)) {
+            return CATEGORYPATH;
+        } else if (item.getClass().equals(Entry.class)) {
+            return ENTRYPATH;
         }
-        if (updateIndex == -1) {
-            categories.add(category);
-        }
-        this.saveData(CATEGORYPATH, categories);
-        return categories;
+        return null;
     }
 
     /**
