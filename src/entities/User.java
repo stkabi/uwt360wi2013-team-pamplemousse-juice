@@ -32,8 +32,7 @@ public class User extends BaseEntity {
      * @param passwordHash
      *            User's passwordHash
      */
-    public User(final String id, final Role role, final String name, final String address, final String phoneNumber, final String email, final String passwordHash) {
-        this.id = id;
+    public User(final Role role, final String name, final String address, final String phoneNumber, final String email, final String passwordHash) {
         this.role = role;
         this.name = name;
         this.address = address;

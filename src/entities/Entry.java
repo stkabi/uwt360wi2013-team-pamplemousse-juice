@@ -29,8 +29,7 @@ public class Entry extends BaseEntity {
      * @param otherDetails
      *            User-provided details that don't fit elsewhere
      */
-    public Entry(final String id, final String userID, final String categoryID, final boolean isWinner, final String weavingPattern, final String fibersInWeave, final String otherDetails) {
-        this.id = id;
+    public Entry(final String userID, final String categoryID, final boolean isWinner, final String weavingPattern, final String fibersInWeave, final String otherDetails) {
         this.userID = userID;
         this.categoryID = categoryID;
         this.isWinner = isWinner;

@@ -7,8 +7,7 @@ public class Category extends BaseEntity {
     private String name;
     private ArrayList<String> judgeIDs;
 
-    public Category(final String id, final String name, ArrayList<String> judgeIDs) {
-        this.id = id;
+    public Category(final String name, ArrayList<String> judgeIDs) {
         this.name = name;
         this.judgeIDs = judgeIDs;
     }

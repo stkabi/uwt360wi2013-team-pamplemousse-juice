@@ -17,8 +17,7 @@ public class Contest extends BaseEntity {
      * @param endDate
      *            The ending date
      */
-    public Contest(final String id, final String name, final Date startDate, final Date endDate) {
-        this.id = id;
+    public Contest(final String name, final Date startDate, final Date endDate) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
