@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -16,13 +18,15 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
+import entities.User;
+
 public class RegisterScreen extends BaseScreen {
     private static final long serialVersionUID = -4847569599721799776L;
 
-    public LiteTextField pass, pass2, email, name, address, general;
+    public LiteTextField pass, pass2, email, name, address, general, number;
     public LiteButton back, submit;
 
-    public RegisterScreen(App application) {
+    public RegisterScreen(final App application) {
         super(application);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         Container buttonContainer = new Container();
@@ -43,12 +47,17 @@ public class RegisterScreen extends BaseScreen {
         name = new LiteTextField("Name");
         address = new LiteTextField("Address");
         general = new LiteTextField("General");
+        number = new LiteTextField("Phone Number");
 
         back = new LiteButton("Back");
         submit = new LiteButton("Create");
 
         email.addKeyListener(inputChangeListener);
         pass.addKeyListener(inputChangeListener);
+        pass2.addKeyListener(inputChangeListener);
+        address.addKeyListener(inputChangeListener);
+        name.addKeyListener(inputChangeListener);
+        number.addKeyListener(inputChangeListener);
 
         submit.setBackground(LiteButton.GREEN);
         back.setBackground(Color.white);
@@ -63,9 +72,9 @@ public class RegisterScreen extends BaseScreen {
         this.setBackground(Color.white);
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        this.add(Box.createVerticalStrut(17));
+        this.add(Box.createVerticalStrut(15));
         this.add(title);
-        this.add(Box.createVerticalStrut(25));
+        this.add(Box.createVerticalStrut(15));
         this.add(email);
         this.add(Box.createVerticalStrut(10));
         this.add(pass);
@@ -74,26 +83,73 @@ public class RegisterScreen extends BaseScreen {
         this.add(Box.createVerticalStrut(10));
         this.add(name);
         this.add(Box.createVerticalStrut(10));
+        this.add(number);
+        this.add(Box.createVerticalStrut(10));
         this.add(address);
         this.add(Box.createVerticalStrut(10));
-        this.add(general);
-        this.add(Box.createVerticalStrut(35));
+        this.add(general);        
+        this.add(Box.createVerticalStrut(10));
         this.add(buttonContainer);
+        
+        submit.addActionListener(new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent arg0)
+          {
+            //change ID generation to data provider?
+            int id = (int) Math.random() * 1000;
+            application.getDataProvider().saveUser(new User("" + id, User.Role.CONTESTANT,
+                            name.getText(),address.getText(), number.getText(),email.getText(),
+                            User.hashPassword(pass.getText())));
+          }});
 
         buttonContainer.add(back);
         buttonContainer.add(new Box.Filler(null, null, null));
         buttonContainer.add(submit);
     }
 
-    /**
-     * TODO: Enable/disable the create button unless all fields are valid.
-     */
     private void performValidation() {
-//        if (email.getText().trim().length() > 0 && email.getText().compareTo("Email") != 0 && pass.getText().trim().length() > 0 && pass.getText().compareTo("Password") != 0) {
-//            login.setEnabled(true);
-//        } else {
-//            login.setEnabled(false);
-//        }
+      boolean valid = true;
+      //validate email
+      if (email.getText().length() == 0 || email.getText().indexOf('@') == -1) {
+        valid = false;
+        email.setToolTipText("invalid email address");
+        } else if (application.getDataProvider().getUserByEmail(email.getText()) != null) {
+        valid = false;
+        email.setToolTipText("Email already in use");
+      } else {
+        email.setToolTipText("");
+      }
+      //validate password match
+      if (!pass.getText().equals(pass2.getText())) {
+        pass.setToolTipText("Passwords do not match");
+        pass2.setToolTipText("Passwords do not match");
+        valid = false;
+      } else {
+        pass.setToolTipText("");
+        pass2.setToolTipText("");
+      }
+      //validate name
+      if (name.getText().length() == 0) {
+        name.setToolTipText("Name can not be empty");
+        valid = false;
+      } else {
+        name.setToolTipText("");
+      }
+      //validate number, simply checking it's not empty atm
+      if (number.getText().length() == 0) {
+        valid = false;
+        number.setToolTipText("Please enter a phone number");
+      } else {
+        number.setToolTipText("");
+      }
+      //validate address
+      if (address.getText().length() == 0) { //presumably we needn't do extensive validation
+        address.setToolTipText("Invalid Address"); 
+        valid = false;
+      } else {
+        address.setToolTipText("");
+      }
+      submit.setEnabled(valid);
     }
     
     private KeyListener inputChangeListener = new KeyListener() {
