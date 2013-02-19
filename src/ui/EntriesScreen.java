@@ -78,8 +78,12 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	    button_arr[i].setBackground(button_color[i]);
 	    button_arr[i].setEnabled(false);
 	    buttonContainer.add(button_arr[i]);
-	    if (i == 0) buttonContainer.add(new Box.Filler(null, null, null));
-	    if (i == 1) buttonContainer.add(Box.createRigidArea(new Dimension(10, 0)));
+	    if (i == 0) {
+		buttonContainer.add(new Box.Filler(null, null, null));
+	    }
+	    if (i == 1) {
+		buttonContainer.add(Box.createRigidArea(new Dimension(10, 0)));
+	    }
 	}
 	button_arr[0].setEnabled(true);
 	this.setBackground(Color.white);
