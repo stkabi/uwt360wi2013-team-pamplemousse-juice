@@ -95,9 +95,7 @@ public class RegisterScreen extends BaseScreen {
           @Override
           public void actionPerformed(ActionEvent arg0)
           {
-            //change ID generation to data provider?
-            int id = (int) Math.random() * 1000;
-            application.getDataProvider().saveItem(new User("" + id, User.Role.CONTESTANT,
+            application.getDataProvider().saveItem(new User(User.Role.CONTESTANT,
                             name.getText(),address.getText(), number.getText(),email.getText(),
                             User.hashPassword(pass.getText())));
             application.showLogin();
