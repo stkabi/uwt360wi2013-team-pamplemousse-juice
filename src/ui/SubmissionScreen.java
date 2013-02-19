@@ -130,8 +130,12 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 	    button_arr[i].setBackground(button_color[i]);
 	    button_arr[i].setEnabled(true);
 	    buttonContainer.add(button_arr[i]);
-	    if (i == 0) buttonContainer.add(new Box.Filler(null, null, null));
-	    if (i == 1) buttonContainer.add(Box.createRigidArea(new Dimension(10, 0)));
+	    if (i == 0) {
+		buttonContainer.add(new Box.Filler(null, null, null));
+	    }
+	    if (i == 1) {
+		buttonContainer.add(Box.createRigidArea(new Dimension(10, 0)));
+	    }
 	}
 	button_arr[2].setEnabled(false);
     }
@@ -185,8 +189,10 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 	if (event_object.equals(button_arr[2])) {
 	    // TODO: handle Submit using categoryID
 	}
-	if (event_object.equals(user)) application
-		.changeScreen(new EditRegScreen(application, this));
+	if (event_object.equals(user)) {
+	    application.changeScreen(new EditRegScreen(application, this));
+	}
+
 	if (event_object.equals(upload)) {
 	    openEvent(file_chooser);
 	}
@@ -223,7 +229,9 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 	if (extension != null) {
 	    if (extension.equals(Utils.jpeg) || extension.equals(Utils.jpg)
 		    || extension.equals(Utils.gif) || extension.equals(Utils.tiff)
-		    || extension.equals(Utils.tif) || extension.equals(Utils.png)) type = true;
+		    || extension.equals(Utils.tif) || extension.equals(Utils.png)) {
+		type = true;
+	    }
 	}
 
 	return type;
