@@ -110,7 +110,7 @@ public class LoginScreen extends BaseScreen {
 
         @Override
         public void keyTyped(KeyEvent e) {
-            performValidation();
+//            performValidation();
         }
     };
 
