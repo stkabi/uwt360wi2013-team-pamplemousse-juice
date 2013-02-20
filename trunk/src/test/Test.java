@@ -45,8 +45,8 @@ public class Test {
             c.setJudgeIDs(judgeIDs);
             dp.saveItem(c);
         }
-        
-        //test save user
+
+        // test save user
         dp.saveItem(u);
         
         //test get all users
@@ -118,8 +118,47 @@ public class Test {
         frame.setLocationRelativeTo(null); // center
         frame.setVisible(true);
     }
+    
+    private void createMockUsers() {
+        DataProvider dp = new DataProvider();
+        
+        if (dp.getUserByEmail("organizer@gmail.com") == null) {
+            User organizer = new User();
+            organizer.setName("Joshua Organizer");
+            organizer.setRole(User.Role.ORGANIZER);
+            organizer.setAddress("3970 Harris Rd, Silverdale, WA");
+            organizer.setPassword("pass");
+            organizer.setEmail("organizer@gmail.com");
+            organizer.setPhoneNumber("(408) 227-3610");
+            dp.saveItem(organizer);
+        }
+        
+        if (dp.getUserByEmail("judge@gmail.com") == null) {
+            User judge = new User();
+            judge.setName("Jonathan Judge");
+            judge.setRole(User.Role.JUDGE);
+            judge.setAddress("2843 Sherman Ave, Camden, NJ");
+            judge.setPassword("pass");
+            judge.setEmail("judge@gmail.com");
+            judge.setPhoneNumber("(510) 522-8058");
+            dp.saveItem(judge);
+        }
+        
+        if (dp.getUserByEmail("contestant@gmail.com") == null) {
+            User contestant = new User();
+            contestant.setName("Linda Contestant");
+            contestant.setRole(User.Role.CONTESTANT);
+            contestant.setAddress("235 E Garvey Ave, Monterey Park, CA");
+            contestant.setPassword("pass");
+            contestant.setEmail("contestant@gmail.com");
+            contestant.setPhoneNumber("(626) 288-8613");
+            dp.saveItem(contestant);
+        }
+        
+    }
 
     public Test() {
+        this.createMockUsers();
         this.testUser();
         this.testDataProvider();
         this.testTable();

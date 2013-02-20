@@ -87,19 +87,17 @@ public class RegisterScreen extends BaseScreen {
         this.add(Box.createVerticalStrut(10));
         this.add(address);
         this.add(Box.createVerticalStrut(10));
-        this.add(general);        
+        this.add(general);
         this.add(Box.createVerticalStrut(10));
         this.add(buttonContainer);
-        
+
         submit.addActionListener(new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent arg0)
-          {
-            application.getDataProvider().saveItem(new User(User.Role.CONTESTANT,
-                            name.getText(),address.getText(), number.getText(),email.getText(),
-                            User.hashPassword(pass.getText())));
-            application.showLogin();
-          }});
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                application.getDataProvider().saveItem(new User(User.Role.CONTESTANT, name.getText(), address.getText(), number.getText(), email.getText(), User.hashPassword(pass.getText())));
+                application.showLogin();
+            }
+        });
 
         buttonContainer.add(back);
         buttonContainer.add(new Box.Filler(null, null, null));
@@ -107,54 +105,59 @@ public class RegisterScreen extends BaseScreen {
     }
 
     private void performValidation() {
-      boolean valid = true;
-      //validate email
-      if (email.getText().length() == 0 || email.getText().indexOf('@') == -1 || email.getText() == "email") {
-        valid = false;
-        email.setToolTipText("Please enter a valid email address");
+        boolean valid = true;
+        // validate email
+        if (email.getText().length() == 0 || email.getText().indexOf('@') == -1 || email.getText() == "email") {
+            valid = false;
+            email.setToolTipText("Please enter a valid email address");
         } else if (application.getDataProvider().getUserByEmail(email.getText()) != null) {
-        valid = false;
-        email.setToolTipText("Email already in use");
-      } else {
-        email.setToolTipText("");
-      }
-      //validate password match
-      if (!pass.getText().equals(pass2.getText())) {
-        pass.setToolTipText("Passwords do not match");
-        pass2.setToolTipText("Passwords do not match");
-        valid = false;
-      } else if (pass.getText() == "Password") {
-        valid = false;
-        pass.setToolTipText("Please enter a password");
-        pass2.setToolTipText("Please enter a password");
-      } else {
-        pass.setToolTipText("");
-        pass2.setToolTipText("");
-      }
-      //validate name
-      if (name.getText().length() == 0 || name.getText().equals("Name")) {
-        name.setToolTipText("Please enter a name");
-        valid = false;
-      } else {
-        name.setToolTipText("");
-      }
-      //validate number, simply checking it's not empty atm
-      if (number.getText().length() == 0 || number.getText().equals("Phone Number")) {
-        valid = false;
-        number.setToolTipText("Please enter a phone number");
-      } else {
-        number.setToolTipText("");
-      }
-      //validate address
-      if (address.getText().length() == 0 || address.getText().equals("Address")) { //presumably we needn't do extensive validation
-        address.setToolTipText("Invalid Address"); 
-        valid = false;
-      } else {
-        address.setToolTipText("");
-      }
-      submit.setEnabled(valid);
+            valid = false;
+            email.setToolTipText("Email already in use");
+        } else {
+            email.setToolTipText("");
+        }
+        // validate password match
+        if (!pass.getText().equals(pass2.getText())) {
+            pass.setToolTipText("Passwords do not match");
+            pass2.setToolTipText("Passwords do not match");
+            valid = false;
+        } else if (pass.getText() == "Password") {
+            valid = false;
+            pass.setToolTipText("Please enter a password");
+            pass2.setToolTipText("Please enter a password");
+        } else {
+            pass.setToolTipText("");
+            pass2.setToolTipText("");
+        }
+        // validate name
+        if (name.getText().length() == 0 || name.getText().equals("Name")) {
+            name.setToolTipText("Please enter a name");
+            valid = false;
+        } else {
+            name.setToolTipText("");
+        }
+        // validate number, simply checking it's not empty atm
+        if (number.getText().length() == 0 || number.getText().equals("Phone Number")) {
+            valid = false;
+            number.setToolTipText("Please enter a phone number");
+        } else {
+            number.setToolTipText("");
+        }
+        // validate address
+        if (address.getText().length() == 0 || address.getText().equals("Address")) { // presumably
+                                                                                      // we
+                                                                                      // needn't
+                                                                                      // do
+                                                                                      // extensive
+                                                                                      // validation
+            address.setToolTipText("Invalid Address");
+            valid = false;
+        } else {
+            address.setToolTipText("");
+        }
+        submit.setEnabled(valid);
     }
-    
+
     private KeyListener inputChangeListener = new KeyListener() {
 
         @Override

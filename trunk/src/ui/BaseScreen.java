@@ -1,4 +1,3 @@
-
 package ui;
 
 import javax.swing.JPanel;
@@ -9,6 +8,6 @@ public class BaseScreen extends JPanel {
     public App application;
 
     public BaseScreen(App application) {
-	this.application = application;
+        this.application = application;
     }
 }

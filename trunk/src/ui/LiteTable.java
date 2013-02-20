@@ -11,13 +11,13 @@ import javax.swing.table.TableModel;
 
 public class LiteTable extends JTable {
     private static final long serialVersionUID = -8929617881810754990L;
-    
+
     private void init() {
         this.getTableHeader().setDefaultRenderer(new LiteHeaderCellRenderer());
         this.setDefaultRenderer(Object.class, new LiteCellRenderer());
-        
+
         this.setForeground(new Color(80, 80, 80));
-        this.setBackground(new Color(255,255,255));
+        this.setBackground(new Color(255, 255, 255));
         this.setRowHeight(25);
         this.setShowGrid(false);
         this.setRowMargin(0);
@@ -26,7 +26,7 @@ public class LiteTable extends JTable {
         this.setColumnSelectionAllowed(false);
         this.setCellSelectionEnabled(false);
         this.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        this.setGridColor(new Color(200,200,200));
+        this.setGridColor(new Color(200, 200, 200));
         this.getTableHeader().setReorderingAllowed(false);
     }
 

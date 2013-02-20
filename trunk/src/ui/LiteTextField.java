@@ -68,7 +68,7 @@ public class LiteTextField extends JPasswordField {
                 if (field.getText().compareTo(placeholderText) == 0) {
                     if (field.maskText) {
                         field.setEchoChar('\u25CF'); // circle
-                        field.setText("Password");// Consistent number of circles in both pass fields
+                        field.setText("Password"); // Consistent number of circles in both pass fields
                     }
                     field.setForeground(Color.darkGray);
                 }
@@ -76,8 +76,8 @@ public class LiteTextField extends JPasswordField {
 
             @Override
             public void focusLost(FocusEvent arg0) {
-                if (field.getText().trim().compareTo("") == 0 || field.getText().compareTo(placeholderText) == 0
-                    || field.getText().compareTo("Password") == 0) { //consistent number of circles in both pass fields
+                if (field.getText().trim().compareTo("") == 0 || field.getText().compareTo(placeholderText) == 0 || field.getText().compareTo("Password") == 0) { 
+                    // consistent number of circles in both pass fields
                     field.setEchoChar((char) 0);
                     field.setText(placeholderText);
                     field.setForeground(Color.lightGray.darker());
@@ -126,7 +126,7 @@ public class LiteTextField extends JPasswordField {
             animationTimer.start();
         }
     }
-    
+
     @SuppressWarnings("deprecation")
     public String getText() {
         return super.getText();
