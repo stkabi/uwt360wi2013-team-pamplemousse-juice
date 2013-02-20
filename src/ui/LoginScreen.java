@@ -20,6 +20,8 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
+import com.sun.corba.se.impl.oa.poa.ActiveObjectMap.Key;
+
 public class LoginScreen extends BaseScreen {
     private static final long serialVersionUID = -4847569599721799776L;
 
@@ -101,6 +103,9 @@ public class LoginScreen extends BaseScreen {
         @Override
         public void keyReleased(KeyEvent e) {
             performValidation();
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                login.doClick();
+            }
         }
 
         @Override
