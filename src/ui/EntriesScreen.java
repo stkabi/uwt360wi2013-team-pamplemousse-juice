@@ -51,7 +51,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 
         current_user = application.getLoggedInUser();
         user_data = application.getDataProvider();
-        // entry_list = user_data.getEntriesByUserId(current_user.id);
+         entry_list = user_data.getEntriesByUserId(current_user.getID());
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -61,7 +61,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
         Container buttonContainer = new Container();
         buttonContainer.setLayout(new BoxLayout(buttonContainer, BoxLayout.X_AXIS));
 
-        this.setPreferredSize(new Dimension(300, 400));
+        this.setPreferredSize(new Dimension(350, 450));
         Border padding = new EmptyBorder(8, 8, 8, 8);
         padding = new CompoundBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1), padding);
 
@@ -107,7 +107,9 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
         for (int i = 0; i < entries_arr.length; i++) {
             Container entriesContainer = new Container();
             entriesContainer.setLayout(new BoxLayout(entriesContainer, BoxLayout.LINE_AXIS));
-            // if (userEntries.get(i) != null) entryTxt = "Entered";
+            if (entry_list.size() - 1> i) {
+                entryTxt = entry_list.get(i).getOtherDetails();
+            }
             entries_arr[i] = new LiteTextField(entryTxt);
             ckbx_items[i] = new JCheckBox();
             ckbx_items[i].setSelected(false);

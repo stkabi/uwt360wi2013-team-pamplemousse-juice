@@ -98,6 +98,7 @@ public class LiteTextField extends JPasswordField {
             final LiteTextField field = this;
 
             field.requestFocus();
+            field.selectAll();
 
             // wiggle animation listener
             animationTimer.addActionListener(new ActionListener() {

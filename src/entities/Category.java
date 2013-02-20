@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Category extends BaseEntity {
     private static final long serialVersionUID = -5468875646426363744L;
     private String name;
-    private ArrayList<String> judgeIDs;
+    private ArrayList<String> judgeIDs = new ArrayList<String>();
 
     public Category(final String name, ArrayList<String> judgeIDs) {
         this.name = name;
@@ -26,6 +26,15 @@ public class Category extends BaseEntity {
 
     public void setJudgeIDs(final ArrayList<String> judgeIDs) {
         this.judgeIDs = judgeIDs;
+    }
+    
+    public void addJudgeID(String id) {
+        this.judgeIDs.add(id);
+    }
+    
+    public void removeJudgeID(String id) {
+        //TODO: Untested
+        this.judgeIDs.remove(id);
     }
 
     public ArrayList<String> getJudgeIDs() {
