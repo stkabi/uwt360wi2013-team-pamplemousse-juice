@@ -107,7 +107,7 @@ public class App implements ActionListener {
     /** Show organizer's user list screen */
     public void showUserList() {
         //TODO: Implement user screen
-        changeScreen(new BaseScreen(this));
+        changeScreen(new UserListScreen(this));
     }
 
     /** Show register screen. */
