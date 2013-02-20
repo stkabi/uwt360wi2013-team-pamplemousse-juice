@@ -11,7 +11,7 @@ public class Category extends BaseEntity {
         this.name = name;
         this.judgeIDs = judgeIDs;
     }
-    
+
     public Category() {
         super();
     }
@@ -23,11 +23,11 @@ public class Category extends BaseEntity {
     public void setName(final String name) {
         this.name = name;
     }
-    
+
     public void setJudgeIDs(final ArrayList<String> judgeIDs) {
         this.judgeIDs = judgeIDs;
     }
-    
+
     public ArrayList<String> getJudgeIDs() {
         return this.judgeIDs;
     }

@@ -79,7 +79,7 @@ public class LoginScreen extends BaseScreen {
         buttonContainer.add(new Box.Filler(null, null, null));
         buttonContainer.add(login);
     }
-    
+
     private void performValidation() {
         if (email.getText().trim().length() > 0 && email.getText().compareTo("Email") != 0 && pass.getText().trim().length() > 0 && pass.getText().compareTo("Password") != 0) {
             login.setEnabled(true);

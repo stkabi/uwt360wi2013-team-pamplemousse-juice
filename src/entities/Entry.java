@@ -13,8 +13,6 @@ public class Entry extends BaseEntity {
     /**
      * Parameterized Constructor
      * 
-     * @param id
-     *            This entry's ID
      * @param userID
      *            The ID of the user who submitted this entry
      * @param categoryID

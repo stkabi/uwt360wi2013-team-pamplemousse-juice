@@ -22,7 +22,8 @@ public class LiteButton extends JButton {
     private Color focusColor;
     private Color normalColor;
 
-    public LiteButton() { }
+    public LiteButton() {
+    }
 
     public LiteButton(Icon arg0) {
         super(arg0);
@@ -47,9 +48,9 @@ public class LiteButton extends JButton {
     }
 
     private void setBackgroundState(Color c) {
-        super.setBackground(c);    
+        super.setBackground(c);
     }
-    
+
     protected void init(String text, Icon icon) {
         super.init(text, icon);
         final LiteButton button = this;

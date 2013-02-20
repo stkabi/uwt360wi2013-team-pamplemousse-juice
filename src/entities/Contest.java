@@ -7,9 +7,10 @@ public class Contest extends BaseEntity {
     private String name;
     private Date startDate;
     private Date endDate;
-    
+
     /**
      * Parameterized constructor
+     * 
      * @param name
      *            The name of the contest
      * @param startDate
@@ -22,7 +23,7 @@ public class Contest extends BaseEntity {
         this.startDate = startDate;
         this.endDate = endDate;
     }
-    
+
     public Contest() {
         super();
     }

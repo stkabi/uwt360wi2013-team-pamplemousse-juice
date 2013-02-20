@@ -1,4 +1,3 @@
-
 package ui;
 
 import java.awt.Color;
@@ -18,25 +17,22 @@ class LiteHeaderCellRenderer extends JLabel implements TableCellRenderer {
     private Color borderColor = new Color(240, 240, 240);
 
     // Implementation of TableCellRenderer interface
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-	    boolean hasFocus, int row, int column) {
-	if (value != null) {
-	    setText(value.toString());
-	} else {
-	    setText("");
-	}
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        if (value != null) {
+            setText(value.toString());
+        } else {
+            setText("");
+        }
 
-	this.setBorder(BorderFactory.createCompoundBorder(
-		BorderFactory.createMatteBorder(0, 0, 1, 0, borderColor),
-		BorderFactory.createEmptyBorder(8, 4, 8, 4)));
-	this.setFont(this.getFont().deriveFont(Font.BOLD));
+        this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, borderColor), BorderFactory.createEmptyBorder(8, 4, 8, 4)));
+        this.setFont(this.getFont().deriveFont(Font.BOLD));
 
-	setSize(table.getColumnModel().getColumn(column).getWidth(), getPreferredSize().height);
+        setSize(table.getColumnModel().getColumn(column).getWidth(), getPreferredSize().height);
 
-	setOpaque(true);
-	setBackground(headerBackColor);
-	setForeground(headerForeColor);
+        setOpaque(true);
+        setBackground(headerBackColor);
+        setForeground(headerForeColor);
 
-	return this;
+        return this;
     }
 }

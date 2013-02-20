@@ -8,6 +8,7 @@ public class User extends BaseEntity {
     public static enum Role {
         CONTESTANT, JUDGE, ORGANIZER
     }
+
     private Role role = Role.CONTESTANT;
     private String name;
     private String address;
@@ -40,7 +41,7 @@ public class User extends BaseEntity {
         this.email = email;
         this.passwordHash = passwordHash;
     }
-    
+
     public User() {
         super();
     }
@@ -92,15 +93,17 @@ public class User extends BaseEntity {
     public void setPassword(final String passwordPlainText) {
         this.passwordHash = User.hashPassword(passwordPlainText);
     }
-    
+
     public boolean authenticate(final String passwordPlainText) {
-        //convert string to md5, validate against stored md5.
-        return User.hashPassword(passwordPlainText).compareTo(this.passwordHash) == 0;      
+        // convert string to md5, validate against stored md5.
+        return User.hashPassword(passwordPlainText).compareTo(this.passwordHash) == 0;
     }
-    
+
     /**
      * Get the hash for a plaintext password
-     * @param passwordPlainText Password in plain text
+     * 
+     * @param passwordPlainText
+     *            Password in plain text
      * @return hashed password
      */
     public static String hashPassword(String passwordPlainText) {
