@@ -38,13 +38,11 @@ public class Test {
         DataProvider dp = new DataProvider();
         
         Category c = new Category();
-        if (dp.getAllCategories().size() == 0) {
-            c.setName("CoolWeavez~~");
-            ArrayList<String> judgeIDs = new ArrayList<String>();
-            judgeIDs.add(u.getID());
-            c.setJudgeIDs(judgeIDs);
-            dp.saveItem(c);
-        }
+        c.setName("CoolWeavez~~");
+        ArrayList<String> judgeIDs = new ArrayList<String>();
+        judgeIDs.add(u.getID());
+        c.setJudgeIDs(judgeIDs);
+        dp.saveItem(c);
 
         // test save user
         dp.saveItem(u);
@@ -58,6 +56,7 @@ public class Test {
         
         //test get user by email
         System.out.println("get by email: " + (dp.getUserByEmail(u.getEmail()).getID().compareTo(u.getID()) == 0));
+        
         
         //test update user
         User u2a = new User();
@@ -93,6 +92,10 @@ public class Test {
         //test get entry by UserID
         ArrayList<Entry> userEntryList = dp.getEntriesByUserId(u.getID());
         System.out.println("check get entry by UserId: " + (userEntryList.get(userEntryList.size() - 1).getID().compareTo(e2.getID()) == 0));
+        
+        dp.removeItem(e);
+        dp.removeItem(u);
+        dp.removeItem(c);
     }
     
     private void testTable() {
@@ -122,8 +125,9 @@ public class Test {
     private void createMockUsers() {
         DataProvider dp = new DataProvider();
         
-        if (dp.getUserByEmail("organizer@gmail.com") == null) {
-            User organizer = new User();
+        User organizer = dp.getUserByEmail("organizer@gmail.com");
+        if (organizer == null) {
+            organizer = new User();
             organizer.setName("Joshua Organizer");
             organizer.setRole(User.Role.ORGANIZER);
             organizer.setAddress("3970 Harris Rd, Silverdale, WA");
@@ -133,8 +137,9 @@ public class Test {
             dp.saveItem(organizer);
         }
         
-        if (dp.getUserByEmail("judge@gmail.com") == null) {
-            User judge = new User();
+        User judge = dp.getUserByEmail("judge@gmail.com");
+        if (judge == null) {
+            judge = new User();
             judge.setName("Jonathan Judge");
             judge.setRole(User.Role.JUDGE);
             judge.setAddress("2843 Sherman Ave, Camden, NJ");
@@ -144,8 +149,9 @@ public class Test {
             dp.saveItem(judge);
         }
         
-        if (dp.getUserByEmail("contestant@gmail.com") == null) {
-            User contestant = new User();
+        User contestant = dp.getUserByEmail("contestant@gmail.com");
+        if (contestant == null) {
+            contestant = new User();
             contestant.setName("Linda Contestant");
             contestant.setRole(User.Role.CONTESTANT);
             contestant.setAddress("235 E Garvey Ave, Monterey Park, CA");
@@ -153,6 +159,41 @@ public class Test {
             contestant.setEmail("contestant@gmail.com");
             contestant.setPhoneNumber("(626) 288-8613");
             dp.saveItem(contestant);
+        }
+        
+        if (dp.getAllCategories().size() == 0) {
+            Category c1 = new Category();
+            c1.setName("Classic");
+            Category c2 = new Category();
+            c2.setName("Hipster");
+            Category c3 = new Category();
+            c3.setName("Ancient");
+            
+            c1.addJudgeID(judge.getID());
+            c2.addJudgeID(judge.getID());
+            
+            dp.saveItem(c1);
+            dp.saveItem(c2);
+            dp.saveItem(c3);
+            
+            
+            Entry e1 = new Entry();
+            e1.setUserID(contestant.getID());
+            e1.setCategoryID(c1.getID());
+            e1.setOtherDetails("Really cool weave in Classic category.");
+            dp.saveItem(e1);
+            
+            Entry e2 = new Entry();
+            e2.setUserID(contestant.getID());
+            e2.setCategoryID(c2.getID());
+            e2.setOtherDetails("Really cool weave in Hipster category.");
+            dp.saveItem(e2);
+            
+            Entry e3 = new Entry();
+            e3.setUserID(contestant.getID());
+            e3.setCategoryID(c3.getID());
+            e3.setOtherDetails("Really cool weave in Ancient category.");
+            dp.saveItem(e3);
         }
         
     }

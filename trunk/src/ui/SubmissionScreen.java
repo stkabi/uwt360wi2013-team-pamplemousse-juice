@@ -47,7 +47,8 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
     private String fibersInWeave;
     private String otherDetails;
 
-    private LiteButton logout, back, submit, user, upload, label;
+    private LiteButton logout, back, submit, user, upload;
+    private JLabel label;
     private LiteButton[] button_arr = { logout, back, submit };
     private String[] button_txt = { "Logout", "Back", "Submit" };
     private Color[] button_color = { LiteButton.RED, LiteButton.BLUE, LiteButton.GREEN };
@@ -132,10 +133,10 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
     private void setUploadLabel() {
         upload = new LiteButton("Upload...");
         upload.addActionListener(this);
-        label = new LiteButton();
-        label.setBackground(Color.WHITE);
-        label.setFocusable(false);
-        label.setFocusPainted(false);
+        label = new JLabel();
+//        label.setBackground(Color.WHITE);
+//        label.setFocusable(false);
+//        label.setFocusPainted(false);
     }
 
     private void setupButtons(Container buttonContainer) {
