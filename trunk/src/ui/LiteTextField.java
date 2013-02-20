@@ -64,7 +64,6 @@ public class LiteTextField extends JPasswordField {
         this.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent arg0) {
-                field.selectAll();
                 if (field.getText().compareTo(placeholderText) == 0) {
                     if (field.maskText) {
                         field.setEchoChar('\u25CF'); // circle
@@ -72,6 +71,7 @@ public class LiteTextField extends JPasswordField {
                     }
                     field.setForeground(Color.darkGray);
                 }
+                field.selectAll();
             }
 
             @Override
