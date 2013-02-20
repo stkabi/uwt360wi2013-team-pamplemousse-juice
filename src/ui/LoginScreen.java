@@ -59,12 +59,9 @@ public class LoginScreen extends BaseScreen {
         this.setBackground(Color.white);
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        try {
-            JLabel picLabel = new JLabel(new ImageIcon(ImageIO.read(new File("res/images/logo.png"))));
-            picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            this.add(picLabel);
-        } catch (IOException e) {
-        }
+        JLabel picLabel = new JLabel(new ImageIcon(getClass().getResource("/res/images/logo.png")));
+        picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        this.add(picLabel);
 
         this.add(Box.createVerticalStrut(25));
         this.add(title);
