@@ -30,8 +30,8 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 
 	private BaseScreen lastScreen;
 
-	private User current_user;
-	private DataProvider user_data;
+	private User current_user = application.getLoggedInUser();
+	private DataProvider user_data = application.getDataProvider();
 
 	private LiteButton user, logout, back, update;
 	private LiteTextField name, email, address, phone, pass, pass2, general;
@@ -39,12 +39,13 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 			pass, pass2, general };
 	private String[] user_fields_txt = { "Name", "Email", "Address", "phone",
 			"New Password", "Confirm Password", "General" };
+	private String[] user_info_data = { current_user.getName(),
+			current_user.getEmail(), current_user.getAddress(),
+			current_user.getPhoneNumber(), "", "", "" };
 
 	public EditRegScreen(App application, BaseScreen screen) {
 
 		super(application);
-		current_user = application.getLoggedInUser();
-		user_data = application.getDataProvider();
 
 		lastScreen = screen;
 		logout = new LiteButton("Logout");
@@ -83,8 +84,7 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 		title.setFont(title.getFont().deriveFont(Font.PLAIN, 25));
 
 		for (int i = 0; i < user_info_fields.length; i++) {
-			user_info_fields[i] = new LiteTextField(""); // TODO: change to data
-			// from dataprovider
+			user_info_fields[i] = new LiteTextField(user_info_data[i]);
 			user_info_fields[i].setBorder(new TitledBorder(BorderFactory
 					.createTitledBorder(user_fields_txt[i])));
 			user_info_fields[i].addKeyListener(inputChangeListener);
