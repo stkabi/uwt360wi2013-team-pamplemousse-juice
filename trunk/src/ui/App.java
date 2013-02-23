@@ -117,6 +117,7 @@ public class App implements ActionListener {
             registerScreen.back.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
                     showLogin(); // when back is pressed, show login
+                    registerScreen.clearFields();
                 }
             });
         }

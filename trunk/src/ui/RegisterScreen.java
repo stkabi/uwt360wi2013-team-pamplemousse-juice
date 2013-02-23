@@ -95,6 +95,7 @@ public class RegisterScreen extends BaseScreen {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 application.getDataProvider().saveItem(new User(User.Role.CONTESTANT, name.getText(), address.getText(), number.getText(), email.getText(), User.hashPassword(pass.getText())));
+                clearFields();
                 application.showLogin();
             }
         });
@@ -102,6 +103,25 @@ public class RegisterScreen extends BaseScreen {
         buttonContainer.add(back);
         buttonContainer.add(new Box.Filler(null, null, null));
         buttonContainer.add(submit);
+    }
+
+    public void clearFields() {
+	pass.setText("");
+	pass2.setText("");
+	email.setText("");
+	email.setText("");
+	name.setText("");
+	address.setText("");
+	general.setText("");
+	number.setText("");
+	pass.setToolTipText("");
+	pass2.setToolTipText("");
+	email.setToolTipText("");
+	email.setToolTipText("");
+	name.setToolTipText("");
+	address.setToolTipText("");
+	general.setToolTipText("");
+	number.setToolTipText("");
     }
 
     private void performValidation() {
