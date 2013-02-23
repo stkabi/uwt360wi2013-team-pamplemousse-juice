@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -43,7 +45,7 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 			current_user.getEmail(), current_user.getAddress(),
 			current_user.getPhoneNumber(), "", "", "" };
 
-	public EditRegScreen(App application, BaseScreen screen) {
+	public EditRegScreen(final App application, final BaseScreen screen) {
 
 		super(application);
 
@@ -122,18 +124,6 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 		this.add(Box.createRigidArea(new Dimension(300, 8)));
 	}
 
-	// TODO: update dataprovider after validation
-	private void performValidation() {
-		// if (email.getText().trim().length() > 0 &&
-		// email.getText().compareTo("Email") != 0
-		// && pass.getText().trim().length() > 0 &&
-		// pass.getText().compareTo("Password") != 0) {
-		// update.setEnabled(true);
-		// } else {
-		// update.setEnabled(false);
-		// }
-	}
-
 	private KeyListener inputChangeListener = new KeyListener() {
 
 		@Override
@@ -161,13 +151,80 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 			application.showLogin();
 		}
 		if (event_object.equals(update)) {
-			// TODO: Update values in dataprovider then go back to the last
-			// screen
-			application.changeScreen(lastScreen);
+			current_user.setName(user_info_fields[0].getText());
+			current_user.setEmail(user_info_fields[1].getText());
+			current_user.setAddress(user_info_fields[2].getText());
+			current_user.setPhoneNumber(user_info_fields[3].getText());
+			current_user.setPassword(user_info_fields[4].getText());
+			application.changeScreen(new EntriesScreen(application));
+
 		}
 		if (event_object.equals(back)) {
 			application.changeScreen(lastScreen);
 		}
 
+	}
+
+	private void performValidation() {
+		boolean valid = true;
+		// validate email
+		if (user_info_fields[1].getText().length() == 0
+				|| user_info_fields[1].getText().indexOf('@') == -1
+				|| user_info_fields[1].getText() == "email") {
+			valid = false;
+			user_info_fields[1]
+					.setToolTipText("Please enter a valid email address");
+		} else if (user_data.getUserByEmail(user_info_fields[1].getText()) != null
+				&& !current_user.getEmail().equals(
+						user_info_fields[1].getText())) {
+			valid = false;
+			user_info_fields[1].setToolTipText("Email already in use");
+		} else {
+			user_info_fields[1].setToolTipText("");
+		}
+		// validate password match
+		if (!user_info_fields[4].getText()
+				.equals(user_info_fields[5].getText())) {
+			user_info_fields[4].setToolTipText("Passwords do not match");
+			user_info_fields[5].setToolTipText("Passwords do not match");
+			valid = false;
+		} else if (user_info_fields[4].getText() == "Password") {
+			valid = false;
+			user_info_fields[4].setToolTipText("Please enter a password");
+			user_info_fields[5].setToolTipText("Please enter a password");
+		} else {
+			user_info_fields[4].setToolTipText("");
+			user_info_fields[5].setToolTipText("");
+		}
+		// validate name
+		if (user_info_fields[0].getText().length() == 0
+				|| user_info_fields[0].getText().equals("Name")) {
+			user_info_fields[0].setToolTipText("Please enter a name");
+			valid = false;
+		} else {
+			user_info_fields[0].setToolTipText("");
+		}
+		// validate number, simply checking it's not empty atm
+		if (user_info_fields[3].getText().length() == 0
+				|| user_info_fields[3].getText().equals("Phone Number")) {
+			valid = false;
+			user_info_fields[3].setToolTipText("Please enter a phone number");
+		} else {
+			user_info_fields[3].setToolTipText("");
+		}
+		// validate address
+		if (user_info_fields[2].getText().length() == 0
+				|| user_info_fields[2].getText().equals("Address")) { // presumably
+			// we
+			// needn't
+			// do
+			// extensive
+			// validation
+			user_info_fields[2].setToolTipText("Invalid Address");
+			valid = false;
+		} else {
+			user_info_fields[2].setToolTipText("");
+		}
+		update.setEnabled(valid);
 	}
 }
