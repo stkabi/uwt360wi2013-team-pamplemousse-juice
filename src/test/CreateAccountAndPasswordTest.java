@@ -1,4 +1,4 @@
-package entities;
+package test;
 
 import static org.junit.Assert.assertTrue;
 
@@ -8,7 +8,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class UserTest {
+import entities.User;
+
+public class CreateAccountAndPasswordTest {
 
     // create an instance of user and a string
     static User u = new User();
