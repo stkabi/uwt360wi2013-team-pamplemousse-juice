@@ -1,50 +1,67 @@
+/*
+ * TCSS360 Winter 2013
+ * Team Pamplemouse_Juice
+ * Talal SADAK
+ * Weaving application
+ */
+
 package ui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JSeparator;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
 
 import data.DataProvider;
-
 import entities.User;
 
+/**
+ * Class of the edit screen ui.
+ * 
+ * @author Talal Sadak
+ * 
+ */
 public class EditRegScreen extends BaseScreen implements ActionListener {
 
+	/** Unique serial ID */
 	private static final long serialVersionUID = -7834083558260164475L;
 
+	/** the last screen */
 	private BaseScreen lastScreen;
 
-	private User current_user = application.getLoggedInUser();
-	private DataProvider user_data = application.getDataProvider();
+	/** the current user */
+	private User u = application.getLoggedInUser();
 
+	/** the data provider */
+	private DataProvider dp = application.getDataProvider();
+
+	/** the buttons of this screen */
 	private LiteButton user, logout, back, update;
+
+	/** the fields of the user data to be updated */
 	private LiteTextField name, email, address, phone, pass, pass2, general;
+
+	/** the array of the user data fields */
 	private LiteTextField[] user_info_fields = { name, email, address, phone,
 			pass, pass2, general };
+
+	/** the user data text fields titles array */
 	private String[] user_fields_txt = { "Name", "Email", "Address", "phone",
 			"New Password", "Confirm Password", "General" };
-	private String[] user_info_data = { current_user.getName(),
-			current_user.getEmail(), current_user.getAddress(),
-			current_user.getPhoneNumber(), "", "", "" };
 
+	/** the string array containing the data entered at the registration phase */
+	private String[] user_info_data = { u.getName(),
+			u.getEmail(), u.getAddress(),
+			u.getPhoneNumber(), "", "", "" };
+
+	/**
+	 * Constructor of the class.
+	 * 
+	 * @param application
+	 *            the application
+	 * @param screen
+	 *            the last screen
+	 */
 	public EditRegScreen(final App application, final BaseScreen screen) {
 
 		super(application);
@@ -72,7 +89,7 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 		titleContainer.add(title);
 		titleContainer.add(Box.createRigidArea(new Dimension(100, 40)));
 
-		user = new LiteButton("User: " + current_user.getName());
+		user = new LiteButton("User: " + u.getName());
 		user.setBorder(new EmptyBorder(8, 8, 8, 8));
 		user.setForeground(new Color(170, 170, 170));
 		user.setBackground(Color.WHITE);
@@ -124,6 +141,9 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 		this.add(Box.createRigidArea(new Dimension(300, 8)));
 	}
 
+	/**
+	 * user input change listener.
+	 */
 	private KeyListener inputChangeListener = new KeyListener() {
 
 		@Override
@@ -142,6 +162,12 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 		}
 	};
 
+	/**
+	 * Handles the event actions for the buttons.
+	 * 
+	 * @param the_event
+	 *            the action event
+	 */
 	@Override
 	public void actionPerformed(final ActionEvent the_event) {
 		Object event_object = the_event.getSource();
@@ -151,11 +177,11 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 			application.showLogin();
 		}
 		if (event_object.equals(update)) {
-			current_user.setName(user_info_fields[0].getText());
-			current_user.setEmail(user_info_fields[1].getText());
-			current_user.setAddress(user_info_fields[2].getText());
-			current_user.setPhoneNumber(user_info_fields[3].getText());
-			current_user.setPassword(user_info_fields[4].getText());
+			u.setName(user_info_fields[0].getText());
+			u.setEmail(user_info_fields[1].getText());
+			u.setAddress(user_info_fields[2].getText());
+			u.setPhoneNumber(user_info_fields[3].getText());
+			u.setPassword(user_info_fields[4].getText());
 			application.changeScreen(new EntriesScreen(application));
 
 		}
@@ -165,6 +191,12 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 
 	}
 
+	/**
+	 * Performs the validation of the new entries.
+	 * 
+	 * @author Brian Mathews
+	 * @author Talal Sadak (amended to reflect not changing the email)
+	 */
 	private void performValidation() {
 		boolean valid = true;
 		// validate email
@@ -174,8 +206,8 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 			valid = false;
 			user_info_fields[1]
 					.setToolTipText("Please enter a valid email address");
-		} else if (user_data.getUserByEmail(user_info_fields[1].getText()) != null
-				&& !current_user.getEmail().equals(
+		} else if (dp.getUserByEmail(user_info_fields[1].getText()) != null
+				&& !u.getEmail().equals(
 						user_info_fields[1].getText())) {
 			valid = false;
 			user_info_fields[1].setToolTipText("Email already in use");
@@ -214,12 +246,7 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 		}
 		// validate address
 		if (user_info_fields[2].getText().length() == 0
-				|| user_info_fields[2].getText().equals("Address")) { // presumably
-			// we
-			// needn't
-			// do
-			// extensive
-			// validation
+				|| user_info_fields[2].getText().equals("Address")) {
 			user_info_fields[2].setToolTipText("Invalid Address");
 			valid = false;
 		} else {
