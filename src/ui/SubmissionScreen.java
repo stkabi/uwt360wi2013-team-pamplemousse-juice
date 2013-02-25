@@ -73,8 +73,8 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 
 		last_screen = the_screen;
 		current_user = the_application.getLoggedInUser();
-		// user_data = the_application.getDataProvider();
-		user_data = new DataProvider();
+		user_data = the_application.getDataProvider();
+		// user_data = new DataProvider();
 		setupDescription();
 
 		userID = current_user.getName();
@@ -346,15 +346,16 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 			otherDetails = details_area.getText();
 			fibersInWeave = fibers_in_weave_area.getText();
 
-			Entry entry = new Entry(userID, categoryID, false, weavingPattern,
-					fibersInWeave, otherDetails);
-			// Entry entry = new Entry();
-			// entry.setUserID(userID);
-			// entry.setCategoryID(categoryID);
-			// entry.setWeavingPattern(weavingPattern);
-			// entry.setFibersInWeave(fibersInWeave);
-			// entry.setWinner(false);
-			// entry.setOtherDetails(otherDetails);
+			// Entry entry = new Entry(userID, categoryID, false,
+			// weavingPattern,
+			// fibersInWeave, otherDetails);
+			Entry entry = new Entry();
+			entry.setUserID(userID);
+			entry.setCategoryID(categoryID);
+			entry.setWeavingPattern(weavingPattern);
+			entry.setFibersInWeave(fibersInWeave);
+			entry.setWinner(false);
+			entry.setOtherDetails(otherDetails);
 			user_data.saveItem(entry);
 			application.changeScreen(new EntriesScreen(application));
 		}
