@@ -49,7 +49,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	private String[] entries_txt = { " Classic ", " Hipster ", " Ancient " };
 
 	/** the buttons of this screen */
-	private LiteButton logout, remove, add, user;
+	private LiteButton logout, remove, add, user_button;
 
 	/** the buttons array */
 	private LiteButton[] button_arr = { logout, remove, add };
@@ -107,15 +107,15 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		JLabel title = new JLabel("User Entries", null, JLabel.CENTER);
 		titleContainer.add(title);
 		titleContainer.add(Box.createRigidArea(new Dimension(60, 30)));
-		user = new LiteButton("User: " + u.getName());
-		user.setBorder(new EmptyBorder(8, 8, 8, 8));
-		user.setForeground(new Color(170, 170, 170));
-		user.setBackground(Color.WHITE);
-		user.setContentAreaFilled(false);
-		user.setBorderPainted(false);
-		user.setFocusable(false);
-		user.addActionListener(this);
-		titleContainer.add(user);
+		user_button = new LiteButton("User: " + u.getName());
+		user_button.setBorder(new EmptyBorder(8, 8, 8, 8));
+		user_button.setForeground(new Color(170, 170, 170));
+		user_button.setBackground(Color.WHITE);
+		user_button.setContentAreaFilled(false);
+		user_button.setBorderPainted(false);
+		user_button.setFocusable(false);
+		user_button.addActionListener(this);
+		titleContainer.add(user_button);
 
 		title.setAlignmentX(Component.LEFT_ALIGNMENT);
 		title.setForeground(new Color(13, 102, 255));
@@ -228,7 +228,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 					categoryID, i));
 		}
 		// Handle click on the user (editing)
-		if (event_object.equals(user)) {
+		if (event_object.equals(user_button)) {
 			application.changeScreen(new EditRegScreen(application, this));
 		}
 
