@@ -26,6 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -46,12 +47,12 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 
 	private String userID = "";
 	private String categoryID = "";
-	private String weavingPattern;
-	private String fibersInWeave;
-	private String description;
-	private String otherDetails;
+	private String weavingPattern = "";
+	private String fibersInWeave = "";
+	private String otherDetails = "";
 
 	private LiteButton logout, back, submit, user, upload;
+	private LiteTextField cat;
 	private JLabel label;
 	private LiteButton[] button_arr = { logout, back, submit };
 	private String[] button_txt = { "Logout", "Back", "Submit" };
@@ -60,7 +61,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 
 	private BaseScreen last_screen;
 	private BufferedImage my_image;
-	private JTextArea details_area, description_area; // TODO: Fibers In weave
+	private JTextArea details_area, description_area, fibers_in_weave_area;
 
 	public SubmissionScreen(final App the_application,
 			final BaseScreen the_screen, final String the_category) {
@@ -72,26 +73,16 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 
 		last_screen = the_screen;
 		current_user = the_application.getLoggedInUser();
-		user_data = the_application.getDataProvider();
-
-		setupOtherDetails();
+		// user_data = the_application.getDataProvider();
+		user_data = new DataProvider();
 		setupDescription();
 
-		// userID = current_user.id;
+		userID = current_user.getName();
 		categoryID = the_category;
-		// weavingPattern
-		// fibersInWeave
-		// otherDetails
-
-		// entry_list = user_data.getEntriesByUserId(current_user.id);
 
 		Container buttonContainer = new Container();
 		buttonContainer.setLayout(new BoxLayout(buttonContainer,
 				BoxLayout.X_AXIS));
-
-		Border padding = new EmptyBorder(8, 8, 8, 8);
-		padding = new CompoundBorder(BorderFactory.createLineBorder(new Color(
-				200, 200, 200), 1), padding);
 
 		Container titleContainer = setupTitleContainer(current_user);
 		setUploadLabel();
@@ -101,19 +92,85 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 		this.add(Box.createVerticalStrut(10));
 		this.add(titleContainer);
 		this.add(new JSeparator(JSeparator.HORIZONTAL), -1);
-		this.add(Box.createRigidArea(new Dimension(100, 30)));
 
+		this.add(setupCategoryContainer());
 		this.add(description_area);
 		this.add(picContainer);
-
-		this.add(details_area);
-		this.add(Box.createRigidArea(new Dimension(100, 50)));
-		this.add(Box.createVerticalStrut(30));
+		this.add(setupFibersInWeave());
+		this.add(setupOtherDetails());
+		this.add(Box.createVerticalStrut(10));
 		this.add(buttonContainer);
+	}
+
+	private Component setupFibersInWeave() {
+		fibers_in_weave_area = new JTextArea(3, 1);
+		fibers_in_weave_area.setPreferredSize(fibers_in_weave_area
+				.getMinimumSize());
+		fibers_in_weave_area.setLineWrap(true);
+		fibers_in_weave_area.setWrapStyleWord(true);
+		fibers_in_weave_area.setBorder(new TitledBorder(BorderFactory
+				.createTitledBorder("Enter the fibers ...")));
+		fibers_in_weave_area.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() > 1) {
+					fibers_in_weave_area.setText("");
+					fibersInWeave = "";
+					fibers_in_weave_area.setEditable(true);
+				}
+			}
+		});
+		fibers_in_weave_area.getDocument().addDocumentListener(
+				new DocumentListener() {
+					@Override
+					public void changedUpdate(DocumentEvent e) {
+						checkLength();
+					}
+
+					@Override
+					public void removeUpdate(DocumentEvent e) {
+						checkLength();
+					}
+
+					@Override
+					public void insertUpdate(DocumentEvent e) {
+						checkLength();
+					}
+
+					public void checkLength() {
+						if (fibers_in_weave_area.getText().length() > 50
+								|| fibers_in_weave_area.getLineCount() > 2) {
+							JOptionPane.showMessageDialog(null,
+									"You cannot have more than 2 lines",
+									"Message", JOptionPane.INFORMATION_MESSAGE);
+							// fibersInWeave = fibers_in_weave_area.getText();
+							// System.out.print(fibersInWeave);
+							fibers_in_weave_area.setEditable(false);
+
+						}
+					}
+				});
+		return fibers_in_weave_area;
+	}
+
+	private Container setupCategoryContainer() {
+		Container category_Container = new Container();
+		category_Container.setLayout(new BoxLayout(category_Container,
+				BoxLayout.X_AXIS));
+		cat = new LiteTextField("Category: " + categoryID);
+		cat.setHorizontalAlignment(SwingConstants.LEFT);
+		cat.setBackground(Color.WHITE);
+		cat.setBorder(new EmptyBorder(0, 0, 0, 0));
+		cat.setFocusable(false);
+		cat.setEnabled(false);
+		category_Container.add(cat);
+		category_Container.add(new Box.Filler(null, null, null));
+		return cat;
 	}
 
 	private void setupDescription() {
 		description_area = new JTextArea(3, 1);
+		description_area.setPreferredSize(description_area.getMinimumSize());
 		description_area.setLineWrap(true);
 		description_area.setWrapStyleWord(true);
 		description_area.setBorder(new TitledBorder(BorderFactory
@@ -123,11 +180,12 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() > 1) {
 					description_area.setText("");
-					description = "";
+					weavingPattern = "";
 					description_area.setEditable(true);
 				}
 			}
 		});
+
 		description_area.getDocument().addDocumentListener(
 				new DocumentListener() {
 					@Override
@@ -147,12 +205,12 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 
 					public void checkLength() {
 						if (description_area.getText().length() > 50
-								|| details_area.getLineCount() >= 3) {
+								|| description_area.getLineCount() > 2) {
 							JOptionPane.showMessageDialog(null,
-									"You cannot have more than 3 lines",
+									"You cannot have more than 2 lines",
 									"Message", JOptionPane.INFORMATION_MESSAGE);
-							description = details_area.getText();
-							System.out.print(otherDetails);
+							// weavingPattern = description_area.getText();
+							// System.out.print(description);
 							description_area.setEditable(false);
 
 						}
@@ -160,8 +218,9 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 				});
 	}
 
-	private void setupOtherDetails() {
+	private Component setupOtherDetails() {
 		details_area = new JTextArea(3, 1);
+		details_area.setPreferredSize(details_area.getMinimumSize());
 		details_area.setLineWrap(true);
 		details_area.setWrapStyleWord(true);
 		details_area.setBorder(new TitledBorder(BorderFactory
@@ -194,24 +253,25 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 
 			public void checkLength() {
 				if (details_area.getText().length() > 50
-						|| details_area.getLineCount() >= 3) {
+						|| details_area.getLineCount() > 2) {
 					JOptionPane.showMessageDialog(null,
-							"You cannot have more than 3 lines", "Message",
+							"You cannot have more than 2 lines", "Message",
 							JOptionPane.INFORMATION_MESSAGE);
-					otherDetails = details_area.getText();
-					System.out.print(otherDetails);
+					// otherDetails = details_area.getText();
+					// System.out.print(otherDetails);
 					details_area.setEditable(false);
 
 				}
 			}
 		});
+		return details_area;
 	}
 
 	private void setUploadLabel() {
 		upload = new LiteButton("Upload...");
 		upload.addActionListener(this);
 		label = new JLabel(new ImageIcon(getClass().getResource(
-				"/res/images/upload.png")));
+				"/res/images/placeholder.png")));
 
 	}
 
@@ -250,7 +310,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 		titleContainer.add(title);
 		titleContainer.add(Box.createRigidArea(new Dimension(60, 30)));
 		user = new LiteButton("User: " + current_user.getName());
-		user.setBorder(new EmptyBorder(8, 8, 8, 8));
+		user.setBorder(new EmptyBorder(0, 0, 0, 0));
 		user.setForeground(new Color(170, 170, 170));
 		user.setBackground(Color.WHITE);
 		user.setContentAreaFilled(false);
@@ -281,6 +341,22 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 		// Handle the submit button
 		if (event_object.equals(button_arr[2])) {
 			// TODO: handle Submit using categoryID
+
+			weavingPattern = description_area.getText();
+			otherDetails = details_area.getText();
+			fibersInWeave = fibers_in_weave_area.getText();
+
+			Entry entry = new Entry(userID, categoryID, false, weavingPattern,
+					fibersInWeave, otherDetails);
+			// Entry entry = new Entry();
+			// entry.setUserID(userID);
+			// entry.setCategoryID(categoryID);
+			// entry.setWeavingPattern(weavingPattern);
+			// entry.setFibersInWeave(fibersInWeave);
+			// entry.setWinner(false);
+			// entry.setOtherDetails(otherDetails);
+			user_data.saveItem(entry);
+			application.changeScreen(new EntriesScreen(application));
 		}
 		if (event_object.equals(user)) {
 			application.changeScreen(new EditRegScreen(application, this));

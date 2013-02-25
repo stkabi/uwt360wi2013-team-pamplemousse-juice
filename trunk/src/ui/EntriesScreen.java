@@ -8,7 +8,9 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -34,7 +36,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	private ArrayList<Entry> entry_list = new ArrayList<Entry>();
 	private LiteTextField one, two, three;
 	private LiteTextField[] entries_arr = { one, two, three };
-	private String[] entries_txt = { " 1. ", " 2. ", " 3. " };
+	private String[] entries_txt = { " Classic ", " Hipster ", " Ancient " };
 	private LiteButton logout, remove, add, user;
 	private LiteButton[] button_arr = { logout, remove, add };
 	private String[] button_txt = { "Logout", "Remove", "Add" };
@@ -42,9 +44,9 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 			LiteButton.GREEN };
 	private JCheckBox ckbx1, ckbx2, ckbx3;
 	private JCheckBox[] ckbx_items = { ckbx1, ckbx2, ckbx3 };
-	private String[] ckbx_txt_arr = { "1", "2", "3" };
+	private String[] ckbx_txt_arr = { "Classic", "Hipster", "Ancient" };
 	private ButtonGroup chekBoxGrp = new ButtonGroup();
-	private String entryTxt = "empty";
+	private String entryTxt = "Empty";
 	private String categoryID = "";
 
 	public EntriesScreen(final App application) {
@@ -112,10 +114,11 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 			Container entriesContainer = new Container();
 			entriesContainer.setLayout(new BoxLayout(entriesContainer,
 					BoxLayout.LINE_AXIS));
-			if (entry_list.size() - 1 > i) {
-				entryTxt = entry_list.get(i).getOtherDetails();
-			}
+			// if (entry_list.size() - 1 > i) {
+			// entryTxt = entry_list.get(i).getOtherDetails().toString();
+			// }
 			entries_arr[i] = new LiteTextField(entryTxt);
+
 			ckbx_items[i] = new JCheckBox();
 			ckbx_items[i].setSelected(false);
 			ckbx_items[i].setEnabled(true);
@@ -139,9 +142,48 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		this.add(buttonContainer);
 	}
 
+	// public int getSelectedCheckBox(ButtonGroup buttonGroup) {
+	// for (Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+	// buttons
+	// .hasMoreElements();) {
+	// JCheckBox button = (JCheckBox) buttons.nextElement();
+	//
+	// if (button.isSelected()) {
+	//
+	// return button.getText();
+	// }
+	// }
+	//
+	// return null;
+	// }
+
 	@Override
 	public void actionPerformed(final ActionEvent the_event) {
 		Object event_object = the_event.getSource();
+		int i = 0;
+
+		// get the selected checkbox item
+		for (JCheckBox c : ckbx_items) {
+			// JCheckBox cb = (JCheckBox) c;
+
+			if (c.isSelected()) {
+				System.out.println("CheckBox selected: " + i);
+				categoryID = ckbx_txt_arr[i];
+				break;
+			}
+			i++;
+		}
+
+		// TODO: fix issue with entrylist being empty
+
+		// if (!entry_list.isEmpty()) {
+		// enable the remove button if an entry is present
+		button_arr[1].setEnabled(true);
+		// }
+		if (entry_list.size() < 3) {
+			// enable the add button if not all entries are filled
+			button_arr[2].setEnabled(true);
+		}
 
 		// Handle the logout button
 		if (event_object.equals(button_arr[0])) {
@@ -150,29 +192,26 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		}
 		// Handle the remove button
 		if (event_object.equals(button_arr[1])) {
-			// TODO: handle removing an entry
+			// // TODO: handle removing an entry
+			ArrayList<Entry> entryList = user_data
+					.getEntriesByUserId(current_user.getID());
+
+			Entry entry = entryList.get(i);
+			// entry_list.remove(i);
+			System.out.println("Entry list size: " + entry_list.size());
+			user_data.removeItem(entry);
+
 		}
 		// Handle the add button
 		if (event_object.equals(button_arr[2])) {
 			application.changeScreen(new SubmissionScreen(application, this,
 					categoryID));
 		}
+		// Handle click on the user (editing)
 		if (event_object.equals(user)) {
 
 			application.changeScreen(new EditRegScreen(application, this));
 		}
-		// Handle the checkbox item
-		for (int i = 0; i < ckbx_items.length; i++) {
-			if (event_object.equals(ckbx_items[i])) {
-				// TODO: verify if entry exists or not and capture the
-				// location of the checkbox to
-				// make modifications to the data
-				categoryID = ckbx_txt_arr[i];
-				button_arr[1].setEnabled(true);
-				button_arr[2].setEnabled(true);
-			}
-		}
 
 	}
-
 }
