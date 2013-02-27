@@ -146,6 +146,8 @@ public class CreateMockUser {
 		assertTrue (contestant.getEmail().compareTo("contestant@gmail.com") == 0);
 		assertTrue (contestant.getPhoneNumber().compareTo("(626) 288-8613") == 0);
 		}
+
+	// Now I will modify the information of an user.
 	
 	
 	}
