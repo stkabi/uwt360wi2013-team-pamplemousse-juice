@@ -1,11 +1,13 @@
 package ui.weavedraft;
 
-public class Model {
-    
+import java.io.Serializable;
+
+public class Model implements Serializable {
+    private static final long serialVersionUID = -7309399360699214636L;
+
     public int gridSize = 0, 
                tieUpSize = 0;
                
-
     public boolean warp[][], tieup[][], pedals[][];
 
     public Model(int gridSize, int tieUpSize) {
