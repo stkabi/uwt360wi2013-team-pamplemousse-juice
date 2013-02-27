@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 import ui.LiteTable;
 import ui.weavedraft.WeaveDraft;
@@ -200,7 +201,7 @@ public class Test {
     
     public void testWeaveDraft() {
         JFrame frame = new JFrame("Weave Draft");
-        WeaveDraft wd = new WeaveDraft();
+        WeaveDraft wd = new WeaveDraft(16, 4);
         frame.setResizable(false);
         frame.add(wd);
         frame.pack();
@@ -209,6 +210,10 @@ public class Test {
     }
 
     public Test() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (Exception e) {
+        }
         this.createMockUsers();
         this.testUser();
         this.testDataProvider();

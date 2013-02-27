@@ -2,13 +2,17 @@ package ui.weavedraft;
 
 public class Model {
     
-    public int gridSize = 32, 
-               tieUpSize = 8;
+    public int gridSize = 0, 
+               tieUpSize = 0;
                
 
     public boolean warp[][], tieup[][], pedals[][];
 
-    public Model() {
+    public Model(int gridSize, int tieUpSize) {
+        
+        this.gridSize = gridSize;
+        this.tieUpSize = tieUpSize;
+        
         // [columns][rows]
         warp = new boolean[gridSize][tieUpSize];
         tieup = new boolean[tieUpSize][tieUpSize];
@@ -46,7 +50,7 @@ public class Model {
     }
 
     private int isInWarp(int col) {
-        for (int i = 0; i < tieUpSize - 1; i += 1) {
+        for (int i = 0; i < tieUpSize; i += 1) {
             if (warp[col][i]) {
                 return i;
             }
@@ -55,7 +59,7 @@ public class Model {
     }
 
     private int isInPedal(int row) {
-        for (int i = 0; i < tieUpSize - 1; i += 1) {
+        for (int i = 0; i < tieUpSize; i += 1) {
             if (pedals[i][row]) {
                 return i;
             }
