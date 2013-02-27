@@ -1,11 +1,13 @@
 package test;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
 import ui.LiteTable;
+import ui.weavedraft.WeaveDraft;
 import data.DataProvider;
 import entities.Category;
 import entities.Entry;
@@ -195,7 +197,16 @@ public class Test {
             e3.setOtherDetails("Really cool weave in Ancient category.");
             dp.saveItem(e3);
         }
-        
+    }
+    
+    public void testWeaveDraft() {
+        JFrame frame = new JFrame("Weave Draft");
+        WeaveDraft wd = new WeaveDraft();
+        frame.setResizable(false);
+        frame.add(wd);
+        frame.pack();
+        frame.setLocationRelativeTo(null); // center
+        frame.setVisible(true);
     }
 
     public Test() {
@@ -203,6 +214,7 @@ public class Test {
         this.testUser();
         this.testDataProvider();
         this.testTable();
+        this.testWeaveDraft();
     }
     
     public static void main(String[] args) {
