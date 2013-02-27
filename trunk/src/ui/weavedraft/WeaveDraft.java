@@ -10,13 +10,13 @@ import javax.swing.JSplitPane;
 
 public class WeaveDraft extends JPanel {
     private static final long serialVersionUID = -1275575997193739739L;
-    private final Model model = new Model();
+    private Model model;
     private boolean[][] data;
     private GridRenderer warp, tieup, pedals, center;
     
     public void update() {
-        for (int i = 0; i < model.gridSize - 1; i += 1) {
-            for (int j = 0; j < model.gridSize - 1; j += 1) {
+        for (int i = 0; i < model.gridSize; i += 1) {
+            for (int j = 0; j < model.gridSize; j += 1) {
                 data[i][j] = model.getValue(i, j);
             }
         }
@@ -29,11 +29,14 @@ public class WeaveDraft extends JPanel {
         this.repaint();
     }
 
-    public WeaveDraft() {
+    public WeaveDraft(int gridSize, int tieUpSize) {
+        
+        model = new Model(gridSize, tieUpSize);
+        
         data = new boolean[model.gridSize][model.gridSize];
         
-        for (int i = 0; i < model.gridSize - 1; i += 1) {
-            for (int j = 0; j < model.gridSize - 1; j += 1) {
+        for (int i = 0; i < model.gridSize; i += 1) {
+            for (int j = 0; j < model.gridSize; j += 1) {
                 data[i][j] = model.getValue(i, j);
             }
         }
@@ -82,10 +85,11 @@ public class WeaveDraft extends JPanel {
             public void mouseReleased(MouseEvent e) {}
         });
         
-        warp.setPreferredSize(new Dimension(640, 160));
-        tieup.setPreferredSize(new Dimension(160, 160));
-        pedals.setPreferredSize(new Dimension(160, 640));
-        center.setPreferredSize(new Dimension(640, 640));
+        int width = model.tieUpSize * 20, height = model.gridSize * 20;
+        warp.setPreferredSize(new Dimension(height, width));
+        tieup.setPreferredSize(new Dimension(width, width));
+        pedals.setPreferredSize(new Dimension(width, height));
+        center.setPreferredSize(new Dimension(height, height));
         
         JSplitPane left = new JSplitPane(JSplitPane.VERTICAL_SPLIT, warp, center);
         JSplitPane right = new JSplitPane(JSplitPane.VERTICAL_SPLIT, tieup, pedals);

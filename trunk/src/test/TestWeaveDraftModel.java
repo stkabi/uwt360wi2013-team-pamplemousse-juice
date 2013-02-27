@@ -13,7 +13,7 @@ import ui.weavedraft.Model;
 
 public class TestWeaveDraftModel {
 
-    static Model model = new Model();
+    static Model model = new Model(16, 4);
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception { }
