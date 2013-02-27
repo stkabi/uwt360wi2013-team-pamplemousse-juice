@@ -25,10 +25,9 @@ import entities.User;
 /**
  * Submission screen class.
  * 
- * Sets up the submission screen
+ * Sets up the submission screen UI
  * 
  * @author Talal Sadak
- * 
  */
 public class SubmissionScreen extends BaseScreen implements ActionListener {
 
@@ -114,7 +113,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 		last_screen = the_screen;
 		u = the_application.getLoggedInUser();
 		dp = the_application.getDataProvider();
-		userID = u.getName();
+		userID = u.getID();
 		categoryID = the_category;
 		categoryIndex = the_categoryNum;
 		entry_list = dp.getEntriesByUserId(userID);
@@ -132,7 +131,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 		this.add(setupFibersInWeave());
 		this.add(setupOtherDetails());
 		this.add(Box.createVerticalStrut(10));
-		this.add(setupButtons());
+		this.add(setupButtonsContainer());
 	}
 
 	/**
@@ -318,7 +317,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 	 * 
 	 * @return Container the container of the buttons
 	 */
-	private Container setupButtons() {
+	private Container setupButtonsContainer() {
 		Container buttonContainer = new Container();
 		buttonContainer.setLayout(new BoxLayout(buttonContainer,
 				BoxLayout.X_AXIS));
@@ -411,12 +410,12 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 			otherDetails = details_area.getText();
 			fibersInWeave = fibers_in_weave_area.getText();
 
+			// TODO: Fix stored category location. entry gets stored in
+			// loc now
 			// Create a new entry with the data from the submission form
 			Entry entry = new Entry(userID, categoryID, false, weavingPattern,
 					fibersInWeave, otherDetails, image_path);
-
-			entry_list.add(categoryIndex, entry);
-
+			entry_list.add(entry);
 			dp.saveItem(entry);
 			application.changeScreen(new EntriesScreen(application));
 		}
