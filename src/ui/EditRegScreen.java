@@ -230,6 +230,7 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 			user_info_fields[4].setToolTipText("Please enter a password");
 			user_info_fields[5].setToolTipText("Please enter a password");
 		} else {
+
 			user_info_fields[4].setToolTipText("");
 			user_info_fields[5].setToolTipText("");
 		}
