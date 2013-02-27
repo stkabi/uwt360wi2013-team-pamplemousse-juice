@@ -147,9 +147,34 @@ public class CreateMockUser {
 		assertTrue (contestant.getPhoneNumber().compareTo("(626) 288-8613") == 0);
 		}
 
-	// Now I will modify the information of an user.
+	// Now I will modify the information of contestant.
 	
+	@Test 
+		public void modifyTestConstestant() {
+		
+		// I will change the address of the contestant and change the role of the contestant.
+		String newAddress = "235 E Garvey Ave, Seattle, WA";
+		
+		contestant.setAddress(newAddress);
+		contestant.setRole(User.Role.JUDGE);
+		assertTrue (contestant.getAddress().compareTo(newAddress) == 0);
+		assertTrue (contestant.getRole().compareTo(User.Role.JUDGE) == 0);
+		
+		}
 	
+	// Now I will delete contestant.
+	
+	@Test
+	    public void deleteContestant () {
+		
+		
+		
+		
+		}
+
 	}
+	
+	
+	
 
 
