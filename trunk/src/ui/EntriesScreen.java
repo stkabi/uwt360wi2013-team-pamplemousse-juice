@@ -20,10 +20,9 @@ import entities.User;
 /**
  * Entries screen class.
  * 
- * Sets up the entries screen ui
+ * Sets up the entries screen UI
  * 
  * @author Talal Sadak
- * 
  */
 public class EntriesScreen extends BaseScreen implements ActionListener {
 
@@ -93,56 +92,25 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		entry_list = dp.getEntriesByUserId(u.getID());
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-		Container titleContainer = new Container();
-		titleContainer
-				.setLayout(new BoxLayout(titleContainer, BoxLayout.X_AXIS));
-
-		Container buttonContainer = new Container();
-		buttonContainer.setLayout(new BoxLayout(buttonContainer,
-				BoxLayout.X_AXIS));
-
 		this.setPreferredSize(new Dimension(300, 400));
-
-		JLabel title = new JLabel("User Entries", null, JLabel.CENTER);
-		titleContainer.add(title);
-		titleContainer.add(Box.createRigidArea(new Dimension(60, 30)));
-		user_button = new LiteButton("User: " + u.getName());
-		user_button.setBorder(new EmptyBorder(8, 8, 8, 8));
-		user_button.setForeground(new Color(170, 170, 170));
-		user_button.setBackground(Color.WHITE);
-		user_button.setContentAreaFilled(false);
-		user_button.setBorderPainted(false);
-		user_button.setFocusable(false);
-		user_button.addActionListener(this);
-		titleContainer.add(user_button);
-
-		title.setAlignmentX(Component.LEFT_ALIGNMENT);
-		title.setForeground(new Color(13, 102, 255));
-		title.setFont(title.getFont().deriveFont(Font.PLAIN, 25));
-
-		for (int i = 0; i < button_arr.length; i++) {
-			button_arr[i] = new LiteButton(button_txt[i]);
-			button_arr[i].addActionListener(this);
-			button_arr[i].setBackground(button_color[i]);
-			button_arr[i].setEnabled(false);
-			buttonContainer.add(button_arr[i]);
-			if (i == 0) {
-				buttonContainer.add(new Box.Filler(null, null, null));
-			}
-			if (i == 1) {
-				buttonContainer.add(Box.createRigidArea(new Dimension(10, 0)));
-			}
-		}
-		button_arr[0].setEnabled(true);
 		this.setBackground(Color.white);
 		this.setBorder(new EmptyBorder(10, 10, 10, 10));
-
 		this.add(Box.createVerticalStrut(10));
-		this.add(titleContainer);
+		this.add(setupTitleContainer());
 		this.add(new JSeparator(JSeparator.HORIZONTAL), -1);
 		this.add(Box.createRigidArea(new Dimension(100, 30)));
 		this.add(Box.createVerticalStrut(10));
+		setupEntriesContainer();
+		this.add(Box.createRigidArea(new Dimension(100, 100)));
+		this.add(Box.createVerticalStrut(60));
+		this.add(setupButtonsContainer());
+	}
+
+	/**
+	 * Sets up the multiple entries into separate containers.
+	 * 
+	 */
+	private void setupEntriesContainer() {
 		for (int i = 0; i < entries_arr.length; i++) {
 			Container entriesContainer = new Container();
 			entriesContainer.setLayout(new BoxLayout(entriesContainer,
@@ -170,9 +138,60 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 			entriesContainer.add(Box.createVerticalGlue());
 			this.add(entriesContainer);
 		}
-		this.add(Box.createRigidArea(new Dimension(100, 100)));
-		this.add(Box.createVerticalStrut(60));
-		this.add(buttonContainer);
+	}
+
+	/**
+	 * Sets up the buttons container.
+	 * 
+	 * @return Container the container of the buttons
+	 */
+	private Container setupButtonsContainer() {
+		Container buttonContainer = new Container();
+		buttonContainer.setLayout(new BoxLayout(buttonContainer,
+				BoxLayout.X_AXIS));
+		for (int i = 0; i < button_arr.length; i++) {
+			button_arr[i] = new LiteButton(button_txt[i]);
+			button_arr[i].addActionListener(this);
+			button_arr[i].setBackground(button_color[i]);
+			button_arr[i].setEnabled(false);
+			buttonContainer.add(button_arr[i]);
+			if (i == 0) {
+				buttonContainer.add(new Box.Filler(null, null, null));
+			}
+			if (i == 1) {
+				buttonContainer.add(Box.createRigidArea(new Dimension(10, 0)));
+			}
+		}
+		button_arr[0].setEnabled(true);
+		return buttonContainer;
+	}
+
+	/**
+	 * Sets up the title container.
+	 * 
+	 * @return Container the container of the title and user
+	 */
+	private Container setupTitleContainer() {
+		Container titleContainer = new Container();
+		titleContainer
+				.setLayout(new BoxLayout(titleContainer, BoxLayout.X_AXIS));
+
+		JLabel title = new JLabel("User Entries", null, JLabel.CENTER);
+		title.setAlignmentX(Component.LEFT_ALIGNMENT);
+		title.setForeground(new Color(13, 102, 255));
+		title.setFont(title.getFont().deriveFont(Font.PLAIN, 25));
+		user_button = new LiteButton("User: " + u.getName());
+		user_button.setBorder(new EmptyBorder(8, 8, 8, 8));
+		user_button.setForeground(new Color(170, 170, 170));
+		user_button.setBackground(Color.WHITE);
+		user_button.setContentAreaFilled(false);
+		user_button.setBorderPainted(false);
+		user_button.setFocusable(false);
+		user_button.addActionListener(this);
+		titleContainer.add(title);
+		titleContainer.add(Box.createRigidArea(new Dimension(60, 30)));
+		titleContainer.add(user_button);
+		return titleContainer;
 	}
 
 	/**
@@ -189,17 +208,19 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		// get the selected check box index
 		for (JCheckBox c : ckbx_items) {
 			if (c.isSelected()) {
-				System.out.println("CheckBox selected: " + i);
 				categoryID = ckbx_txt_arr[i];
 				break;
 			}
 			i++;
 		}
 
-		// if (!entry_list.isEmpty()) {
-		// enable the remove button if an entry is present
-		button_arr[1].setEnabled(true);
-		// }
+		if (entry_list.size() >= 1) {
+			// enable the remove button if an entry is present
+			button_arr[1].setEnabled(true);
+		}
+		if (entry_list.size() < 1) {
+			button_arr[1].setEnabled(false);
+		}
 		if (entry_list.size() < 3) {
 			// enable the add button if not all entries are filled
 			button_arr[2].setEnabled(true);
@@ -212,15 +233,14 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		}
 		// Handle the remove button
 		if (event_object.equals(button_arr[1])) {
-			// TODO: fix issue with entry list being empty
-			ArrayList<Entry> entryList = dp
-					.getEntriesByUserId(u.getID());
+
+			ArrayList<Entry> entryList = dp.getEntriesByUserId(u.getID());
 
 			Entry entry = entryList.get(i);
-			// entry_list.remove(i);
+			entry_list.remove(i);
+			button_arr[1].setEnabled(false);
 			System.out.println("Entry list size: " + entry_list.size());
 			dp.removeItem(entry);
-
 		}
 		// Handle the add button
 		if (event_object.equals(button_arr[2])) {
