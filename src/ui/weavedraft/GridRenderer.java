@@ -24,23 +24,19 @@ public class GridRenderer extends JComponent {
         this.data = data;
     }
     
+    //get a column based on a mouse event
     public int eventToCellX(MouseEvent e) {
         return (int)Math.floor((float)e.getX() / (float)cellWidth);   
     }
     
+    //get a row based on a mouse event
     public int eventToCellY(MouseEvent e) {
         return (int)Math.floor((float)e.getY() / (float)cellHeight);
     }
     
+    //paint grid
     public void paintComponent(Graphics g2) {
         Graphics2D g = (Graphics2D) g2;
-//        float width = getWidth();
-//        float height = getHeight();
-        
-//        cellWidth = (int)Math.floor(width / (float)columns);
-//        cellHeight = (int)Math.floor(height / (float)rows);
-        
-        
         
         for (int i = 0; i <= columns; i += 1) {
             for (int j = 0; j <= rows; j += 1) {
