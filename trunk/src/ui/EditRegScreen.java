@@ -16,10 +16,9 @@ import data.DataProvider;
 import entities.User;
 
 /**
- * Class of the edit screen ui.
+ * Class of the edit screen UI.
  * 
  * @author Talal Sadak
- * 
  */
 public class EditRegScreen extends BaseScreen implements ActionListener {
 
@@ -50,9 +49,8 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 			"New Password", "Confirm Password", "General" };
 
 	/** the string array containing the data entered at the registration phase */
-	private String[] user_info_data = { u.getName(),
-			u.getEmail(), u.getAddress(),
-			u.getPhoneNumber(), "", "", "" };
+	private String[] user_info_data = { u.getName(), u.getEmail(),
+			u.getAddress(), u.getPhoneNumber(), "", "", "" };
 
 	/**
 	 * Constructor of the class.
@@ -72,50 +70,40 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 		update = new LiteButton("Update");
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBackground(Color.white);
-		Container titleContainer = new Container();
-		titleContainer
-				.setLayout(new BoxLayout(titleContainer, BoxLayout.X_AXIS));
+		this.setPreferredSize(new Dimension(300, 400));
+		this.setBorder(new EmptyBorder(10, 10, 10, 10));
+		this.add(setupTitleContainer());
+		this.add(new JSeparator(JSeparator.HORIZONTAL));
+		this.add(Box.createVerticalStrut(20));
+		final Container cont = setupButtonsContainer();
+		this.add(Box.createVerticalStrut(30));
+		this.add(cont);
+		this.add(Box.createRigidArea(new Dimension(300, 8)));
+	}
 
+	/**
+	 * Sets up the buttons container.
+	 * 
+	 * @return Container the container of the buttons
+	 */
+	private Container setupButtonsContainer() {
 		Container buttonContainer = new Container();
 		buttonContainer.setLayout(new BoxLayout(buttonContainer,
 				BoxLayout.X_AXIS));
-
-		this.setPreferredSize(new Dimension(300, 400));
-		Border padding = new EmptyBorder(8, 8, 8, 8);
-		padding = new CompoundBorder(BorderFactory.createLineBorder(new Color(
-				200, 200, 200), 1), padding);
-
-		JLabel title = new JLabel("Edit User", null, JLabel.CENTER);
-		titleContainer.add(title);
-		titleContainer.add(Box.createRigidArea(new Dimension(100, 40)));
-
-		user = new LiteButton("User: " + u.getName());
-		user.setBorder(new EmptyBorder(8, 8, 8, 8));
-		user.setForeground(new Color(170, 170, 170));
-		user.setBackground(Color.WHITE);
-		user.setContentAreaFilled(false);
-		user.setBorderPainted(false);
-		user.setFocusable(false);
-		titleContainer.add(user);
-
-		title.setAlignmentX(Component.LEFT_ALIGNMENT);
-		title.setForeground(new Color(13, 102, 255));
-		title.setFont(title.getFont().deriveFont(Font.PLAIN, 25));
-
 		for (int i = 0; i < user_info_fields.length; i++) {
 			user_info_fields[i] = new LiteTextField(user_info_data[i]);
 			user_info_fields[i].setBorder(new TitledBorder(BorderFactory
 					.createTitledBorder(user_fields_txt[i])));
 			user_info_fields[i].addKeyListener(inputChangeListener);
 		}
-
+		// user has to re-enter password otherwise you can't login again
+		user_info_fields[4].setText("Re-enter Password");
+		user_info_fields[5].setText("Re-enter Password");
 		user_info_fields[4].maskText = true;
 		user_info_fields[5].maskText = true;
-
 		logout.addActionListener(this);
 		update.addActionListener(this);
 		back.addActionListener(this);
-
 		logout.setBackground(LiteButton.RED);
 		back.setBackground(LiteButton.BLUE);
 		update.setBackground(LiteButton.GREEN);
@@ -127,18 +115,36 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 		buttonContainer.add(Box.createRigidArea(new Dimension(10, 0)));
 		buttonContainer.add(update);
 		buttonContainer.add(Box.createRigidArea(new Dimension(10, 0)));
-
-		this.setBorder(new EmptyBorder(10, 10, 10, 10));
-		this.add(titleContainer);
-		this.add(new JSeparator(JSeparator.HORIZONTAL));
-
-		this.add(Box.createVerticalStrut(20));
 		for (int i = 0; i < user_info_fields.length; i++) {
 			this.add(user_info_fields[i]);
 		}
-		this.add(Box.createVerticalStrut(30));
-		this.add(buttonContainer);
-		this.add(Box.createRigidArea(new Dimension(300, 8)));
+		return buttonContainer;
+	}
+
+	/**
+	 * Sets up the title container.
+	 * 
+	 * @return Container the container of the title and user
+	 */
+	private Container setupTitleContainer() {
+		Container titleContainer = new Container();
+		titleContainer
+				.setLayout(new BoxLayout(titleContainer, BoxLayout.X_AXIS));
+		JLabel title = new JLabel("Edit User", null, JLabel.CENTER);
+		title.setAlignmentX(Component.LEFT_ALIGNMENT);
+		title.setForeground(new Color(13, 102, 255));
+		title.setFont(title.getFont().deriveFont(Font.PLAIN, 25));
+		titleContainer.add(title);
+		titleContainer.add(Box.createRigidArea(new Dimension(100, 40)));
+		user = new LiteButton("User: " + u.getName());
+		user.setBorder(new EmptyBorder(8, 8, 8, 8));
+		user.setForeground(new Color(170, 170, 170));
+		user.setBackground(Color.WHITE);
+		user.setContentAreaFilled(false);
+		user.setBorderPainted(false);
+		user.setFocusable(false);
+		titleContainer.add(user);
+		return titleContainer;
 	}
 
 	/**
@@ -181,14 +187,14 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 			u.setEmail(user_info_fields[1].getText());
 			u.setAddress(user_info_fields[2].getText());
 			u.setPhoneNumber(user_info_fields[3].getText());
-			u.setPassword(user_info_fields[4].getText());
-			application.changeScreen(new EntriesScreen(application));
 
+			u.setPassword(user_info_fields[4].getText());
+			dp.saveItem(u);
+			application.changeScreen(new EntriesScreen(application));
 		}
 		if (event_object.equals(back)) {
 			application.changeScreen(lastScreen);
 		}
-
 	}
 
 	/**
@@ -207,8 +213,7 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 			user_info_fields[1]
 					.setToolTipText("Please enter a valid email address");
 		} else if (dp.getUserByEmail(user_info_fields[1].getText()) != null
-				&& !u.getEmail().equals(
-						user_info_fields[1].getText())) {
+				&& !u.getEmail().equals(user_info_fields[1].getText())) {
 			valid = false;
 			user_info_fields[1].setToolTipText("Email already in use");
 		} else {
