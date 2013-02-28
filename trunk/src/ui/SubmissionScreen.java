@@ -415,7 +415,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 			// Create a new entry with the data from the submission form
 			Entry entry = new Entry(userID, categoryID, false, weavingPattern,
 					fibersInWeave, otherDetails, image_path);
-			entry_list.add(entry);
+			// entry_list.add(entry);
 			dp.saveItem(entry);
 			application.changeScreen(new EntriesScreen(application));
 		}
