@@ -29,6 +29,31 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	/** Unique serial ID */
 	private static final long serialVersionUID = 3747690407033623572L;
 
+	/** Contest rules */
+	private static final String Rules = "\n Read rules before adding an entry"
+			+ " \n\n\nYour reading of these rules constitutes an agreement to share,"
+			+ " release and use your details by the organizer of this competition.\nAn"
+			+ " entry must be a woven article.\nContestant registration information"
+			+ " is secured so that only trusted individuals can view it.\nContestants"
+			+ " may not have more than one entry in the same category.\nContestants may"
+			+ " not have more than three entries in the contest.\nContestants  may not"
+			+ " judge a category they have an entry in.\nContestant's articles must be"
+			+ " tagged with an ID card. Contestants must register before submitting a"
+			+ " contest entry.\nContestants must register before the cutoff date, two"
+			+ " weeks before the event.\nContestants must sign a release. Each entry"
+			+ " must be from a single, registered contestant.\nEntries must be usable"
+			+ " for the categories of products.\nEntries must follow the list of eligible"
+			+ " fiber materials Entries must include a representation of the weaving draft"
+			+ " for the article.\nJudges cannot be Contestants.\nNo more than one event"
+			+ " can be held at a time.\nRegistration and entry submission are two"
+			+ " separate events.\nThe computerized aspects of the contest should"
+			+ " not detract from the fun of the even.\nA particular user can carry"
+			+ " out only those tasks related to their role.\nFor each event there"
+			+ " is only one user who is the Organizer. A User becomes an Attendee"
+			+ " only by registering. \nA User can have only one role for a given"
+			+ " event.\nAn Attendee only becomes a Contestant by entering.\n\nPlease"
+			+ " hit add to enter\n";
+
 	/** the current user */
 	private User u;
 
@@ -72,11 +97,20 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	/** the check box group container */
 	private ButtonGroup chekBoxGrp = new ButtonGroup();
 
+	/** the rules text area */
+	private JTextPane rules_area = new JTextPane();
+
+	/** the scroll pane container */
+	private JScrollPane scroll_pane = new JScrollPane(rules_area);
+
 	/** the initial text entry */
 	private String entryTxt = "Empty";
 
 	/** the category ID text */
 	private String categoryID = "";
+
+	/** rules area text font */
+	final Font font = new Font("Plain", Font.PLAIN, 12);
 
 	/**
 	 * Constructor for the class.
@@ -101,9 +135,51 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		this.add(Box.createRigidArea(new Dimension(100, 30)));
 		this.add(Box.createVerticalStrut(10));
 		setupEntriesContainer();
-		this.add(Box.createRigidArea(new Dimension(100, 100)));
+		this.add(Box.createRigidArea(new Dimension(300, 30)));
+		this.add(setupRulesComponent());
 		this.add(Box.createVerticalStrut(60));
 		this.add(setupButtonsContainer());
+	}
+
+	private Component setupRulesComponent() {
+		Container labelContainer = new Container();
+		labelContainer.setLayout(new BoxLayout(labelContainer,
+				BoxLayout.LINE_AXIS));
+		Container rulesContainer = new Container();
+		rulesContainer
+				.setLayout(new BoxLayout(rulesContainer, BoxLayout.Y_AXIS));
+		rules_area.setPreferredSize(rules_area.getMinimumSize());
+		rules_area.setEditable(false);
+		Border padding = new EmptyBorder(8, 8, 8, 8);
+		padding = new CompoundBorder(BorderFactory.createLineBorder(new Color(
+				200, 200, 200), 1), padding);
+		rules_area.setBorder(padding);
+		rules_area.setBackground(Color.WHITE);
+		rules_area.setToolTipText("Scroll down to read and accept the rules");
+		rules_area.setText(Rules);
+		rules_area.setCaretPosition(0);
+		rules_area.setFont(font);
+		rules_area.setForeground(Color.GRAY);
+
+		scroll_pane.setMinimumSize(rules_area.getMinimumSize());
+
+		JScrollBar scrollbar = scroll_pane.getVerticalScrollBar();
+		scrollbar.addAdjustmentListener(new AdjustmentListener() {
+
+			@Override
+			public void adjustmentValueChanged(AdjustmentEvent e) {
+				int p = e.getValue();
+				System.out.println(p);
+				if (p == 747 && entry_list.size() < 3) {
+					button_arr[2].setEnabled(true);
+				}
+			}
+		});
+		labelContainer.add(new JLabel("Contest Rules: "));
+		labelContainer.add(new Box.Filler(null, null, null));
+		rulesContainer.add(labelContainer);
+		rulesContainer.add(scroll_pane);
+		return rulesContainer;
 	}
 
 	/**
@@ -213,17 +289,9 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 			}
 			i++;
 		}
-
 		if (entry_list.size() >= 1) {
 			// enable the remove button if an entry is present
 			button_arr[1].setEnabled(true);
-		}
-		if (entry_list.size() < 1) {
-			button_arr[1].setEnabled(false);
-		}
-		if (entry_list.size() < 3) {
-			// enable the add button if not all entries are filled
-			button_arr[2].setEnabled(true);
 		}
 
 		// Handle the logout button
@@ -233,9 +301,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		}
 		// Handle the remove button
 		if (event_object.equals(button_arr[1])) {
-
 			ArrayList<Entry> entryList = dp.getEntriesByUserId(u.getID());
-
 			Entry entry = entryList.get(i);
 			entry_list.remove(i);
 			button_arr[1].setEnabled(false);
