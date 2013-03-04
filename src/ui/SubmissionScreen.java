@@ -12,6 +12,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,8 +20,8 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 
 import data.DataProvider;
-import entities.Entry;
-import entities.User;
+import entities.*;
+import ui.weavedraft.*;
 
 /**
  * Submission screen class.
@@ -41,7 +42,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 	private DataProvider dp;
 
 	/** the entry list */
-	private ArrayList<Entry> entry_list;
+	private ArrayList<Entry> user_entries_list;
 
 	/** the current user ID */
 	private String userID = "";
@@ -58,14 +59,11 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 	/** the other details string */
 	private String otherDetails = "";
 
-	/** the index of the category to update */
-	private int categoryIndex = 0;
-
 	/** the buttons of this screen */
 	private LiteButton logout, back, submit, user, upload;
 
 	/** the current category title */
-	private LiteTextField cat;
+	private LiteTextField category_label;
 
 	/** the label holding the picture */
 	private JLabel label;
@@ -92,6 +90,16 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 	/** the path of the image */
 	private String image_path;
 
+	/** the combo box for the categories */
+	private JComboBox<?> combo_box;
+
+	/** the weave draft */
+	private WeaveDraft wd = new WeaveDraft(16, 4);
+
+	ArrayList<Category> master_category_list;
+	String[] enterred_categories;
+	ArrayList<Category> allowedUserCategories;
+
 	/**
 	 * Constructor of the class.
 	 * 
@@ -105,18 +113,20 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 	 *            the category index from the check box
 	 */
 	public SubmissionScreen(final App the_application,
-			final BaseScreen the_screen, final String the_category,
-			final int the_categoryNum) {
+			final BaseScreen the_screen) {
 
 		super(the_application);
 
 		last_screen = the_screen;
 		u = the_application.getLoggedInUser();
 		dp = the_application.getDataProvider();
+		master_category_list = dp.getAllCategories();
+
 		userID = u.getID();
-		categoryID = the_category;
-		categoryIndex = the_categoryNum;
-		entry_list = dp.getEntriesByUserId(userID);
+
+		user_entries_list = dp.getEntriesByUserId(userID);
+		enterred_categories = new String[user_entries_list.size()];
+		allowedUserCategories = new ArrayList<Category>(master_category_list);
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBackground(Color.white);
@@ -132,6 +142,10 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 		this.add(setupOtherDetails());
 		this.add(Box.createVerticalStrut(10));
 		this.add(setupButtonsContainer());
+	}
+
+	private Object[] getAllCategories(List<Category> userCategories) {
+		return userCategories.toArray();
 	}
 
 	/**
@@ -197,15 +211,57 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 		Container category_Container = new Container();
 		category_Container.setLayout(new BoxLayout(category_Container,
 				BoxLayout.X_AXIS));
-		cat = new LiteTextField("Category: " + categoryID);
-		cat.setHorizontalAlignment(SwingConstants.LEFT);
-		cat.setBackground(Color.WHITE);
-		cat.setBorder(new EmptyBorder(0, 0, 0, 0));
-		cat.setFocusable(false);
-		cat.setEnabled(false);
-		category_Container.add(cat);
+		category_label = new LiteTextField("Category: ");
+		category_label.setHorizontalAlignment(SwingConstants.RIGHT);
+		category_label.setBorder(new EmptyBorder(0, 0, 0, 0));
+		category_label.setFocusable(false);
+		category_label.setEnabled(false);
+
+		// TODO:
+		int cnt = 0;
+		for (Entry cc : user_entries_list) {
+			String catStr = cc.getCategoryID();
+			enterred_categories[cnt] = catStr;
+			System.out.println("Category entered: " + enterred_categories[cnt]);
+			cnt++;
+		}
+
+		for (int j = 0; j < enterred_categories.length; j++) {
+			for (Category cc : master_category_list) {
+				if (cc.getName().equals(enterred_categories[j])) {
+					allowedUserCategories.remove(cc);
+				}
+			}
+		}
+		System.out.println("Available Categories to Enter: "
+				+ allowedUserCategories.toString());
+
+		combo_box = new JComboBox(getAllCategories(allowedUserCategories));
+		combo_box.setToolTipText("Choose the category to enter");
+		combo_box.setRenderer(new DefaultListCellRenderer() {
+			private static final long serialVersionUID = -7138068294370249858L;
+
+			@Override
+			public void paint(Graphics g) {
+				setBackground(Color.WHITE);
+				setForeground(Color.GRAY);
+				super.paint(g);
+			}
+		});
+		combo_box.setSelectedIndex(-1);
+		combo_box.setEditable(false);
+		combo_box.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent the_event) {
+				Object cb = the_event.getSource();
+				categoryID = ((JComboBox<?>) cb).getSelectedItem().toString();
+				System.out.println(categoryID);
+			}
+		});
+		category_Container.add(category_label);
+		category_Container.add(combo_box);
 		category_Container.add(new Box.Filler(null, null, null));
-		return cat;
+		return category_Container;
 	}
 
 	/**
@@ -219,7 +275,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 		description_area.setLineWrap(true);
 		description_area.setWrapStyleWord(true);
 		description_area.setBorder(new TitledBorder(BorderFactory
-				.createTitledBorder("Enter Description here...")));
+				.createTitledBorder("Enter description here...")));
 		description_area.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -230,7 +286,6 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 				}
 			}
 		});
-
 		description_area.getDocument().addDocumentListener(
 				new DocumentListener() {
 					@Override
@@ -410,12 +465,12 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 			otherDetails = details_area.getText();
 			fibersInWeave = fibers_in_weave_area.getText();
 
-			// TODO: Fix stored category location. entry gets stored in
-			// loc now
 			// Create a new entry with the data from the submission form
 			Entry entry = new Entry(userID, categoryID, false, weavingPattern,
 					fibersInWeave, otherDetails, image_path);
-			entry_list.add(entry);
+			System.out.println(userID + " " + categoryID + " " + weavingPattern
+					+ " " + fibersInWeave + " " + otherDetails + " "
+					+ image_path);
 			dp.saveItem(entry);
 			application.changeScreen(new EntriesScreen(application));
 		}
@@ -424,7 +479,47 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 		}
 
 		if (event_object.equals(upload)) {
-			openEvent(file_chooser);
+			final Object[] options = { "Weave Draft", "Image" };
+			int opt = JOptionPane.showOptionDialog(this,
+					"Upload an image or a weaving draft", "Choose an option",
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+					null, options, options[0]);
+			if (opt == JOptionPane.YES_OPTION) {
+				JFrame frame = new JFrame("Weave Draft");
+				frame.setResizable(false);
+				frame.add(wd);
+				frame.pack();
+				frame.setLocationRelativeTo(null);
+				frame.setVisible(true);
+				frame.addWindowListener(new WindowEventHandler());
+				frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+			} else if (opt == JOptionPane.NO_OPTION) {
+				openEvent(file_chooser);
+			}
+		}
+	}
+
+	class WindowEventHandler extends WindowAdapter {
+		public void windowClosing(WindowEvent evt) {
+			File f = new File("");
+			try {
+				f = wd.saveScreenshot("/Users/ts/Desktop/z.jpeg");
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null, "Cannot save image" + "",
+						"Warning", JOptionPane.WARNING_MESSAGE);
+			}
+			// final File f = new File("/Users/ts/Desktop/z.jpeg");
+			try {
+				my_image = ImageIO.read(f);
+				final ImageIcon image_icon = new ImageIcon(
+						my_image.getScaledInstance(64, 64, Image.SCALE_DEFAULT));
+				image_path = f.getAbsolutePath();
+				label.setIcon(image_icon);
+				button_arr[2].setEnabled(true);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null, "Cannot read the file" + f,
+						"Warning", JOptionPane.WARNING_MESSAGE);
+			}
 		}
 	}
 
