@@ -18,7 +18,7 @@ public class GridRenderer extends JComponent {
     private Color light = new Color(200, 200, 200);
     private Color dark = new Color(140, 140, 140);
     
-    public GridRenderer(int rows, int columns, boolean data[][]) {
+    public GridRenderer(int columns, int rows, boolean data[][]) {
         this.rows = rows;
         this.columns = columns;
         this.data = data;
@@ -26,12 +26,20 @@ public class GridRenderer extends JComponent {
     
     //get a column based on a mouse event
     public int eventToCellX(MouseEvent e) {
-        return (int)Math.floor((float)e.getX() / (float)cellWidth);   
+        int x = (int)Math.floor((float)e.getX() / (float)cellWidth);
+        if (x > columns || x < 0) {
+            x = -1;
+        }
+        return x;
     }
     
     //get a row based on a mouse event
     public int eventToCellY(MouseEvent e) {
-        return (int)Math.floor((float)e.getY() / (float)cellHeight);
+        int y = (int)Math.floor((float)e.getY() / (float)cellHeight);
+        if (y > rows || y < 0) {
+            y = -1;
+        }
+        return y;
     }
     
     //paint grid
