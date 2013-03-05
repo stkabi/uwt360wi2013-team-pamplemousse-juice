@@ -13,7 +13,7 @@ import ui.weavedraft.Model;
 
 public class TestWeaveDraftModel {
 
-    static Model model = new Model(16, 4);
+    static Model model = new Model(16, 4, 4, 16);
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception { }
@@ -29,20 +29,18 @@ public class TestWeaveDraftModel {
 
     @Test
     public void testEverything() {
-        model.setPedals(0, 0, true);
+        model.setTread(0, 0, true);
         model.setTieUp(0, 1, true);
-        model.setWarp(0, 1, true);
+        model.setThread(0, 1, true);
         assertTrue(model.getValue(0,0));
         
-        
-        model.setPedals(0, 3, true);
+        model.setTread(0, 3, true);
         assertTrue(model.getValue(0,3));
         assertFalse(model.getValue(1,3));
         
         model.setTieUp(1, 0, true);
-        model.setWarp(3, 0, true);
-        model.setPedals(1, 1, true);
+        model.setThread(3, 0, true);
+        model.setTread(1, 1, true);
         assertTrue(model.getValue(3,1));
     }
-
 }

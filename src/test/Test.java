@@ -201,7 +201,7 @@ public class Test {
     
     public void testWeaveDraft() {
         JFrame frame = new JFrame("Weave Draft");
-        WeaveDraft wd = new WeaveDraft(16, 4);
+        WeaveDraft wd = new WeaveDraft(16, 4, 4, 16);
         frame.setResizable(false);
         frame.add(wd);
         frame.pack();

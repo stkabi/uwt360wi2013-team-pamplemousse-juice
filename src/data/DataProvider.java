@@ -16,10 +16,11 @@ import entities.User;
 
 public class DataProvider {
 
+     
 	private static String DATAPATH = "AppData";
 	private static String USERPATH = "Users";
 	private static String ENTRYPATH = "Entries";
-	private static String CATEGORYPATH = "Categories";
+	private static String CATEGORYPATH = "Categories"; 
 	// private static String CONTESTPATH = "Contests";
 
 	HashMap<String, ArrayList<? extends BaseEntity>> cache = new HashMap<String, ArrayList<? extends BaseEntity>>();
@@ -129,6 +130,18 @@ public class DataProvider {
 		}
 		return resultList;
 	}
+    
+    public String saveImage(String imagePath) {
+        //TODO: Implement
+        //copy image to our data folder
+        //return the id of that image
+        return "";
+    }
+    
+    public File getImageById(String imageId) {
+        //TODO: Implement
+        return null;
+    }
 
 	/**
 	 * Get all entries for a category
