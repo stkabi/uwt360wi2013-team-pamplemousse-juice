@@ -501,14 +501,14 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 
 	class WindowEventHandler extends WindowAdapter {
 		public void windowClosing(WindowEvent evt) {
-			File f = new File("");
+
 			try {
-				f = wd.saveScreenshot("/Users/ts/Desktop/z.jpeg");
+				wd.saveScreenshot("/Users/ts/Desktop/z.jpeg");
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, "Cannot save image" + "",
 						"Warning", JOptionPane.WARNING_MESSAGE);
 			}
-			// final File f = new File("/Users/ts/Desktop/z.jpeg");
+			final File f = new File("/Users/ts/Desktop/z.jpeg");
 			try {
 				my_image = ImageIO.read(f);
 				final ImageIcon image_icon = new ImageIcon(
