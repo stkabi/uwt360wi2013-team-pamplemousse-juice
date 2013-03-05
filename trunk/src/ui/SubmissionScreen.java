@@ -207,6 +207,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 	 * 
 	 * @return Container the category container
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private Container setupCategoryContainer() {
 		Container category_Container = new Container();
 		category_Container.setLayout(new BoxLayout(category_Container,
@@ -217,7 +218,6 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 		category_label.setFocusable(false);
 		category_label.setEnabled(false);
 
-		// TODO:
 		int cnt = 0;
 		for (Entry cc : user_entries_list) {
 			String catStr = cc.getCategoryID();
@@ -255,7 +255,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 			public void actionPerformed(final ActionEvent the_event) {
 				Object cb = the_event.getSource();
 				categoryID = ((JComboBox<?>) cb).getSelectedItem().toString();
-				System.out.println(categoryID);
+				System.out.println("Category just entered: " + categoryID);
 			}
 		});
 		category_Container.add(category_label);
@@ -464,6 +464,9 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 			weavingPattern = description_area.getText();
 			otherDetails = details_area.getText();
 			fibersInWeave = fibers_in_weave_area.getText();
+			if (!checkForm()) {
+				return;
+			}
 
 			// Create a new entry with the data from the submission form
 			Entry entry = new Entry(userID, categoryID, false, weavingPattern,
@@ -485,29 +488,56 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
 					null, options, options[0]);
 			if (opt == JOptionPane.YES_OPTION) {
-				JFrame frame = new JFrame("Weave Draft");
-				frame.setResizable(false);
-				frame.add(wd);
-				frame.pack();
-				frame.setLocationRelativeTo(null);
-				frame.setVisible(true);
-				frame.addWindowListener(new WindowEventHandler());
-				frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+				loadWeaveDraftFrame();
 			} else if (opt == JOptionPane.NO_OPTION) {
 				openEvent(file_chooser);
 			}
 		}
 	}
 
+	/**
+	 * loads the weaving draft frame.
+	 */
+	private void loadWeaveDraftFrame() {
+		final JFrame frame = new JFrame("Weave Draft");
+		frame.setResizable(false);
+		frame.add(wd);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+		frame.addWindowListener(new WindowEventHandler());
+		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+	}
+
+	/**
+	 * checks whether the form is complete.
+	 * 
+	 * @return Boolean the form status
+	 */
+	private Boolean checkForm() {
+		Boolean complete = true;
+		final int det = details_area.getText().trim().length();
+		final int des = description_area.getText().trim().length();
+		final int fiw = fibers_in_weave_area.getText().trim().length();
+		if (combo_box.getSelectedItem() == null || det == 0 || des == 0
+				|| fiw == 0) {
+			JOptionPane.showMessageDialog(this,
+					"Please complete the form before submitting !", null,
+					JOptionPane.ERROR_MESSAGE);
+			complete = false;
+		}
+		return complete;
+	}
+
 	class WindowEventHandler extends WindowAdapter {
 		public void windowClosing(WindowEvent evt) {
 			try {
-				wd.saveScreenshot("src/res/images/weaveScreenshot.jpeg");
+				wd.saveScreenshot("AppData/weaveScreenshot.jpeg");
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, "Cannot save image" + "",
 						"Warning", JOptionPane.WARNING_MESSAGE);
 			}
-			final File f = new File("src/res/images/weaveScreenshot.jpeg");
+			final File f = new File("AppData/weaveScreenshot.jpeg");
 			try {
 				my_image = ImageIO.read(f);
 				final ImageIcon image_icon = new ImageIcon(
