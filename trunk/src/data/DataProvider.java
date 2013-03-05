@@ -130,18 +130,6 @@ public class DataProvider {
 		}
 		return resultList;
 	}
-    
-    public String saveImage(String imagePath) {
-        //TODO: Implement
-        //copy image to our data folder
-        //return the id of that image
-        return "";
-    }
-    
-    public File getImageById(String imageId) {
-        //TODO: Implement
-        return null;
-    }
 
 	/**
 	 * Get all entries for a category
