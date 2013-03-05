@@ -174,6 +174,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		mdl.setDataVector(data, new Object[] { "Entered Categories",
 				"Description" });
 		entriesTable.setModel(mdl);
+		entriesTable.setGridColor(Color.BLACK);
 		entriesTable.setToolTipText("Select a category to delete");
 		entriesTable.setRowSelectionAllowed(true);
 		entriesTable.setSelectionBackground(new Color(222, 207, 182));
@@ -201,6 +202,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 
 		entries_scroll_pane = new JScrollPane(entriesTable);
 		Dimension tDim = entriesTable.getPreferredScrollableViewportSize();
+		entries_scroll_pane.setBackground(Color.WHITE);
 		entries_scroll_pane.setPreferredSize(new Dimension(tDim.width,
 				tDim.height + 1500));
 		return entries_scroll_pane;
@@ -354,6 +356,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 					dp.removeItem(en);
 					if (mdl.getRowCount() == 0) {
 						button_arr[1].setEnabled(false);
+						entry_list.clear();
 					}
 					return;
 				}

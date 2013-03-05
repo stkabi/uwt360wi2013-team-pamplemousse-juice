@@ -233,7 +233,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 
 		for (int j = 0; j < enterred_categories.length; j++) {
 			for (Category cc : master_category_list) {
-				if (cc.getName().equals(enterred_categories[j])) {
+				if (cc.getID().equals(enterred_categories[j])) {
 					allowedUserCategories.remove(cc);
 				}
 			}
@@ -261,6 +261,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 				Object cb = the_event.getSource();
 				categoryID = dp.getAllCategories()
 						.get(((JComboBox) cb).getSelectedIndex()).getID();
+
 				upload.setEnabled(true);
 			}
 		});
