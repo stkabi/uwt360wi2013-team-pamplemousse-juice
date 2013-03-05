@@ -35,16 +35,13 @@ public class UserListScreen extends BaseScreen {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         userTable = this.createUserTable();
-        JScrollPane scrollPane1 = new JScrollPane(userTable);
-        this.add(scrollPane1);
+        JScrollPane scrollPane = new JScrollPane(userTable);
+        this.add(scrollPane);
         this.add(new Box.Filler(null, null, null));
         categoryTable = this.createCategoryTable();
         
-        JScrollPane scrollPane2 = new JScrollPane(categoryTable);
-        this.add(scrollPane2);
-        
-//        this.add(userTable);
-//        this.add(categoryTable);
+        scrollPane = new JScrollPane(categoryTable);
+        this.add(scrollPane);
         
         this.createButtonBar();
         this.setOpaque(true);
@@ -60,6 +57,7 @@ public class UserListScreen extends BaseScreen {
         remove.setBackground(LiteButton.RED);
         
         Container buttonContainer = new Container();
+        
         buttonContainer.setLayout(new BoxLayout(buttonContainer, BoxLayout.X_AXIS));
         buttonContainer.add(add);
         buttonContainer.add(remove);
@@ -88,7 +86,7 @@ public class UserListScreen extends BaseScreen {
         //remove category
         remove.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {  
-                int row = categoryTable.getSelectedRow(); 
+                int row = categoryTable.convertRowIndexToView(categoryTable.getSelectedRow()); 
                 if (row > -1) {
                     ((DefaultTableModel) categoryTable.getModel()).removeRow(row);
                     dp.removeItem(dp.getAllCategories().get(row));
@@ -100,9 +98,9 @@ public class UserListScreen extends BaseScreen {
     }
 
     private LiteTable createUserTable() {
-        
         ArrayList<User> users = dp.getAllUsers();
         Object[][] data = new Object[users.size()][5];
+        
         for (int i = 0; i < users.size(); i += 1) {
             data[i][0] = users.get(i).getEmail();
             data[i][1] = users.get(i).getName();
@@ -110,15 +108,16 @@ public class UserListScreen extends BaseScreen {
             data[i][3] = users.get(i).getAddress();
             data[i][4] = users.get(i).getPhoneNumber();
         }
+        
         LiteTable table = new LiteTable();
         DefaultTableModel mdl = new DefaultTableModel();
         mdl.setDataVector(data, new Object[] {"Email", "Name", "Role", "Address", "Phone"});
         table.setModel(mdl);
-        table.setRowSelectionAllowed(true);
+        table.setRowSelectionAllowed(false);
+        
         return table;
     }
     
-    @SuppressWarnings("serial")
     private LiteTable createCategoryTable() {
         final ArrayList<Category> categories = dp.getAllCategories();
         Object[][] data = new Object[categories.size()][5];
@@ -127,7 +126,7 @@ public class UserListScreen extends BaseScreen {
             data[i][0] = categories.get(i).getName();
         }
         
-        LiteTable table = new LiteTable();
+        final LiteTable table = new LiteTable();
         DefaultTableModel mdl = new DefaultTableModel();
         mdl.setDataVector(data, new Object[] {"Categories"});
         table.setModel(mdl); 
@@ -137,7 +136,7 @@ public class UserListScreen extends BaseScreen {
         table.getModel().addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
-                int row = e.getFirstRow();
+                int row = table.convertRowIndexToView(e.getFirstRow());
                 int column = e.getColumn();
                 TableModel model = (TableModel)e.getSource();
                 if (row > -1 && column > -1) {
