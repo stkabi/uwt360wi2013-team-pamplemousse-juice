@@ -35,7 +35,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 	/** Unique serial ID */
 	private static final long serialVersionUID = -7491538055377138917L;
 
-	/** the current user of this app */
+	/** the current user of this application */
 	private User u;
 
 	/** the data provider of the application */
@@ -96,9 +96,14 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 	/** the weave draft */
 	private WeaveDraft wd = new WeaveDraft(16, 4, 4, 16);
 
-	ArrayList<Category> master_category_list;
-	String[] enterred_categories;
-	ArrayList<Category> allowedUserCategories;
+	/** the master category list */
+	private ArrayList<Category> master_category_list;
+
+	/** the user entered categories list */
+	private String[] enterred_categories;
+
+	/** the user's currently allowed category list */
+	private ArrayList<Category> allowedUserCategories;
 
 	/**
 	 * Constructor of the class.
@@ -254,8 +259,9 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 			@Override
 			public void actionPerformed(final ActionEvent the_event) {
 				Object cb = the_event.getSource();
-				categoryID = dp.getAllCategories().get(((JComboBox) cb).getSelectedIndex()).getID();
-				System.out.println("Category just entered: " + categoryID);
+				categoryID = dp.getAllCategories()
+						.get(((JComboBox) cb).getSelectedIndex()).getID();
+				upload.setEnabled(true);
 			}
 		});
 		category_Container.add(category_label);
@@ -348,7 +354,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 			public void removeUpdate(DocumentEvent e) {
 				checkLength();
 			}
-			
+
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				checkLength();
@@ -378,6 +384,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 				BoxLayout.X_AXIS));
 		for (int i = 0; i < button_arr.length; i++) {
 			button_arr[i] = new LiteButton(button_txt[i]);
+			button_arr[i].setToolTipText(button_txt[i]);
 			button_arr[i].addActionListener(this);
 			button_arr[i].setBackground(button_color[i]);
 			button_arr[i].setEnabled(true);
@@ -402,6 +409,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 		Container picContainer = new Container();
 		picContainer.setLayout(new BoxLayout(picContainer, BoxLayout.X_AXIS));
 		upload = new LiteButton("Upload...");
+		upload.setEnabled(false);
 		upload.addActionListener(this);
 		label = new JLabel(new ImageIcon(getClass().getResource(
 				"/res/images/placeholder.png")));
@@ -529,15 +537,24 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 		return complete;
 	}
 
+	/**
+	 * Handles the weave close frame command.
+	 * 
+	 * @author talal Sadak
+	 * 
+	 */
 	class WindowEventHandler extends WindowAdapter {
 		public void windowClosing(WindowEvent evt) {
+			String cat_name = dp.getCategoryById(categoryID).getName();
 			try {
-				wd.saveScreenshot("AppData/weaveScreenshot.jpeg");
+				wd.saveScreenshot("AppData/WeaveScreenshot_" + cat_name
+						+ ".jpeg");
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, "Cannot save image" + "",
 						"Warning", JOptionPane.WARNING_MESSAGE);
 			}
-			final File f = new File("AppData/weaveScreenshot.jpeg");
+			final File f = new File("AppData/WeaveScreenshot_" + cat_name
+					+ ".jpeg");
 			try {
 				my_image = ImageIO.read(f);
 				final ImageIcon image_icon = new ImageIcon(
