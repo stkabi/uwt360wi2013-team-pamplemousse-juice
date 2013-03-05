@@ -91,10 +91,10 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 	private String image_path;
 
 	/** the combo box for the categories */
-	private JComboBox<?> combo_box;
+	private JComboBox combo_box;
 
 	/** the weave draft */
-	private WeaveDraft wd = new WeaveDraft(16, 4);
+	private WeaveDraft wd = new WeaveDraft(16, 4, 4, 16);
 
 	ArrayList<Category> master_category_list;
 	String[] enterred_categories;
@@ -254,7 +254,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 			@Override
 			public void actionPerformed(final ActionEvent the_event) {
 				Object cb = the_event.getSource();
-				categoryID = ((JComboBox<?>) cb).getSelectedItem().toString();
+				categoryID = dp.getAllCategories().get(((JComboBox) cb).getSelectedIndex()).getID();
 				System.out.println("Category just entered: " + categoryID);
 			}
 		});
@@ -348,7 +348,7 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 			public void removeUpdate(DocumentEvent e) {
 				checkLength();
 			}
-
+			
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				checkLength();

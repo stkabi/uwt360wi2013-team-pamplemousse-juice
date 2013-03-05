@@ -7,17 +7,35 @@
 
 package ui;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 import data.DataProvider;
+import entities.Category;
 import entities.Entry;
 import entities.User;
 
@@ -144,7 +162,8 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 			return getEmptyLabel();
 		}
 		for (int i = 0; i < entry_list.size(); i += 1) {
-			data[i][0] = entry_list.get(i).getCategoryID();
+		    Category c = dp.getCategoryById(entry_list.get(i).getCategoryID());
+			data[i][0] = c != null ? c.getName() : "Unknown Category";
 			data[i][1] = entry_list.get(i).getOtherDetails();
 		}
 
