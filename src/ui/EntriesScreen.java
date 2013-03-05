@@ -12,6 +12,10 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import data.DataProvider;
 import entities.Entry;
@@ -63,15 +67,6 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	/** the entry list */
 	private ArrayList<Entry> entry_list;
 
-	/** the entries text fields */
-	private LiteTextField one, two, three;
-
-	/** the entries text fields array */
-	private LiteTextField[] entries_arr = { one, two, three };
-
-	/** the entries text fields text */
-	private String[] entries_txt = { " Classic ", " Hipster ", " Ancient " };
-
 	/** the buttons of this screen */
 	private LiteButton logout, remove, add, user_button;
 
@@ -85,24 +80,13 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	private Color[] button_color = { LiteButton.RED, LiteButton.BLUE,
 			LiteButton.GREEN };
 
-	/** the check boxes of the categories */
-	private JCheckBox ckbx1, ckbx2, ckbx3;
-
-	/** the check boxes array */
-	private JCheckBox[] ckbx_items = { ckbx1, ckbx2, ckbx3 };
-
-	/** the check boxes text array */
-	private String[] ckbx_txt_arr = { "Classic", "Hipster", "Ancient" };
-
-	/** the check box group container */
-	private ButtonGroup chekBoxGrp = new ButtonGroup();
-
 	/** the rules text area */
 	private JTextPane rules_area = new JTextPane();
 
-	/** the scroll pane container */
-	private JScrollPane scroll_pane = new JScrollPane(rules_area);
-
+	/** the rules scroll pane container */
+	private JScrollPane rules_scroll_pane = new JScrollPane(rules_area);
+	/** the entries scroll pane container */
+	private JScrollPane entries_scroll_pane;
 	/** the initial text entry */
 	private String entryTxt = "Empty";
 
@@ -111,6 +95,13 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 
 	/** rules area text font */
 	final Font font = new Font("Plain", Font.PLAIN, 12);
+
+	/** boolean to control the add button when rules have already been accepted */
+	private Boolean isRuleAccepted = false;
+
+	private LiteTable entriesTable;
+
+	private Object[][] data;
 
 	/**
 	 * Constructor for the class.
@@ -124,7 +115,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		u = application.getLoggedInUser();
 		dp = application.getDataProvider();
 		entry_list = dp.getEntriesByUserId(u.getID());
-
+		data = new Object[entry_list.size()][2];
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setPreferredSize(new Dimension(300, 400));
 		this.setBackground(Color.white);
@@ -134,11 +125,73 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		this.add(new JSeparator(JSeparator.HORIZONTAL), -1);
 		this.add(Box.createRigidArea(new Dimension(100, 30)));
 		this.add(Box.createVerticalStrut(10));
-		setupEntriesContainer();
+		this.add(setupEntriesContainer());
 		this.add(Box.createRigidArea(new Dimension(300, 30)));
 		this.add(setupRulesComponent());
 		this.add(Box.createVerticalStrut(60));
 		this.add(setupButtonsContainer());
+	}
+
+	/**
+	 * Sets up the multiple entries into separate containers.
+	 * 
+	 * @return
+	 * 
+	 */
+	private Component setupEntriesContainer() {
+
+		if (entry_list.size() == 0) {
+			return getEmptyLabel();
+		}
+		for (int i = 0; i < entry_list.size(); i += 1) {
+			data[i][0] = entry_list.get(i).getCategoryID();
+			data[i][1] = entry_list.get(i).getOtherDetails();
+		}
+
+		entriesTable = new LiteTable();
+		DefaultTableModel mdl = new DefaultTableModel();
+		mdl.setDataVector(data, new Object[] { "Entered Categories",
+				"Description" });
+		entriesTable.setModel(mdl);
+		entriesTable.setRowSelectionAllowed(true);
+		entriesTable.setSelectionBackground(new Color(222, 207, 182));
+		entriesTable.setShowGrid(true);
+		entriesTable.setIntercellSpacing(new Dimension(0, 0));
+		entriesTable.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent evt) {
+				int i = entriesTable.getSelectedRow();
+				String val = (String) entriesTable.getModel().getValueAt(i, 0);
+				if (evt.getClickCount() == 1) {
+					categoryID = val;
+					button_arr[1].setEnabled(true);
+				}
+			}
+		});
+
+		entries_scroll_pane = new JScrollPane(entriesTable);
+		Dimension tDim = entriesTable.getPreferredScrollableViewportSize();
+		entries_scroll_pane.setPreferredSize(new Dimension(tDim.width,
+				tDim.height + 1500));
+		return entries_scroll_pane;
+
+	}
+
+	/**
+	 * @return the empty label component
+	 */
+	private Component getEmptyLabel() {
+		LiteButton empty_label = new LiteButton("No entries !");
+		empty_label.setForeground(Color.BLACK);
+		empty_label.setBackground(Color.WHITE);
+		empty_label.setHorizontalAlignment(SwingConstants.CENTER);
+		empty_label.setBorder(new EmptyBorder(0, 0, 0, 0));
+		empty_label.setFocusable(false);
+		empty_label.setEnabled(false);
+		empty_label.setSelected(false);
+		this.add(empty_label);
+		return empty_label;
 	}
 
 	private Component setupRulesComponent() {
@@ -161,59 +214,23 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		rules_area.setFont(font);
 		rules_area.setForeground(Color.GRAY);
 
-		scroll_pane.setMinimumSize(rules_area.getMinimumSize());
-
-		JScrollBar scrollbar = scroll_pane.getVerticalScrollBar();
+		rules_scroll_pane.setMinimumSize(rules_area.getMinimumSize());
+		JScrollBar scrollbar = rules_scroll_pane.getVerticalScrollBar();
 		scrollbar.addAdjustmentListener(new AdjustmentListener() {
-
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {
 				int p = e.getValue();
-				System.out.println(p);
-				if (p == 747 && entry_list.size() < 3) {
+				if (p > 50 && entry_list.size() < 3) {
 					button_arr[2].setEnabled(true);
+					rules_area.setToolTipText("You have accepted the rules");
 				}
 			}
 		});
 		labelContainer.add(new JLabel("Contest Rules: "));
 		labelContainer.add(new Box.Filler(null, null, null));
 		rulesContainer.add(labelContainer);
-		rulesContainer.add(scroll_pane);
+		rulesContainer.add(rules_scroll_pane);
 		return rulesContainer;
-	}
-
-	/**
-	 * Sets up the multiple entries into separate containers.
-	 * 
-	 */
-	private void setupEntriesContainer() {
-		for (int i = 0; i < entries_arr.length; i++) {
-			Container entriesContainer = new Container();
-			entriesContainer.setLayout(new BoxLayout(entriesContainer,
-					BoxLayout.LINE_AXIS));
-			if (entry_list.size() - 1 > i) {
-				entryTxt = entry_list.get(i).getOtherDetails();
-			}
-			entries_arr[i] = new LiteTextField(entryTxt);
-
-			ckbx_items[i] = new JCheckBox();
-			ckbx_items[i].setSelected(false);
-			ckbx_items[i].setEnabled(true);
-			ckbx_items[i].setFocusable(true);
-			ckbx_items[i].setBackground(getBackground());
-			ckbx_items[i].addActionListener(this);
-			chekBoxGrp.add(ckbx_items[i]);
-			entries_arr[i].setEditable(false);
-			entries_arr[i].setBackground(getBackground());
-			entries_arr[i].setFocusable(false);
-			entries_arr[i].setBorder(new TitledBorder(BorderFactory
-					.createTitledBorder(entries_txt[i])));
-			entriesContainer.add(ckbx_items[i]);
-			entriesContainer.add(Box.createRigidArea(new Dimension(10, 0)));
-			entriesContainer.add(entries_arr[i]);
-			entriesContainer.add(Box.createVerticalGlue());
-			this.add(entriesContainer);
-		}
 	}
 
 	/**
@@ -239,6 +256,8 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 			}
 		}
 		button_arr[0].setEnabled(true);
+		if (entry_list.size() == 0)
+			button_arr[2].setEnabled(true);
 		return buttonContainer;
 	}
 
@@ -279,16 +298,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent the_event) {
 		Object event_object = the_event.getSource();
-		int i = 0;
 
-		// get the selected check box index
-		for (JCheckBox c : ckbx_items) {
-			if (c.isSelected()) {
-				categoryID = ckbx_txt_arr[i];
-				break;
-			}
-			i++;
-		}
 		if (entry_list.size() >= 1) {
 			// enable the remove button if an entry is present
 			button_arr[1].setEnabled(true);
@@ -301,22 +311,35 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		}
 		// Handle the remove button
 		if (event_object.equals(button_arr[1])) {
+
 			ArrayList<Entry> entryList = dp.getEntriesByUserId(u.getID());
-			Entry entry = entryList.get(i);
-			entry_list.remove(i);
-			button_arr[1].setEnabled(false);
-			System.out.println("Entry list size: " + entry_list.size());
-			dp.removeItem(entry);
+			for (Entry en : entryList) {
+				if (en.getCategoryID().equals(categoryID)) {
+					DefaultTableModel mdl = (DefaultTableModel) entriesTable
+							.getModel();
+					mdl.removeRow(entriesTable.getSelectedRow());
+					dp.removeItem(en);
+					System.out.println(mdl.getRowCount());
+					if (mdl.getRowCount() == 0) {
+						// entries_scroll_pane.add(getEmptyLabel());
+						// this.remove(entries_scroll_pane);
+						this.revalidate();
+						this.repaint();
+						// this.add(getEmptyLabel());
+						// this.revalidate();
+						// this.repaint();
+					}
+					return;
+				}
+			}
 		}
 		// Handle the add button
 		if (event_object.equals(button_arr[2])) {
-			application.changeScreen(new SubmissionScreen(application, this,
-					categoryID, i));
+			application.changeScreen(new SubmissionScreen(application, this));
 		}
 		// Handle click on the user (editing)
 		if (event_object.equals(user_button)) {
 			application.changeScreen(new EditRegScreen(application, this));
 		}
-
 	}
 }
