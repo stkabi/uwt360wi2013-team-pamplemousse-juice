@@ -103,10 +103,9 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 
 	/** the rules scroll pane container */
 	private JScrollPane rules_scroll_pane = new JScrollPane(rules_area);
+
 	/** the entries scroll pane container */
 	private JScrollPane entries_scroll_pane;
-	/** the initial text entry */
-	private String entryTxt = "Empty";
 
 	/** the category ID text */
 	private String categoryID = "";
@@ -114,11 +113,10 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	/** rules area text font */
 	final Font font = new Font("Plain", Font.PLAIN, 12);
 
-	/** boolean to control the add button when rules have already been accepted */
-	private Boolean isRuleAccepted = false;
-
+	/** the user entries table */
 	private LiteTable entriesTable;
 
+	/** the table data */
 	private Object[][] data;
 
 	/**
@@ -129,11 +127,15 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	 */
 	public EntriesScreen(final App application) {
 		super(application);
-
 		u = application.getLoggedInUser();
 		dp = application.getDataProvider();
 		entry_list = dp.getEntriesByUserId(u.getID());
 		data = new Object[entry_list.size()][2];
+		initialize();
+	}
+
+	/** sets up the panel */
+	private void initialize() {
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setPreferredSize(new Dimension(300, 400));
 		this.setBackground(Color.white);
@@ -153,7 +155,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	/**
 	 * Sets up the multiple entries into separate containers.
 	 * 
-	 * @return
+	 * @return the entries container
 	 * 
 	 */
 	private Component setupEntriesContainer() {
@@ -162,7 +164,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 			return getEmptyLabel();
 		}
 		for (int i = 0; i < entry_list.size(); i += 1) {
-		    Category c = dp.getCategoryById(entry_list.get(i).getCategoryID());
+			Category c = dp.getCategoryById(entry_list.get(i).getCategoryID());
 			data[i][0] = c != null ? c.getName() : "Unknown Category";
 			data[i][1] = entry_list.get(i).getOtherDetails();
 		}
@@ -172,6 +174,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		mdl.setDataVector(data, new Object[] { "Entered Categories",
 				"Description" });
 		entriesTable.setModel(mdl);
+		entriesTable.setToolTipText("Select a category to delete");
 		entriesTable.setRowSelectionAllowed(true);
 		entriesTable.setSelectionBackground(new Color(222, 207, 182));
 		entriesTable.setShowGrid(true);
@@ -182,9 +185,16 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 			public void mouseClicked(MouseEvent evt) {
 				int i = entriesTable.getSelectedRow();
 				String val = (String) entriesTable.getModel().getValueAt(i, 0);
+				ArrayList<Category> all_categories = dp.getAllCategories();
 				if (evt.getClickCount() == 1) {
-					categoryID = val;
-					button_arr[1].setEnabled(true);
+					for (Category cat : all_categories) {
+						String cname = cat.getName();
+						if (val == cname) {
+							categoryID = cat.getID();
+							button_arr[1].setEnabled(true);
+							return;
+						}
+					}
 				}
 			}
 		});
@@ -198,21 +208,27 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	}
 
 	/**
+	 * sets up the initial empty message.
+	 * 
 	 * @return the empty label component
 	 */
 	private Component getEmptyLabel() {
-		LiteButton empty_label = new LiteButton("No entries !");
+		LiteTextField empty_label = new LiteTextField("No entries !");
 		empty_label.setForeground(Color.BLACK);
 		empty_label.setBackground(Color.WHITE);
 		empty_label.setHorizontalAlignment(SwingConstants.CENTER);
 		empty_label.setBorder(new EmptyBorder(0, 0, 0, 0));
 		empty_label.setFocusable(false);
 		empty_label.setEnabled(false);
-		empty_label.setSelected(false);
 		this.add(empty_label);
 		return empty_label;
 	}
 
+	/**
+	 * sets up the rules component.
+	 * 
+	 * @return the rules component
+	 */
 	private Component setupRulesComponent() {
 		Container labelContainer = new Container();
 		labelContainer.setLayout(new BoxLayout(labelContainer,
@@ -239,7 +255,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {
 				int p = e.getValue();
-				if (p > 50 && entry_list.size() < 3) {
+				if (p > 300 && entry_list.size() < 3) {
 					button_arr[2].setEnabled(true);
 					rules_area.setToolTipText("You have accepted the rules");
 				}
@@ -263,6 +279,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 				BoxLayout.X_AXIS));
 		for (int i = 0; i < button_arr.length; i++) {
 			button_arr[i] = new LiteButton(button_txt[i]);
+			button_arr[i].setToolTipText(button_txt[i]);
 			button_arr[i].addActionListener(this);
 			button_arr[i].setBackground(button_color[i]);
 			button_arr[i].setEnabled(false);
@@ -275,8 +292,6 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 			}
 		}
 		button_arr[0].setEnabled(true);
-		if (entry_list.size() == 0)
-			button_arr[2].setEnabled(true);
 		return buttonContainer;
 	}
 
@@ -330,7 +345,6 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		}
 		// Handle the remove button
 		if (event_object.equals(button_arr[1])) {
-
 			ArrayList<Entry> entryList = dp.getEntriesByUserId(u.getID());
 			for (Entry en : entryList) {
 				if (en.getCategoryID().equals(categoryID)) {
@@ -338,15 +352,8 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 							.getModel();
 					mdl.removeRow(entriesTable.getSelectedRow());
 					dp.removeItem(en);
-					System.out.println(mdl.getRowCount());
 					if (mdl.getRowCount() == 0) {
-						// entries_scroll_pane.add(getEmptyLabel());
-						// this.remove(entries_scroll_pane);
-						this.revalidate();
-						this.repaint();
-						// this.add(getEmptyLabel());
-						// this.revalidate();
-						// this.repaint();
+						button_arr[1].setEnabled(false);
 					}
 					return;
 				}
