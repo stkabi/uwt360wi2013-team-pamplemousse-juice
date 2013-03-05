@@ -79,14 +79,15 @@ public class UserListScreen extends BaseScreen {
                 Category c = new Category();
                 c.setName("New Category");
                 dp.saveItem(c);
-                ((DefaultTableModel) categoryTable.getModel()).insertRow(0, new Object[]{c.getName()});
+                ((DefaultTableModel) categoryTable.getModel()).addRow(new Object[]{c.getName()});
+                categoryTable.editCellAt(categoryTable.getRowCount() - 1, 0);
             }
         });
         
         //remove category
         remove.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {  
-                int row = categoryTable.convertRowIndexToView(categoryTable.getSelectedRow()); 
+                int row = categoryTable.convertRowIndexToModel(categoryTable.getSelectedRow()); 
                 if (row > -1) {
                     ((DefaultTableModel) categoryTable.getModel()).removeRow(row);
                     dp.removeItem(dp.getAllCategories().get(row));
@@ -136,7 +137,7 @@ public class UserListScreen extends BaseScreen {
         table.getModel().addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
-                int row = table.convertRowIndexToView(e.getFirstRow());
+                int row = e.getFirstRow();
                 int column = e.getColumn();
                 TableModel model = (TableModel)e.getSource();
                 if (row > -1 && column > -1) {
