@@ -7,10 +7,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -41,7 +38,7 @@ public class LoginScreen extends BaseScreen {
         pass = new LiteTextField("Password");
         pass.maskText = true;
 
-        login = new LiteButton("Login");
+        login = new LiteButton("Login"); 
         register = new LiteButton("Register");
 
         email.addKeyListener(inputChangeListener);
