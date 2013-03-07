@@ -259,10 +259,14 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 			@Override
 			public void actionPerformed(final ActionEvent the_event) {
 				Object cb = the_event.getSource();
-				categoryID = dp.getAllCategories()
-						.get(((JComboBox) cb).getSelectedIndex()).getID();
-
-				upload.setEnabled(true);
+				for (Category cc : master_category_list) {
+					if (cc.getName() == ((JComboBox) cb).getSelectedItem()
+							.toString()) {
+						categoryID = cc.getID();
+						upload.setEnabled(true);
+						return;
+					}
+				}
 			}
 		});
 		category_Container.add(category_label);
