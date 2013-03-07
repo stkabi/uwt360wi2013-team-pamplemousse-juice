@@ -12,6 +12,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -356,10 +357,10 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 					// entry_list.remove(dp.getEntriesByUserId(u.getID()).remove(o))
 					dp.removeItem(en);
 					entry_list = dp.getEntriesByUserId(u.getID());
-					rules_area.setCaretPosition(0);
+					rules_scroll_pane.getViewport().setViewPosition(
+							new Point(0, 0));
 					if (mdl.getRowCount() == 0) {
 						button_arr[1].setEnabled(false);
-
 						entry_list.clear();
 					}
 					return;
