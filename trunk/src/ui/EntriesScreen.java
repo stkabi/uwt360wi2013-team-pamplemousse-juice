@@ -171,9 +171,15 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		}
 
 		entriesTable = new LiteTable();
-		DefaultTableModel mdl = new DefaultTableModel();
+		DefaultTableModel mdl = new DefaultTableModel() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		mdl.setDataVector(data, new Object[] { "Entered Categories",
 				"Description" });
+
 		entriesTable.setModel(mdl);
 		entriesTable.setGridColor(Color.BLACK);
 		entriesTable.setToolTipText("Select a category to delete");
@@ -200,7 +206,6 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 				}
 			}
 		});
-
 		entries_scroll_pane = new JScrollPane(entriesTable);
 		Dimension tDim = entriesTable.getPreferredScrollableViewportSize();
 		entries_scroll_pane.setBackground(Color.WHITE);
@@ -264,6 +269,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 				}
 			}
 		});
+		rules_scroll_pane.getViewport().setViewPosition(new Point(0, 0));
 		labelContainer.add(new JLabel("Contest Rules: "));
 		labelContainer.add(new Box.Filler(null, null, null));
 		rulesContainer.add(labelContainer);
@@ -359,6 +365,8 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 					entry_list = dp.getEntriesByUserId(u.getID());
 					rules_scroll_pane.getViewport().setViewPosition(
 							new Point(0, 0));
+					rules_area.setToolTipText("Scroll down to accept rules");
+
 					if (mdl.getRowCount() == 0) {
 						button_arr[1].setEnabled(false);
 						entry_list.clear();

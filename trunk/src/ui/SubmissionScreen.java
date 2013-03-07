@@ -622,6 +622,14 @@ public class SubmissionScreen extends BaseScreen implements ActionListener {
 				type = true;
 			}
 		}
+		if (!type) {
+			JOptionPane.showMessageDialog(null,
+					"File did not contain a valid image", "Message",
+					JOptionPane.INFORMATION_MESSAGE);
+			label.setIcon(new ImageIcon(getClass().getResource(
+					"/res/images/placeholder.png")));
+			button_arr[2].setEnabled(false);
+		}
 
 		return type;
 	}
