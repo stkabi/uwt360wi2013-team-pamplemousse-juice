@@ -360,7 +360,6 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 					DefaultTableModel mdl = (DefaultTableModel) entriesTable
 							.getModel();
 					mdl.removeRow(entriesTable.getSelectedRow());
-					// entry_list.remove(dp.getEntriesByUserId(u.getID()).remove(o))
 					dp.removeItem(en);
 					entry_list = dp.getEntriesByUserId(u.getID());
 					rules_scroll_pane.getViewport().setViewPosition(
