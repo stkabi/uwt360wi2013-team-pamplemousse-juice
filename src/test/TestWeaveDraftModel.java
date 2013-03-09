@@ -3,6 +3,8 @@ package test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Color;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -32,15 +34,15 @@ public class TestWeaveDraftModel {
         model.setTread(0, 0, true);
         model.setTieUp(0, 1, true);
         model.setThread(0, 1, true);
-        assertTrue(model.getValue(0,0));
+        assertTrue(model.getValue(0,0).equals(Color.black));
         
         model.setTread(0, 3, true);
-        assertTrue(model.getValue(0,3));
-        assertFalse(model.getValue(1,3));
+        assertTrue(model.getValue(0,3).equals(Color.black));
+        assertFalse(model.getValue(1,3).equals(Color.black));
         
         model.setTieUp(1, 0, true);
         model.setThread(3, 0, true);
         model.setTread(1, 1, true);
-        assertTrue(model.getValue(3,1));
+        assertTrue(model.getValue(3,1).equals(Color.black));
     }
 }
