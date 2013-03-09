@@ -97,7 +97,7 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 			user_info_fields[i].addKeyListener(inputChangeListener);
 		}
 		// user has to re-enter password otherwise you can't login again
-		user_info_fields[4].setText("Re-enter Password");
+		user_info_fields[4].setText("Password");
 		user_info_fields[5].setText("Re-enter Password");
 		user_info_fields[4].maskText = true;
 		user_info_fields[5].maskText = true;
@@ -187,7 +187,6 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 			u.setEmail(user_info_fields[1].getText());
 			u.setAddress(user_info_fields[2].getText());
 			u.setPhoneNumber(user_info_fields[3].getText());
-
 			u.setPassword(user_info_fields[4].getText());
 			dp.saveItem(u);
 			application.changeScreen(new EntriesScreen(application));
@@ -205,6 +204,7 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 	 */
 	private void performValidation() {
 		boolean valid = true;
+
 		// validate email
 		if (user_info_fields[1].getText().length() == 0
 				|| user_info_fields[1].getText().indexOf('@') == -1
@@ -230,7 +230,6 @@ public class EditRegScreen extends BaseScreen implements ActionListener {
 			user_info_fields[4].setToolTipText("Please enter a password");
 			user_info_fields[5].setToolTipText("Please enter a password");
 		} else {
-
 			user_info_fields[4].setToolTipText("");
 			user_info_fields[5].setToolTipText("");
 		}
