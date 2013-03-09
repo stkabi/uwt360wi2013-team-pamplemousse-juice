@@ -17,8 +17,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -110,9 +108,6 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	/** the entries scroll pane container */
 	private JScrollPane entries_scroll_pane;
 
-	/** the category ID text */
-	private String categoryID = "";
-
 	/** rules area text font */
 	final Font font = new Font("Plain", Font.PLAIN, 12);
 
@@ -173,7 +168,8 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		}
 
 		entriesTable = new LiteTable();
-		DefaultTableModel mdl = new DefaultTableModel() {
+		@SuppressWarnings("serial")
+        DefaultTableModel mdl = new DefaultTableModel() {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
