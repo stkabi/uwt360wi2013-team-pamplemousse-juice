@@ -9,7 +9,7 @@ public class Model implements Serializable {
     public int threadWidth, threadHeight, treadWidth, treadHeight;
                
     public boolean threading[][], tieup[][], treading[][];
-    public Color threadingColor[], treadingColor[];
+    public Color threadingColor[][], treadingColor[][];
 
     public Model(int threadWidth, int threadHeight, int treadWidth, int treadHeight) {
         this.threadWidth = threadWidth;
@@ -21,6 +21,16 @@ public class Model implements Serializable {
         threading = new boolean[threadWidth][threadHeight];
         tieup = new boolean[treadWidth][threadHeight];
         treading = new boolean[treadWidth][treadHeight];
+        threadingColor = new Color[threadWidth][1];
+        treadingColor = new Color[1][treadHeight];
+        
+        for (int i = 0; i < threadWidth; i += 1) {
+            threadingColor[i][0] = new Color(0, 0, 0);
+        }
+        
+        for (int i = 0; i < treadHeight; i += 1) {
+            treadingColor[0][i] = new Color(255, 255, 255);
+        }
     }
     
     public void toggleTieUp(int x, int y) {
@@ -71,13 +81,13 @@ public class Model implements Serializable {
         return -1;
     }
 
-    public boolean getValue(int col, int row) {
+    public Color getValue(int col, int row) {
         int warp = isInThread(col), pedal = isInTread(row);
         if (warp > -1 && pedal > -1) {
             if (tieup[pedal][warp]) {
-                return true;
+                return threadingColor[col][0];
             }
         }
-        return false;
+        return treadingColor[0][row];
     }
 }

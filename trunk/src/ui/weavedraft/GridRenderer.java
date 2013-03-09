@@ -12,8 +12,10 @@ public class GridRenderer extends JComponent {
     
     private int rows;
     private int columns;
-    private boolean data[][];
+    private boolean boolData[][];
+    private Color[][] colorData;
     public int cellWidth = 20, cellHeight = 20;
+    private boolean showColors;
     
     private Color light = new Color(200, 200, 200);
     private Color dark = new Color(140, 140, 140);
@@ -21,12 +23,20 @@ public class GridRenderer extends JComponent {
     public GridRenderer(int columns, int rows, boolean data[][]) {
         this.rows = rows;
         this.columns = columns;
-        this.data = data;
+        this.boolData = data;
+        this.showColors = false;
+    }
+    
+    public GridRenderer(int columns, int rows, Color data[][]) {
+        this.rows = rows;
+        this.columns = columns;
+        this.colorData = data;
+        this.showColors = true;
     }
     
     //get a column based on a mouse event
     public int eventToCellX(MouseEvent e) {
-        int x = (int)Math.floor((float)e.getX() / (float)cellWidth);
+        int x = (int)Math.floor((float)(e.getX() - this.getInsets().right) / (float)cellWidth);
         if (x > columns || x < 0) {
             x = -1;
         }
@@ -35,7 +45,7 @@ public class GridRenderer extends JComponent {
     
     //get a row based on a mouse event
     public int eventToCellY(MouseEvent e) {
-        int y = (int)Math.floor((float)e.getY() / (float)cellHeight);
+        int y = (int)Math.floor((float)(e.getY() - this.getInsets().top) / (float)cellHeight);
         if (y > rows || y < 0) {
             y = -1;
         }
@@ -44,12 +54,16 @@ public class GridRenderer extends JComponent {
     
     //paint grid
     public void paintComponent(Graphics g2) {
+
+        int offsetY = this.getInsets().top;
+        int offsetX = this.getInsets().right;
+        
         Graphics2D g = (Graphics2D) g2;
         
         for (int i = 0; i <= columns; i += 1) {
             for (int j = 0; j <= rows; j += 1) {
-                int x = i * cellWidth - 1;
-                int y = j * cellHeight - 1;
+                int x = i * cellWidth - 1 + offsetX;
+                int y = j * cellHeight - 1 + offsetY;
                 
                 g.setColor(light);
                 g.drawRect(x, y, cellWidth, cellHeight);
@@ -64,12 +78,17 @@ public class GridRenderer extends JComponent {
                     g.drawLine(x, y, x + cellWidth, y);
                 }
                 
-                if (data[i][j]) {
-                    g.setPaint(Color.black);
+                if (!showColors) {
+                    if (boolData[i][j]) {
+                        g.setPaint(Color.black);
+                    } else {
+                        g.setPaint(Color.white);
+                    }
                 } else {
-                    g.setPaint(Color.white);
+                    g.setPaint(colorData[i][j]);
                 }
-                    g.fillRect(x + 1, y + 1, cellWidth - 1, cellHeight - 1);
+
+                g.fillRect(x + 1, y + 1, cellWidth - 1, cellHeight - 1);
             }
         }
         

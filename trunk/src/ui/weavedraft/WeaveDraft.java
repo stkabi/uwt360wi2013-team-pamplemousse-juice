@@ -11,14 +11,15 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.JColorChooser;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 public class WeaveDraft extends JPanel {
     private static final long serialVersionUID = -1275575997193739739L;
     private Model model;
-    private boolean[][] data;
-    private GridRenderer threading, tieup, treading, center;
+    private Color[][] data;
+    private GridRenderer threading, tieup, treading, center, threadColor, treadColor;
 
     public void update() {
         for (int i = 0; i < model.threadWidth; i += 1) {
@@ -67,7 +68,7 @@ public class WeaveDraft extends JPanel {
     }
 
     private void init() {
-        data = new boolean[model.threadWidth][model.treadHeight];
+        data = new Color[model.threadWidth][model.treadHeight];
 
         for (int i = 0; i < model.threadWidth; i += 1) {
             for (int j = 0; j < model.treadHeight; j += 1) {
@@ -79,6 +80,9 @@ public class WeaveDraft extends JPanel {
         tieup = new GridRenderer(model.treadWidth - 1, model.threadHeight - 1, model.tieup);
         treading = new GridRenderer(model.treadWidth - 1, model.treadHeight - 1, model.treading);
         center = new GridRenderer(model.threadWidth - 1, model.treadHeight - 1, data);
+        
+        threadColor = new GridRenderer(model.threadWidth - 1, 0, model.threadingColor);
+        treadColor = new GridRenderer(0, model.treadHeight - 1, model.treadingColor);
         
         threading.addMouseMotionListener(new MouseMotionListener() {
             public void mouseDragged(MouseEvent e) {
@@ -130,23 +134,52 @@ public class WeaveDraft extends JPanel {
             public void mouseExited(MouseEvent e) { }
             public void mouseReleased(MouseEvent e) { }
         });
+        
+        threadColor.addMouseListener(new MouseListener() {
+            public void mousePressed(MouseEvent e) {
+                handleThreadColorEvent(e);
+            }
+            public void mouseClicked(MouseEvent e) { }
+            public void mouseEntered(MouseEvent e) { }
+            public void mouseExited(MouseEvent e) { }
+            public void mouseReleased(MouseEvent e) { }
+        });
+        
+        treadColor.addMouseListener(new MouseListener() {
+            public void mousePressed(MouseEvent e) {
+                handleTreadColorEvent(e);
+            }
+            public void mouseClicked(MouseEvent e) { }
+            public void mouseEntered(MouseEvent e) { }
+            public void mouseExited(MouseEvent e) { }
+            public void mouseReleased(MouseEvent e) { }
+        });
 
         int thw = model.threadWidth * 20, thh = model.threadHeight * 20,
             trw = model.treadWidth * 20, trh = model.treadHeight * 20;
+
+        JSplitPane threadSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, threadColor, threading);
+        JSplitPane left = new JSplitPane(JSplitPane.VERTICAL_SPLIT, threadSplit, center);
+        JSplitPane treadSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treading, treadColor);
+        JSplitPane right = new JSplitPane(JSplitPane.VERTICAL_SPLIT, tieup, treadSplit);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
         
         threading.setPreferredSize(new Dimension(thw, thh));
-        tieup.setPreferredSize(new Dimension(trw, thh));
+        tieup.setPreferredSize(new Dimension(trw + 20 + treadSplit.getDividerSize(), thh + 20 + threadSplit.getDividerSize()));
+        tieup.setBorder(BorderFactory.createEmptyBorder(20 + treadSplit.getDividerSize(), 0,  + 20 + treadSplit.getDividerSize(), 0));
         treading.setPreferredSize(new Dimension(trw, trh));
         center.setPreferredSize(new Dimension(trw, trh));
-
-        JSplitPane left = new JSplitPane(JSplitPane.VERTICAL_SPLIT, threading, center);
-        JSplitPane right = new JSplitPane(JSplitPane.VERTICAL_SPLIT, tieup, treading);
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
+        threadColor.setPreferredSize(new Dimension(thw, 20));
+        treadColor.setPreferredSize(new Dimension(20, trh));
 
         splitPane.setBorder(BorderFactory.createEmptyBorder());
         left.setBorder(BorderFactory.createEmptyBorder());
         right.setBorder(BorderFactory.createEmptyBorder());
+        threadSplit.setBorder(BorderFactory.createEmptyBorder());
+        treadSplit.setBorder(BorderFactory.createEmptyBorder());
 
+        threadSplit.setEnabled(false);
+        treadSplit.setEnabled(false);
         splitPane.setEnabled(false);
         left.setEnabled(false);
         right.setEnabled(false);
@@ -178,6 +211,22 @@ public class WeaveDraft extends JPanel {
                 model.toggleTread(cellX, cellY);    
             }
             
+            update();
+        }
+    }
+    
+    private void handleTreadColorEvent(MouseEvent e) {
+        int cellY = treadColor.eventToCellY(e);
+        if (cellY > -1) {
+            model.treadingColor[0][cellY] = JColorChooser.showDialog(this, "Choose Background Color", model.treadingColor[0][cellY]);
+            update();
+        }
+    }
+
+    private void handleThreadColorEvent(MouseEvent e) {
+        int cellX = threadColor.eventToCellX(e);
+        if (cellX > -1) {
+            model.threadingColor[cellX][0] = JColorChooser.showDialog(this, "Choose Background Color", model.threadingColor[cellX][0]);
             update();
         }
     }
