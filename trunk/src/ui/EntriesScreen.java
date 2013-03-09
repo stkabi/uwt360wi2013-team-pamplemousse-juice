@@ -33,6 +33,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import data.DataProvider;
@@ -187,14 +189,13 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		entriesTable.setSelectionBackground(new Color(222, 207, 182));
 		entriesTable.setShowGrid(true);
 		entriesTable.setIntercellSpacing(new Dimension(0, 0));
-		entriesTable.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseClicked(MouseEvent evt) {
-			    //enable button if the entriesTable has a selected row greater than -1
-			    button_arr[1].setEnabled(entriesTable.getSelectedRow() >= -1);
-			}
+		
+		entriesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+		    public void valueChanged(ListSelectionEvent e) {
+		        button_arr[1].setEnabled(entriesTable.getSelectedRow() >= -1);
+		    }
 		});
+		
 		entries_scroll_pane = new JScrollPane(entriesTable);
 		Dimension tDim = entriesTable.getPreferredScrollableViewportSize();
 		entries_scroll_pane.setBackground(Color.WHITE);
