@@ -191,19 +191,8 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 
 			@Override
 			public void mouseClicked(MouseEvent evt) {
-				int i = entriesTable.getSelectedRow();
-				String val = (String) entriesTable.getModel().getValueAt(i, 0);
-				ArrayList<Category> all_categories = dp.getAllCategories();
-				if (evt.getClickCount() == 1) {
-					for (Category cat : all_categories) {
-						String cname = cat.getName();
-						if (val == cname) {
-							categoryID = cat.getID();
-							button_arr[1].setEnabled(true);
-							return;
-						}
-					}
-				}
+			    //enable button if the entriesTable has a selected row greater than -1
+			    button_arr[1].setEnabled(entriesTable.getSelectedRow() >= -1);
 			}
 		});
 		entries_scroll_pane = new JScrollPane(entriesTable);
@@ -342,11 +331,6 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 	public void actionPerformed(final ActionEvent the_event) {
 		Object event_object = the_event.getSource();
 
-		if (entry_list.size() >= 1) {
-			// enable the remove button if an entry is present
-			button_arr[1].setEnabled(true);
-		}
-
 		// Handle the logout button
 		if (event_object.equals(button_arr[0])) {
 			application.loginScreen = null;
@@ -354,30 +338,26 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		}
 		// Handle the remove button
 		if (event_object.equals(button_arr[1])) {
-			ArrayList<Entry> entryList = dp.getEntriesByUserId(u.getID());
-			for (Entry en : entryList) {
-				if (en.getCategoryID().equals(categoryID)) {
-					DefaultTableModel mdl = (DefaultTableModel) entriesTable
-							.getModel();
-					mdl.removeRow(entriesTable.getSelectedRow());
-					dp.removeItem(en);
-					entry_list = dp.getEntriesByUserId(u.getID());
-					rules_scroll_pane.getViewport().setViewPosition(
-							new Point(0, 0));
-					rules_area.setToolTipText("Scroll down to accept rules");
+		    
+		    //get entry. Entry_list sorting will match entries table row index
+		    Entry en = entry_list.get(entriesTable.getSelectedRow());
+		    
+		    //remove it from database
+		    dp.removeItem(en);
+		    entry_list = dp.getEntriesByUserId(u.getID());
+		    
+		    //remove it from table
+		    DefaultTableModel mdl = (DefaultTableModel) entriesTable.getModel();
+            mdl.removeRow(entriesTable.getSelectedRow());
 
-					if (mdl.getRowCount() == 0) {
-						button_arr[1].setEnabled(false);
-						entry_list.clear();
-					}
-					return;
-				}
-			}
+            //disable remove button because now the table doesn't have a selection
+            button_arr[1].setEnabled(false);
 		}
 		// Handle the add button
 		if (event_object.equals(button_arr[2])) {
 			application.changeScreen(new SubmissionScreen(application, this));
 		}
+        
 		// Handle click on the user (editing)
 		if (event_object.equals(user_button)) {
 			application.changeScreen(new EditRegScreen(application, this));
