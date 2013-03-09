@@ -169,7 +169,7 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 
 		entriesTable = new LiteTable();
 		@SuppressWarnings("serial")
-        DefaultTableModel mdl = new DefaultTableModel() {
+		DefaultTableModel mdl = new DefaultTableModel() {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -185,13 +185,14 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		entriesTable.setSelectionBackground(new Color(222, 207, 182));
 		entriesTable.setShowGrid(true);
 		entriesTable.setIntercellSpacing(new Dimension(0, 0));
-		
-		entriesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-		    public void valueChanged(ListSelectionEvent e) {
-		        button_arr[1].setEnabled(entriesTable.getSelectedRow() >= -1);
-		    }
-		});
-		
+
+		entriesTable.getSelectionModel().addListSelectionListener(
+				new ListSelectionListener() {
+					public void valueChanged(ListSelectionEvent e) {
+						button_arr[1].setEnabled(entriesTable.getSelectedRow() >= -1);
+					}
+				});
+
 		entries_scroll_pane = new JScrollPane(entriesTable);
 		Dimension tDim = entriesTable.getPreferredScrollableViewportSize();
 		entries_scroll_pane.setBackground(Color.WHITE);
@@ -335,26 +336,30 @@ public class EntriesScreen extends BaseScreen implements ActionListener {
 		}
 		// Handle the remove button
 		if (event_object.equals(button_arr[1])) {
-		    
-		    //get entry. Entry_list sorting will match entries table row index
-		    Entry en = entry_list.get(entriesTable.getSelectedRow());
-		    
-		    //remove it from database
-		    dp.removeItem(en);
-		    entry_list = dp.getEntriesByUserId(u.getID());
-		    
-		    //remove it from table
-		    DefaultTableModel mdl = (DefaultTableModel) entriesTable.getModel();
-            mdl.removeRow(entriesTable.getSelectedRow());
 
-            //disable remove button because now the table doesn't have a selection
-            button_arr[1].setEnabled(false);
+			// get entry. Entry_list sorting will match entries table row index
+			Entry en = entry_list.get(entriesTable.getSelectedRow());
+
+			// remove it from database
+			dp.removeItem(en);
+			entry_list = dp.getEntriesByUserId(u.getID());
+
+			// remove it from table
+			DefaultTableModel mdl = (DefaultTableModel) entriesTable.getModel();
+			mdl.removeRow(entriesTable.getSelectedRow());
+
+			// reset the rules area scroll pane to the top
+			rules_scroll_pane.getViewport().setViewPosition(new Point(0, 0));
+
+			// disable remove button because now the table doesn't have a
+			// selection
+			button_arr[1].setEnabled(false);
 		}
 		// Handle the add button
 		if (event_object.equals(button_arr[2])) {
 			application.changeScreen(new SubmissionScreen(application, this));
 		}
-        
+
 		// Handle click on the user (editing)
 		if (event_object.equals(user_button)) {
 			application.changeScreen(new EditRegScreen(application, this));
