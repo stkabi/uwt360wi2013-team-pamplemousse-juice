@@ -218,7 +218,8 @@ public class WeaveDraft extends JPanel {
     private void handleTreadColorEvent(MouseEvent e) {
         int cellY = treadColor.eventToCellY(e);
         if (cellY > -1) {
-            model.treadingColor[0][cellY] = JColorChooser.showDialog(this, "Choose Background Color", model.treadingColor[0][cellY]);
+            Color newC = JColorChooser.showDialog(this, "Choose Background Color", model.treadingColor[0][cellY]);
+            model.treadingColor[0][cellY] = newC != null ? newC : model.treadingColor[0][cellY];
             update();
         }
     }
@@ -226,7 +227,8 @@ public class WeaveDraft extends JPanel {
     private void handleThreadColorEvent(MouseEvent e) {
         int cellX = threadColor.eventToCellX(e);
         if (cellX > -1) {
-            model.threadingColor[cellX][0] = JColorChooser.showDialog(this, "Choose Background Color", model.threadingColor[cellX][0]);
+            Color newC = JColorChooser.showDialog(this, "Choose Background Color", model.threadingColor[cellX][0]);
+            model.threadingColor[cellX][0] = newC != null ? newC : model.threadingColor[cellX][0];
             update();
         }
     }

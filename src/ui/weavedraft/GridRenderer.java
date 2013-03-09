@@ -68,12 +68,12 @@ public class GridRenderer extends JComponent {
                 g.setColor(light);
                 g.drawRect(x, y, cellWidth, cellHeight);
                 
-                if (i % 4 == 0) {
+                if (i % 4 == 0 && i != 0) {
                     g.setColor(dark);
                     g.drawLine(x, y, x, y + cellHeight);
                 }
                 
-                if (j % 4 == 0) {
+                if (j % 4 == 0 && j != 0) {
                     g.setColor(dark);
                     g.drawLine(x, y, x + cellWidth, y);
                 }
