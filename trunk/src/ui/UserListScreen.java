@@ -116,6 +116,14 @@ public class UserListScreen extends BaseScreen {
         
         LiteTable table = new LiteTable(){
             private static final long serialVersionUID = 757009776144465801L;
+            
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                if (column != 2) {
+                    return false;    
+                }
+                return true;
+            }
 
             @Override
             public TableCellEditor getCellEditor(final int row, int column) {
