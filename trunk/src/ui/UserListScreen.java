@@ -118,22 +118,22 @@ public class UserListScreen extends BaseScreen {
             private static final long serialVersionUID = 757009776144465801L;
 
             @Override
-            public TableCellEditor getCellEditor(int row, int column) {
+            public TableCellEditor getCellEditor(final int row, int column) {
                 Object value = super.getValueAt(row, column);
                 if (value != null) {
                     if (column == 2) {
                         Role role = (Role)value;
                         JComboBox roleCombo = new JComboBox();
-                        roleCombo.addItem("ORGANIZER");
-                        roleCombo.addItem("JUDGE");
-                        roleCombo.addItem("CONTESTANT");
-                        roleCombo.setSelectedItem(role.toString());
+                        roleCombo.addItem(Role.ORGANIZER);
+                        roleCombo.addItem(Role.JUDGE);
+                        roleCombo.addItem(Role.CONTESTANT);
+                        roleCombo.setSelectedItem(role);
                         roleCombo.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent arg0) {
                                 JComboBox source = (JComboBox) arg0.getSource();
-                                Role role = User.Role.valueOf((String) source.getSelectedItem());
-                                User user = users.get(getSelectedRow());
+                                Role role = (Role)source.getSelectedItem();
+                                User user = users.get(row);
                                 user.setRole(role);
                                 dp.saveItem(user);
                             }
