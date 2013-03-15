@@ -23,7 +23,11 @@ import data.DataProvider;
 import entities.Category;
 import entities.User;
 import entities.User.Role;
-
+/**
+ * UI for organizer view ofregistered users
+ * @author Brian Matthews, Justin Prentice
+ *
+ */
 public class UserListScreen extends BaseScreen {
     private static final long serialVersionUID = -1373614477586478093L;
     private LiteTable userTable;

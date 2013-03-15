@@ -19,7 +19,11 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
 import entities.User;
-
+/**
+ * Registration screen UI and logic
+ * @author Justin Prentice, Brian Matthews
+ *
+ */
 public class RegisterScreen extends BaseScreen {
     private static final long serialVersionUID = -4847569599721799776L;
 
