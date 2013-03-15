@@ -1,5 +1,9 @@
 package entities;
-
+/**
+ * 
+ * @author Justin Prentice
+ *
+ */
 public class Entry extends BaseEntity {
 	private static final long serialVersionUID = -3191322136179845133L;
 	private String userID;

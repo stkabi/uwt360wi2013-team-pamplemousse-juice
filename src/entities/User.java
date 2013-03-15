@@ -1,7 +1,11 @@
 package entities;
 
 import java.security.MessageDigest;
-
+/**
+ * 
+ * @author Justin Prentice
+ *
+ */
 public class User extends BaseEntity {
     private static final long serialVersionUID = -7917347868104375158L;
 
